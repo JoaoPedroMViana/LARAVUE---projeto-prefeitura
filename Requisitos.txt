@@ -1,0 +1,65 @@
+Interface:
+
+- Barra lateral na esquerda com os links para os menus
+- Navbar com um hamburger para acionar a side bar
+- No lado direito da barra lateral deve ter um espaço para as telas serem carregadas
+
+---------------------------------------------
+
+Cadastro de Pessoas: 
+
+- Inclusão, edição, exclusão
+- Nome (required), data de nascimento (required), CPF (required), sexo (required), cidade, bairro, rua, número e complemento
+- Id com autoincremento
+- Data de nascimento deve ser do tipo date, no banco, inclusão e edição
+- Sexo deve ser do tipo lista/radio/checkbox
+- Na edição  o CPF deve ser bloqueado
+- Tela para consultar todas as pessoas cadastradas em uma tabela paginada, na tabela de pessoas precisa ter ID, nome, CPF, data de nascimento e sexo
+- Cada registro na tabela deve ter botões de vizualizar e excluir
+- A opção visualizar deve levar a um form para editar a pessoa com um botão de salvar
+- Na tela de consulta filtro com nome, data de nascimento, CPF e sexo
+- Inclusão, edição e exclusão devem ter mensagens de confirmação/erro
+- Na exclusão fazer um modal de confirmação de ação antes de excluir
+
+---------------------------------------------
+
+Cadastro de Protocolo:
+
+- Descrição (permitir pelo menos 2000), data (atual), Prazo (em dias, só números), Contribuinte (pessoa linkada)
+- Número de identificação autoincremental, coluna com nome número (é o id do protocolo)
+- Data deve ser do tipo date (no form e no banco)
+- O campo contruibuinte deve ser uma lista com as pessoas cadastradas no sistema, no banco de dados deve vincular o id da pessoa com o protocolo (chave estrangeira)
+- Inclusão, edição e exclusão
+- Todos os campos required
+- Deve possuir uma tabela paginada, nela dever ter os campos número, data, prazo e nome do demandante
+- Para cada registro botões de vizualizar e excluir
+- O visualizar deve levar até um form para editar
+- Na página de consulta um filtro com número, descrição, data de abertura e nome contribuinte
+- inclusão, edição e exclusão devem ter mensagens de confirmação/erro
+- Na exclusão um modal de confirmação da ação antes de excluir
+
+---------------------------------------------
+
+Validações:
+
+- Deve ser utilizado o precognition
+- CPF deve ser único e válido
+- O prazo entre 5 e 30 dias
+- Contribuintes com menos de 16 não podem ter protocolo registrado
+
+---------------------------------------------
+
+Anexar Documentos: 
+
+- No cadastro de protocolo campo para anexar documentos (documentos da pessoa, fotos)
+- No máximo 5 documentos por protocolo
+- Arquivos permitidos: JPG, JPEG, PNG e PDFs
+- O tamanho máximo de cada arquivo deve ser 3MB
+- É possível excluir o documento anexado, caso seja anexado indevidamente
+
+---------------------------------------------
+
+Autenticação:
+
+- Cadastro de usuários
+- ID autoincremental, nome completo, E-mail, senha
