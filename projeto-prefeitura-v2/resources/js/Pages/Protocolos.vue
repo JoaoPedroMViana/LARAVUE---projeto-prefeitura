@@ -12,3 +12,10 @@
         </main-layout>
     </div>
 </template>
+
+<style scoped>
+    [type='text']:focus {
+        box-shadow: none; 
+        /* por algum motivo os inputs tavam com um box-shadow azul no focus  que parecia um border */
+    }
+</style>

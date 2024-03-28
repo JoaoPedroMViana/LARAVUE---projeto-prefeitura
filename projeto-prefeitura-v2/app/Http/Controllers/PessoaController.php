@@ -16,4 +16,15 @@ class PessoaController extends Controller
         ]);
         // enviar as pessoas junto como props
     }
+
+    function show() {
+        $query = '';
+        if(request('search') != 'null') $query = request('search'); // verificar se possui uma query 
+
+        $pessoasPesquisadas = Pessoa::where([['nome', 'like', '%'.$query.'%']])->paginate(5);
+        return Inertia::render('Pessoas', [
+            'pesquisa' => request('search'),
+            'pessoas' => $pessoasPesquisadas
+        ]);
+    }
 }
