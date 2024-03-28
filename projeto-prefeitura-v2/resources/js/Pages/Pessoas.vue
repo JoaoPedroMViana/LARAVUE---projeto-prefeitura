@@ -13,6 +13,16 @@
         else return true
     }
 
+    let pagina_atual = ref(props.pessoas.current_page);
+
+    watch(pagina_atual, () => {
+        console.log(props.pessoas.current_page);
+        // verificar se tem pesquisa
+        if(props.pesquisa != null) router.get(`/pessoas/pesquisar?search=${props.pesquisa}&page=${pagina_atual.value}`);
+        else router.get(`/pessoas?page=${pagina_atual.value}`)
+    })
+
+    // search
     const valueSearch = () => {
         if(props.pesquisa == 'null' ) return ''
         else return props.pesquisa
@@ -32,8 +42,8 @@
         <Head title="Pessoas" />
         <main-layout paginaAtual="Pessoas" class="w-full">
 
-            <v-app class="bg-red-400 w-full mt-12">
-                <div class="w-full flex justify-center">
+            <v-app class="bg-red-400 w-full mt-4">
+                <div class="w-full flex justify-center ">
                     <v-card elevation="4" class="w-5/6 rounded-lg">
                     
                         <v-text-field
@@ -79,7 +89,17 @@
                                 
                         </v-table>
                         <p v-if="pessoas.data.length == 0" ><v-icon icon="mdi-alert-circle" class="ml-6 m-4"></v-icon> Nenhuma pessoa encontrada com: "{{ pesquisa }}"</p>
-                        <div clas="flex" v-if="pessoas.length != 0">
+                        <v-pagination
+                            v-if="pessoas.data.length != 0" 
+                            v-model="pagina_atual"
+                            :length="pessoas.last_page"
+                            class="mb-2"
+                            :total-visible="5"
+                            active-color="#1B5E20"
+                            color="#7CB342"
+                            rounded
+                        ></v-pagination>
+                        <!-- <div clas="flex" v-if="pessoas.length != 0">
                             <Link 
                                 :href="pessoas.prev_page_url"
                                 :disabled="pessoas.current_page == 1"
@@ -102,15 +122,15 @@
                                     {{ link.label }}
                                 </Link>                   
                             </div>
-                        </div>
-                        <Link 
-                                :href="pessoas.next_page_url"
-                                :disabled="pessoas.current_page == pessoas.last_page"
-                                as="button"
-                                preserve-scroll="true"
-                            >
-                                Proxima
-                        </Link><br/>
+                            <Link 
+                                    :href="pessoas.next_page_url"
+                                    :disabled="pessoas.current_page == pessoas.last_page"
+                                    as="button"
+                                    preserve-scroll="true"
+                                >
+                                    Proxima
+                            </Link><br/>
+                        </div> -->
                     </v-card>
                 </div>
             </v-app>
