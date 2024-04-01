@@ -14,6 +14,8 @@ Route::get('/pessoas', [PessoaController::class, 'index'])->middleware(['auth', 
 
 Route::get('/pessoas/pesquisar', [PessoaController::class, 'show'])->middleware(['auth'])->name('pessoas.pesquisar');
 
+Route::get('/pessoa/{id}', [PessoaController::class, 'edit'])->middleware(['auth'])->name('pessoa.edit');
+
 Route::get('/protocolos', function() {
     return Inertia::render('Protocolos');
 })->middleware(['auth'])->name('protocolos');

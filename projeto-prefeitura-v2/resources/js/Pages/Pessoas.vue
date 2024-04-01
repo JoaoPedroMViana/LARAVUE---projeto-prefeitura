@@ -8,32 +8,26 @@
         pesquisa: String
     });
 
-    const toggleNextPrevius = (index, arr) => {
-        if(index == 0 || index == arr.length -1) return false
-        else return true
-    }
-
+    // páginação
     let pagina_atual = ref(props.pessoas.current_page);
 
     watch(pagina_atual, () => {
-        console.log(props.pessoas.current_page);
-        // verificar se tem pesquisa
         if(props.pesquisa != null) router.get(`/pessoas/pesquisar?search=${props.pesquisa}&page=${pagina_atual.value}`);
         else router.get(`/pessoas?page=${pagina_atual.value}`)
     })
 
     // search
-    const valueSearch = () => {
-        if(props.pesquisa == 'null' ) return ''
-        else return props.pesquisa
-    }
-
-    let search = ref(valueSearch());
+    let search = ref(props.pesquisa);
 
     watch(search, () => {
         router.get(`/pessoas/pesquisar?search=${search.value}`)
     });
-    //fazer um watcher no search pra rota de pesquisa
+
+    // página de editar
+    const editar = (id) => {
+        router.get(`/pessoa/${id}`);
+    }
+
 </script>
 
 <template>
@@ -42,8 +36,8 @@
         <Head title="Pessoas" />
         <main-layout paginaAtual="Pessoas" class="w-full">
 
-            <v-app class="bg-red-400 w-full mt-4">
-                <div class="w-full flex justify-center ">
+            <v-app class="w-full mt-4">
+                <div class="w-full flex justify-center">
                     <v-card elevation="4" class="w-5/6 rounded-lg">
                     
                         <v-text-field
@@ -54,7 +48,6 @@
                             label="Pesquisar"
                             prepend-inner-icon="mdi-text-search"
                             variant="underlined"
-                         
                         >
                         </v-text-field>
                         
@@ -77,10 +70,10 @@
                                     <td>{{pessoa.data_nascimento}}</td>
                                     <td>{{pessoa.sexo}}</td>
                                     <td>
-                                        <v-btn class="mr-6" rounded="lg" color="#7CB342" prepend-icon="mdi-pencil" variant="flat">
+                                        <v-btn class="mr-6" rounded="lg" color="#7CB342" prepend-icon="mdi-pencil" variant="flat" @click.once="editar(pessoa.id)">
                                             Editar 
                                         </v-btn>
-                                        <v-btn rounded="lg" color="#B71C1C" prepend-icon="mdi-delete-outline" variant="tonal">
+                                        <v-btn rounded="lg" color="#B71C1C" prepend-icon="mdi-delete-outline" variant="flat">
                                             Apagar  
                                         </v-btn>
                                     </td>
@@ -99,38 +92,6 @@
                             color="#7CB342"
                             rounded
                         ></v-pagination>
-                        <!-- <div clas="flex" v-if="pessoas.length != 0">
-                            <Link 
-                                :href="pessoas.prev_page_url"
-                                :disabled="pessoas.current_page == 1"
-                                as="button"
-                                preserve-scroll="true"
-                            >
-                                Anterior
-                            </Link>
-                            <div class="flex" v-for="(link, index) in pessoas.links"
-                                :key="index"
-                            >
-                                <Link
-                                    v-if="toggleNextPrevius(index, pessoas.links)"
-                                    as="button"
-                                    :href="link.url"
-                                    :disabled="pessoas.current_page == link.label"
-                                    class="p-3"
-                                    preserve-scroll="true"
-                                >
-                                    {{ link.label }}
-                                </Link>                   
-                            </div>
-                            <Link 
-                                    :href="pessoas.next_page_url"
-                                    :disabled="pessoas.current_page == pessoas.last_page"
-                                    as="button"
-                                    preserve-scroll="true"
-                                >
-                                    Proxima
-                            </Link><br/>
-                        </div> -->
                     </v-card>
                 </div>
             </v-app>
@@ -139,11 +100,5 @@
     </div>
 </template>
 
-<style scoped>
-    [type="text"]:focus {
-        box-shadow: none;
-        /* por algum motivo os inputs tavam com um box-shadow azul no focus  que parecia um border */
-    }
-</style>
 
 

@@ -17,5 +17,6 @@
     </head>
     <body class="font-sans antialiased">
         @inertia
+        <!-- //tem uma classe no html que bota essa progress bar -->
     </body>
 </html>

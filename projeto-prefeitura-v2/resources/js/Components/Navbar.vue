@@ -11,7 +11,7 @@
         emits('sidebar')// evento que avisa pro main quando o button for clicado
     }   
 </script>
-
+ 
 <template>
     <section class="w-full bg-lime-400 min-h-20 flex justify-between items-center drop-shadow-md">
         <Link as="button" method="post" href="/logout" class="m-4 transition-all text-lime-100 hover:underline"><v-icon icon="mdi-logout" class="mr-2" size="small"></v-icon>Logout</Link>

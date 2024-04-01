@@ -14,7 +14,6 @@ class PessoaController extends Controller
         return Inertia::render('Pessoas', [
             'pessoas' => Pessoa::paginate(5)
         ]);
-        // enviar as pessoas junto como props
     }
 
     function show() {
@@ -23,8 +22,15 @@ class PessoaController extends Controller
 
         $pessoasPesquisadas = Pessoa::where([['nome', 'like', '%'.$query.'%']])->paginate(5);
         return Inertia::render('Pessoas', [
-            'pesquisa' => request('search'),
+            'pesquisa' => $query,
             'pessoas' => $pessoasPesquisadas
+        ]);
+    }
+
+    function edit($id) {
+        $pessoa = Pessoa::findOrFail($id);
+        return Inertia::render('Editar_pessoa', [
+            'pessoa' => $pessoa
         ]);
     }
 }

@@ -27,4 +27,10 @@
         margin: 0;
         box-sizing: border-box;
     }
+    [type='text']:focus {
+        box-shadow: none;
+        border: none;
+        outline: none;
+        /* por algum motivo os inputs tavam com um box-shadow azul no focus  que parecia um border */
+    }
 </style>
