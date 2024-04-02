@@ -10,15 +10,22 @@ Route::get('/', function () {
     return to_route('login');
 });
 
+// Rotas para pessoas:
 Route::get('/pessoas', [PessoaController::class, 'index'])->middleware(['auth', 'verified'])->name('pessoas');
 
 Route::get('/pessoas/pesquisar', [PessoaController::class, 'show'])->middleware(['auth'])->name('pessoas.pesquisar');
 
 Route::get('/pessoa/{id}', [PessoaController::class, 'edit'])->middleware(['auth'])->name('pessoa.edit');
 
+Route::put('/pessoa/update', [PessoaController::class, 'update'])->middleware(['auth'])->name('pessoa.update');
+
+
+// Rotas para protocolos:
 Route::get('/protocolos', function() {
     return Inertia::render('Protocolos');
 })->middleware(['auth'])->name('protocolos');
+
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

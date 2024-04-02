@@ -38,4 +38,9 @@ class PessoaController extends Controller
             'pessoa' => $pessoa
         ]);
     }
+
+    function update(Request $request) {
+        Pessoa::findOrFail($request->id)->update($request->all());
+        return to_route('pessoas');
+    }
 }

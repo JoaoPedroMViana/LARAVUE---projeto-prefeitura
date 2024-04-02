@@ -1,22 +1,11 @@
 <script setup>
-    import { Head, Link, router } from '@inertiajs/vue3';
+    import { Head, Link, router, useForm } from '@inertiajs/vue3';
     import { computed, ref, watch } from 'vue';
     import MainLayout from "../Layouts/MainLayout.vue";
 
     const props = defineProps({
         pessoa: Object
     })
-
-    let nome = ref(props.pessoa.nome);
-    let sexo = ref(props.pessoa.sexo);
-    let cpf = ref(props.pessoa.CPF);
-    let data_nascimento = ref(props.pessoa.data_nascimento);
-    let cidade = ref(props.pessoa.cidade);
-    let bairro = ref(props.pessoa.bairro);
-    let rua = ref(props.pessoa.rua);
-    let numero = ref(props.pessoa.numero);
-    let complemento = ref(props.pessoa.complemento);
-
 
     // Date picker
     const isMenuOpen = ref(false)
@@ -30,9 +19,19 @@
         let dia = ('0' + data.getDate()).slice(-2);
         let formatada = `${dia}/${mes}/${ano}`
         return formatada;
-    }// formata a data do date picker
+    }// formata a data do date picker para mostrar no front (dd/mm/yyyy)
 
-    let formated = ref(formatarData(data_nascimento.value));// variavel que é exposta no front
+    let formatarDataBanco = (date) => {
+        let data = new Date(date);
+        let ano = data.getFullYear();
+        let mes = ('0' + (data.getMonth() + 1)).slice(-2);
+        let dia = ('0' + data.getDate()).slice(-2);
+        let formatada = `${ano}-${mes}-${dia}`
+        return formatada;
+    };// formata a data do picker para mandar pro banco de dados (yyyy-mm-dd)
+
+    let formated = ref(formatarData(props.pessoa.data_nascimento));// variavel que é exposta no front
+
     watch(selectedDate, (newValue, oldValue) => {
         isMenuOpen.value = false
         formated = formatarData(selectedDate.value)
@@ -45,19 +44,43 @@
         'outro'
     ]
 
+    // número so aceita números
+    const onlyNumbers = (event) => {
+        if(/^[\d\-.]+$/.test(event.key) || event.key == 'Backspace') return
+        else event.preventDefault();
+    }
+    
+    // enviar form
+    const form = useForm({
+        id: props.pessoa.id,
+        nome: props.pessoa.nome,
+        sexo: props.pessoa.sexo,
+        CPF: props.pessoa.CPF,
+        data_nascimento: props.pessoa.data_nascimento,
+        cidade: props.pessoa.cidade,
+        bairro: props.pessoa.bairro,
+        rua: props.pessoa.rua,
+        numero: props.pessoa.numero,
+        complemento: props.pessoa.complemento,
+    })
+
+    watch(selectedDate, (newValue, oldValue) => {
+        form.data_nascimento = formatarDataBanco(selectedDate.value)
+    })
+
     // formatação do cpf
     const formatarCpf = (event) => {
         if(event.key == 'Backspace'){
             // se for backspace faz nada
-        }else if(cpf.value != null && /^[\d\-.]+$/.test(event.key) ){
+        }else if(form.CPF != null && /^[\d]+$/.test(event.key) ){
             // testa de a tecla clicada é um numero/-/.
-            if(cpf.value.length == 3 || cpf.value.length == 7){    
+            if(form.CPF.length == 3 || form.CPF.length == 7){    
             // add o ponto/traço dinamicamente
-                cpf.value += '.'
-            }else if(cpf.value.length == 11) {
-                cpf.value += '-';
+                form.CPF += '.'
+            }else if(form.CPF.length == 11) {
+                form.CPF += '-';
             }
-        }else if(cpf.value == null && (/^[\d\-.]+$/.test(event.key))){
+        }else if(form.CPF == null && (/^[\d]+$/.test(event.key))){
             return;
         }else{
             // se for alguma letra não escreve
@@ -65,27 +88,25 @@
         }
     }
 
-    // número so aceita números
-    const onlyNumbers = (event) => {
-        if(/^[\d\-.]+$/.test(event.key) || event.key == 'Backspace') return
-        else event.preventDefault();
-    }
     // fechar modal quando clica fora dele
+    // botar a data no formato br na tabela de pessoas
+    // são 3 formatos de data diferente: br(front), en(data base) e string(data picker)
 </script>
 
 <template>
     <main-layout paginaAtual="Editar Pessoa" class="w-full">
         <Head title="Editar pessoa"/>
         <v-app class="w-full mt-4">
+            {{pessoa.data_nascimento}}
             <div class="w-full flex justify-center">
                 <v-card elevation="4" class="w-5/6 rounded-lg">
-                    <form @submit.prevent="" class="p-8">
+                    <form method="post" @submit.prevent="form.submit('put', '/pessoa/update')" class="p-8">
                         <v-container class="flex gap-8">
 
                             <v-text-field
                             variant="outlined"
                             rounded="md"
-                            v-model="nome"
+                            v-model="form.nome"
                             :counter="255"
                             label="Nome"
                             required
@@ -99,7 +120,7 @@
                             <v-text-field
                             variant="outlined"
                             rounded="md"
-                            v-model="cpf"
+                            v-model="form.CPF"
                             :counter="14"
                             label="CPF"
                             required
@@ -132,7 +153,7 @@
                             </div>
             
                             <v-select
-                            v-model="sexo"
+                            v-model="form.sexo"
                             variant="outlined"
                             rounded="md"
                             :items="items"
@@ -148,10 +169,9 @@
                             <v-text-field
                             variant="outlined"
                             rounded="md"
-                            v-model="cidade"
+                            v-model="form.cidade"
                             label="Cidade"
                             :counter="255"
-                            required
                             clearable           
                             type="input"
                             base-color="#7CB342"
@@ -161,10 +181,9 @@
                             <v-text-field
                             variant="outlined"
                             rounded="md"
-                            v-model="bairro"
+                            v-model="form.bairro"
                             label="Bairro"
                             :counter="255"
-                            required
                             clearable           
                             type="input"
                             base-color="#7CB342"
@@ -177,10 +196,9 @@
                             <v-text-field
                             variant="outlined"
                             rounded="md"
-                            v-model="rua"
+                            v-model="form.rua"
                             label="Rua"
                             :counter="255"
-                            required
                             clearable           
                             type="input"
                             base-color="#7CB342"
@@ -191,10 +209,9 @@
                             @keydown="onlyNumbers($event)"
                             variant="outlined"
                             rounded="md"
-                            v-model="numero"
+                            v-model="form.numero"
                             label="Número"
                             :counter="255"
-                            required
                             clearable           
                             type="input"
                             base-color="#7CB342"
@@ -204,10 +221,9 @@
                             <v-text-field
                             variant="outlined"
                             rounded="md"
-                            v-model="complemento"
+                            v-model="form.complemento"
                             label="Complemento"
                             :counter="255"
-                            required
                             clearable           
                             type="input"
                             base-color="#7CB342"
@@ -219,7 +235,7 @@
                             <v-btn
                             rounded="md" color="#7CB342" prepend-icon="mdi-content-save-edit-outline" variant="flat"  
                             >
-                            Salvar
+                                <input type="submit" value="Salvar">
                             </v-btn>
                             <v-btn
                              rounded="md" color="#B71C1C" prepend-icon="mdi-delete-outline" variant="flat"
