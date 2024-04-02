@@ -11,8 +11,10 @@ class PessoaController extends Controller
 { 
     //
     function index() {
+        $itens_por_pag = 5;
+        if(request('itens_pag')) $itens_por_pag = request('itens_pag');
         return Inertia::render('Pessoas', [
-            'pessoas' => Pessoa::paginate(5)
+            'pessoas' => Pessoa::paginate($itens_por_pag)
         ]);
     }
 
@@ -20,7 +22,10 @@ class PessoaController extends Controller
         $query = '';
         if(request('search') != 'null') $query = request('search'); // verificar se possui uma query 
 
-        $pessoasPesquisadas = Pessoa::where([['nome', 'like', '%'.$query.'%']])->paginate(5);
+        $itens_por_pag = 5;
+        if(request('itens_pag')) $itens_por_pag = request('itens_pag');
+
+        $pessoasPesquisadas = Pessoa::where([['nome', 'like', '%'.$query.'%']])->paginate($itens_por_pag);
         return Inertia::render('Pessoas', [
             'pesquisa' => $query,
             'pessoas' => $pessoasPesquisadas

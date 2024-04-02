@@ -94,7 +94,7 @@ const submit = () => {
                     Already registered?
                 </Link>
 
-                <PrimaryButton class="ms-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
+                <PrimaryButton class="ms-4 bg-lime-600 hover:bg-lime-500" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
                     Register
                 </PrimaryButton>
             </div>
@@ -104,6 +104,6 @@ const submit = () => {
 
 <style scoped>
     #password_confirmation, #password, #email, #name {
-        border: 1px solid rgba(79, 79, 134, 0.617);
+        border: 1px solid #7CB342;
     }
 </style>

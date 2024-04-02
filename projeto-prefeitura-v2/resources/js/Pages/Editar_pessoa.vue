@@ -64,8 +64,12 @@
             event.preventDefault()
         }
     }
-    // botar o caminho na navbar e fazer um link
-    // botar um select com a as páginas que a pessoa pode escolher na páginação
+
+    // número so aceita números
+    const onlyNumbers = (event) => {
+        if(/^[\d\-.]+$/.test(event.key) || event.key == 'Backspace') return
+        else event.preventDefault();
+    }
     // fechar modal quando clica fora dele
 </script>
 
@@ -146,6 +150,7 @@
                             rounded="md"
                             v-model="cidade"
                             label="Cidade"
+                            :counter="255"
                             required
                             clearable           
                             type="input"
@@ -158,6 +163,7 @@
                             rounded="md"
                             v-model="bairro"
                             label="Bairro"
+                            :counter="255"
                             required
                             clearable           
                             type="input"
@@ -173,6 +179,7 @@
                             rounded="md"
                             v-model="rua"
                             label="Rua"
+                            :counter="255"
                             required
                             clearable           
                             type="input"
@@ -181,10 +188,12 @@
                             ></v-text-field>
 
                             <v-text-field
+                            @keydown="onlyNumbers($event)"
                             variant="outlined"
                             rounded="md"
                             v-model="numero"
                             label="Número"
+                            :counter="255"
                             required
                             clearable           
                             type="input"
@@ -197,6 +206,7 @@
                             rounded="md"
                             v-model="complemento"
                             label="Complemento"
+                            :counter="255"
                             required
                             clearable           
                             type="input"

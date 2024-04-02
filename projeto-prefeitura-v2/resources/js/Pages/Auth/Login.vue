@@ -41,7 +41,7 @@ const submit = () => {
             <div>
                 <InputLabel for="email" value="Email" />
 
-                <TextInput
+                <TextInput 
                     id="email"
                     type="email"
                     class="mt-1 block w-full"
@@ -49,6 +49,7 @@ const submit = () => {
                     required
                     autofocus
                     autocomplete="username"
+                    
                 />
 
                 <InputError class="mt-2" :message="form.errors.email" />
@@ -78,7 +79,7 @@ const submit = () => {
 
             <div class="flex items-center justify-end mt-4">
 
-                <PrimaryButton class="ms-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
+                <PrimaryButton class="ms-4 bg-lime-600 hover:bg-lime-500" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
                     Log in
                 </PrimaryButton>
                 
@@ -107,6 +108,6 @@ const submit = () => {
 
 <style scoped>
     #email, #password,  #remember{
-        border: 1px solid rgba(79, 79, 134, 0.617);
+        border: 1px solid #7CB342;
     }
 </style>
