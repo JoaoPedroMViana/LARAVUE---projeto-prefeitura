@@ -42,6 +42,14 @@
         router.get(`/pessoa/${id}`);
     }
 
+    // Formatar data tabela
+    const formatarData = (date) => {
+        const dataString = date;
+        const [ano, mes, dia] = dataString.split('-');
+        let formatada = `${dia}/${mes}/${ano}`
+        return formatada;
+    }
+
 </script>
 
 <template>
@@ -81,7 +89,7 @@
                                     <td>{{pessoa.id}}</td>
                                     <td>{{pessoa.nome}}</td>
                                     <td>{{pessoa.CPF}}</td>
-                                    <td>{{pessoa.data_nascimento}}</td>
+                                    <td>{{formatarData(pessoa.data_nascimento)}}</td>
                                     <td>{{pessoa.sexo}}</td>
                                     <td>
                                         <v-btn class="mr-6 h-75" rounded="lg" color="#7CB342" prepend-icon="mdi-pencil" variant="flat" @click.once="editar(pessoa.id)">

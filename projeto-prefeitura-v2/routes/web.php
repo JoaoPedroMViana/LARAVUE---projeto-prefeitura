@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
+use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests; 
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\PessoaController;
@@ -17,7 +18,7 @@ Route::get('/pessoas/pesquisar', [PessoaController::class, 'show'])->middleware(
 
 Route::get('/pessoa/{id}', [PessoaController::class, 'edit'])->middleware(['auth'])->name('pessoa.edit');
 
-Route::put('/pessoa/update', [PessoaController::class, 'update'])->middleware(['auth'])->name('pessoa.update');
+Route::put('/pessoa/update', [PessoaController::class, 'update'])->middleware([HandlePrecognitiveRequests::class])->name('pessoa.update');
 
 
 // Rotas para protocolos:

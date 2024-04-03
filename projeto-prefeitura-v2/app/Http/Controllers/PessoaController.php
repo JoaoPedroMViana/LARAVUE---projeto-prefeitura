@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\PessoaRequest;
 use Inertia\Inertia;
 use App\Models\Pessoa;
 
@@ -39,7 +40,8 @@ class PessoaController extends Controller
         ]);
     }
 
-    function update(Request $request) {
+    function update(PessoaRequest $request) {
+        
         Pessoa::findOrFail($request->id)->update($request->all());
         return to_route('pessoas');
     }

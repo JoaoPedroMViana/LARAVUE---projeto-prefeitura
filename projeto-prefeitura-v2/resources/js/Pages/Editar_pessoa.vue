@@ -1,5 +1,6 @@
 <script setup>
-    import { Head, Link, router, useForm } from '@inertiajs/vue3';
+    import { Head, Link, router} from '@inertiajs/vue3';
+    import { useForm } from 'laravel-precognition-vue-inertia';
     import { computed, ref, watch } from 'vue';
     import MainLayout from "../Layouts/MainLayout.vue";
 
@@ -12,11 +13,8 @@
     let selectedDate = ref()
 
     const formatarData = (date) => {
-        let data = new Date(date);
-        console.log(data.getDay());
-        let ano = data.getFullYear();
-        let mes = ('0' + (data.getMonth() + 1)).slice(-2);
-        let dia = ('0' + data.getDate()).slice(-2);
+        const dataString = date;
+        const [ano, mes, dia] = dataString.split('-');
         let formatada = `${dia}/${mes}/${ano}`
         return formatada;
     }// formata a data do date picker para mostrar no front (dd/mm/yyyy)
@@ -34,7 +32,8 @@
 
     watch(selectedDate, (newValue, oldValue) => {
         isMenuOpen.value = false
-        formated = formatarData(selectedDate.value)
+        formated = formatarData(formatarDataBanco(selectedDate.value))
+        console.log(selectedDate.value);
     })
 
     // valores do select
@@ -44,14 +43,21 @@
         'outro'
     ]
 
-    // número so aceita números
+    // número só aceita números
     const onlyNumbers = (event) => {
         if(/^[\d\-.]+$/.test(event.key) || event.key == 'Backspace') return
         else event.preventDefault();
     }
+
+    // nome só aceita letras
+    const onlyLetras = (event) => {
+        if(!/^[A-Za-zÀ-ú\s]+$/.test(event.key)){
+            event.preventDefault()
+        }
+    }
     
     // enviar form
-    const form = useForm({
+    const form = useForm('put','/pessoa/update', {
         id: props.pessoa.id,
         nome: props.pessoa.nome,
         sexo: props.pessoa.sexo,
@@ -61,8 +67,8 @@
         bairro: props.pessoa.bairro,
         rua: props.pessoa.rua,
         numero: props.pessoa.numero,
-        complemento: props.pessoa.complemento,
-    })
+        complemento: props.pessoa.complemento}
+    )
 
     watch(selectedDate, (newValue, oldValue) => {
         form.data_nascimento = formatarDataBanco(selectedDate.value)
@@ -89,21 +95,21 @@
     }
 
     // fechar modal quando clica fora dele
-    // botar a data no formato br na tabela de pessoas
     // são 3 formatos de data diferente: br(front), en(data base) e string(data picker)
+    // botar o preserveScroll na páginação e no número por página
 </script>
 
 <template>
     <main-layout paginaAtual="Editar Pessoa" class="w-full">
         <Head title="Editar pessoa"/>
         <v-app class="w-full mt-4">
-            {{pessoa.data_nascimento}}
             <div class="w-full flex justify-center">
                 <v-card elevation="4" class="w-5/6 rounded-lg">
-                    <form method="post" @submit.prevent="form.submit('put', '/pessoa/update')" class="p-8">
-                        <v-container class="flex gap-8">
-
+                    <form method="post" @submit.prevent="form.submit()" class="p-8">
+                       
+                        <v-container class="flex gap-8 justify-between">
                             <v-text-field
+                            class="max-w-lg"
                             variant="outlined"
                             rounded="md"
                             v-model="form.nome"
@@ -115,9 +121,17 @@
                             type="input"
                             base-color="#7CB342"
                             color="#7CB342"
+                            id="nome"
+                            @input="form.validate('nome')"
+                            @mouseout="form.validate('nome')"
+                            @keydown="onlyLetras($event)"
+                            :error-messages="form.errors.nome"
                             ></v-text-field>
+                            
+
 
                             <v-text-field
+                            class="max-w-md"
                             variant="outlined"
                             rounded="md"
                             v-model="form.CPF"
@@ -130,7 +144,13 @@
                             type="input"
                             base-color="#7CB342"
                             color="#7CB342"
+                            id="CPF"
+                            @input="form.validate('CPF')"
+                            @mouseout="form.validate('CPF')"
+                            :error-messages="form.errors.CPF"
                             ></v-text-field>
+                            
+
                         </v-container>
                         <v-container class="flex gap-8">
                             <div class="w-25">
@@ -231,17 +251,21 @@
                             ></v-text-field>
                         </v-container>
 
-                        <v-container class="flex gap-6 py-0">
+                        <v-container class="flex gap-6 py-0 items-center">
                             <v-btn
-                            rounded="md" color="#7CB342" prepend-icon="mdi-content-save-edit-outline" variant="flat"  
+                            rounded="md" color="#7CB342" prepend-icon="mdi-content-save-edit-outline" variant="flat" :disabled="!form.isDirty || form.processing || form.hasErrors"  
                             >
-                                <input type="submit" value="Salvar">
+                                <button type="submit">
+                                    Salvar 
+                                    <v-icon v-if="form.processing" icon="mdi-loading" class="animate-spin h-5 w-5 mr-3"></v-icon>
+                                </button>
                             </v-btn>
                             <v-btn
                              rounded="md" color="#B71C1C" prepend-icon="mdi-delete-outline" variant="flat"
                             >
-                            Apagar
+                                <button>Excluir</button>
                             </v-btn>
+                             <p v-if="form.isDirty" class="text-sm p-0 m-0 opacity-55">O formulário possui alterações não salvas!</p>
                         </v-container>
                     </form>
                 </v-card>
