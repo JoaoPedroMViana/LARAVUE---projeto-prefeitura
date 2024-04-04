@@ -27,21 +27,24 @@
 </script>
 
 <template>
-    <section :class="Allclasses">
-        <div>    
-            <button class="m-4 p-1 w-8 rounded-full transition-all hover:bg-lime-300 hover:text-white" @click="fecharSide"><v-icon icon="mdi-close" size="medium"></v-icon></button>
-            <button-link-vue :pag="pag" :selectedClass="selected('Pessoas')" nome="Pessoas" route="/pessoas">
-                <v-icon icon="mdi-account-multiple" class="mr-2"></v-icon>Pessoas
-            </button-link-vue>
-            <button-link-vue :pag="pag" :selectedClass="selected('Protocolos')" nome="Protocolos" route="/protocolos">
-                <v-icon icon="mdi-file-sign" class="mr-2"></v-icon>Protocolos
-            </button-link-vue>
-        </div>
-        <Link as="button"
-            method="post"
-            href="/logout" 
-            class="text-lime-700 m-4 p-3 w-5/6 flex transition-all hover:text-lime-900">
-            <v-icon icon="mdi-logout" class="mr-2" size="small"></v-icon>Logout
-         </Link>
+    <section>
+        <div v-if="active" class="w-100 min-h-screen bg-lime-100 absolute top-0 z-50 opacity-50" @click="fecharSide"></div><!-- overlay -->
+        <section :class="Allclasses">
+            <div>    
+                <button class="m-4 p-1 w-8 rounded-full transition-all hover:bg-lime-300 hover:text-white" @click="fecharSide"><v-icon icon="mdi-close" size="medium"></v-icon></button>
+                <button-link-vue :pag="pag" :selectedClass="selected('Pessoas')" nome="Pessoas" route="/pessoas">
+                    <v-icon icon="mdi-account-multiple" class="mr-2"></v-icon>Pessoas
+                </button-link-vue>
+                <button-link-vue :pag="pag" :selectedClass="selected('Protocolos')" nome="Protocolos" route="/protocolos">
+                    <v-icon icon="mdi-file-sign" class="mr-2"></v-icon>Protocolos
+                </button-link-vue>
+            </div>
+            <Link as="button"
+                method="post"
+                href="/logout" 
+                class="text-lime-700 m-4 p-3 w-5/6 flex transition-all hover:text-lime-900">
+                <v-icon icon="mdi-logout" class="mr-2" size="small"></v-icon>Logout
+            </Link>
+        </section>
     </section>
 </template>

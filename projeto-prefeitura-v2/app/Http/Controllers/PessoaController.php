@@ -19,6 +19,10 @@ class PessoaController extends Controller
         ]);
     }
 
+    function create() {
+        return Inertia::render('CadastroPessoas');
+    } 
+
     function show() {
         $query = '';
         if(request('search') != 'null') $query = request('search'); // verificar se possui uma query 

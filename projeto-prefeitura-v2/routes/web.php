@@ -14,6 +14,8 @@ Route::get('/', function () {
 // Rotas para pessoas:
 Route::get('/pessoas', [PessoaController::class, 'index'])->middleware(['auth', 'verified'])->name('pessoas');
 
+Route::get('/pessoas/cadastro', [PessoaController::class, 'create'])->middleware(['auth'])->name('pessoas.cadastro');
+
 Route::get('/pessoas/pesquisar', [PessoaController::class, 'show'])->middleware(['auth'])->name('pessoas.pesquisar');
 
 Route::get('/pessoa/{id}', [PessoaController::class, 'edit'])->middleware(['auth'])->name('pessoa.edit');
@@ -21,6 +23,7 @@ Route::get('/pessoa/{id}', [PessoaController::class, 'edit'])->middleware(['auth
 Route::put('/pessoa/update', [PessoaController::class, 'update'])->middleware(['auth'])->middleware([HandlePrecognitiveRequests::class])->name('pessoa.update');
 
 Route::delete('/pessoa/delete/{id}', [PessoaController::class, 'destroy'])->middleware(['auth'])->name('pessoa.delete');
+
 
 
 // Rotas para protocolos:

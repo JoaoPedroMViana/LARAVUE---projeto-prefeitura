@@ -73,6 +73,9 @@
             }
         }});
     }
+
+    // botar o preserveScroll na páginação e no número por página
+    // fazer as mensagens de erro do deletar pessoa
 </script>
 
 <template>
@@ -95,14 +98,14 @@
                     <template v-slot:actions>
                     <v-container class="flex justify-end gap-4">
                         <v-btn
-                            size="large" rounded="lg" color="#B71C1C" variant="flat"
+                            class="px-5" size="large" rounded="lg" color="#B71C1C" variant="flat"
                             @click="dialog = false;  deletarPessoa(pessoa_excluir.id)"
                         >
                             Deletar
                         </v-btn>
 
                         <v-btn
-                            size="large" rounded="lg" color="#0D47A1" variant="tonal"
+                            class="px-5" size="large" rounded="lg" color="#0D47A1" variant="tonal"
                             @click="dialog = false"
                         >
                             Cancelar
@@ -113,8 +116,8 @@
             </v-dialog>
             <v-app class="w-full my-4">
                 <div class="w-full flex justify-center">
+                    
                     <v-card elevation="4" class="w-5/6 rounded-lg">
-
                         <v-text-field
                             v-model="search"
                             class="mx-8 mt-3"
@@ -125,7 +128,12 @@
                             autofocus
                         >
                         </v-text-field>
-                        <p class="text-sm py-0 my-0 mx-8 opacity-45">Total de pessoas: {{pessoas.total}}</p>
+                        <div class="w-100 flex items-center justify-between m-0 py-2">
+                            <p class="text-sm py-0 my-0 ml-8 opacity-45">Total de pessoas: {{pessoas.total}}</p>
+                            <v-btn class="mr-8" rounded="lg" variant="text">
+                                <Link href="/pessoas/cadastro" ><v-icon icon="mdi-plus-circle-outline" class="mr-3"></v-icon> Cadastrar</Link>
+                            </v-btn>
+                        </div>
                         <v-table  density="comfortable" hover class="p-5 pt-0">
                             <thead class="text-base">
                                 <tr>
