@@ -36,13 +36,27 @@ class PessoaController extends Controller
     function edit($id) {
         $pessoa = Pessoa::findOrFail($id);
         return Inertia::render('Editar_pessoa', [
-            'pessoa' => $pessoa
+            'pessoa' => $pessoa,
+            
         ]);
     }
 
     function update(PessoaRequest $request) {
         
         Pessoa::findOrFail($request->id)->update($request->all());
-        return to_route('pessoas');
+        return redirect('/pessoas')->with('message', 'A pessoa foi salva com sucesso!');
+    }
+
+    function destroy($id) {
+        try {
+            $pessoa = Pessoa::findOrFail($id);
+            if($pessoa->delete()){
+                return redirect('/pessoas')->with('message', 'A pessoa foi deletada com sucesso!');
+            }else{
+                return redirect()->back()->with('message', 'Erro ao deletar pessoa');
+            }
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return redirect()->back()->with('message', 'Pessoa não encontrada');
+        }
     }
 }

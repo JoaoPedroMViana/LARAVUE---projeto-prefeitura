@@ -18,7 +18,9 @@ Route::get('/pessoas/pesquisar', [PessoaController::class, 'show'])->middleware(
 
 Route::get('/pessoa/{id}', [PessoaController::class, 'edit'])->middleware(['auth'])->name('pessoa.edit');
 
-Route::put('/pessoa/update', [PessoaController::class, 'update'])->middleware([HandlePrecognitiveRequests::class])->name('pessoa.update');
+Route::put('/pessoa/update', [PessoaController::class, 'update'])->middleware(['auth'])->middleware([HandlePrecognitiveRequests::class])->name('pessoa.update');
+
+Route::delete('/pessoa/delete/{id}', [PessoaController::class, 'destroy'])->middleware(['auth'])->name('pessoa.delete');
 
 
 // Rotas para protocolos:

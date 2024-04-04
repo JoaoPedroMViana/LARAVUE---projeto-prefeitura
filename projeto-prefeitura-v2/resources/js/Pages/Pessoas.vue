@@ -1,8 +1,12 @@
 <script setup>
-    import { Head, Link, router } from '@inertiajs/vue3';
+    import { Head, Link, router, usePage } from '@inertiajs/vue3';
     import { computed, ref, watch } from 'vue';
     import MainLayout from "../Layouts/MainLayout.vue";
+    import { toast } from 'vue3-toastify';
+    import 'vue3-toastify/dist/index.css';
 
+    const page = usePage()
+ 
     const props = defineProps({
         pessoas: Object,
         pesquisa: String,
@@ -50,6 +54,25 @@
         return formatada;
     }
 
+    // Modal excluir
+    let dialog = ref(false)
+    let pessoa_excluir = ref({
+        id: null,
+        nome: null
+    })
+
+    const deletarPessoa = (id) => {
+        router.delete(`/pessoa/delete/${id}`, {onSuccess: () => {
+            if(page.props.flash){
+                toast(`${page.props.flash}`, {
+                    "autoClose": 2500,
+                    "type": "success",
+                    "dangerouslyHTMLString": true,
+                    "position": "top-center",
+                });// Mensagem de sucesso
+            }
+        }});
+    }
 </script>
 
 <template>
@@ -57,11 +80,41 @@
     <div>
         <Head title="Pessoas" />
         <main-layout paginaAtual="Pessoas" class="w-full">
-            
+            <v-dialog
+            v-model="dialog"
+            transition="dialog-top-transition"
+            class="w-50"
+            >   
+                <v-card
+                    rounded="lg"
+                >
+                    <v-card-title class="pt-6">
+                        <p class="text-2xl p-2 pb-0"><v-icon icon="mdi-delete-circle"></v-icon> Deletar pessoa {{pessoa_excluir.id}}</p>    
+                    </v-card-title>
+                    <v-card-text class="pl-8 pt-2">Deseja excluir a pessoa: <b class="text-red-800 underline">{{pessoa_excluir.nome}}</b>?</v-card-text>
+                    <template v-slot:actions>
+                    <v-container class="flex justify-end gap-4">
+                        <v-btn
+                            size="large" rounded="lg" color="#B71C1C" variant="flat"
+                            @click="dialog = false;  deletarPessoa(pessoa_excluir.id)"
+                        >
+                            Deletar
+                        </v-btn>
+
+                        <v-btn
+                            size="large" rounded="lg" color="#0D47A1" variant="tonal"
+                            @click="dialog = false"
+                        >
+                            Cancelar
+                        </v-btn>
+                    </v-container>
+                    </template>
+                </v-card>
+            </v-dialog>
             <v-app class="w-full my-4">
                 <div class="w-full flex justify-center">
                     <v-card elevation="4" class="w-5/6 rounded-lg">
-                    
+
                         <v-text-field
                             v-model="search"
                             class="mx-8 mt-3"
@@ -95,7 +148,7 @@
                                         <v-btn class="mr-6 h-75" rounded="lg" color="#7CB342" prepend-icon="mdi-pencil" variant="flat" @click.once="editar(pessoa.id)">
                                             Editar 
                                         </v-btn>
-                                        <v-btn class="h-75" rounded="lg" color="#B71C1C" prepend-icon="mdi-delete-outline" variant="flat">
+                                        <v-btn class="h-75" rounded="lg" color="#B71C1C" prepend-icon="mdi-delete-outline" variant="flat" @click="dialog = true; pessoa_excluir.id = pessoa.id; pessoa_excluir.nome = pessoa.nome">
                                             Apagar  
                                         </v-btn>
                                     </td>

@@ -25,7 +25,7 @@ class PessoaRequest extends FormRequest
     {
         return [
             'nome' => ['required', 'string', 'max:255', 'min:8'],
-            'CPF' => ['required', 'string', 'max:14', 'min:14']
+            'CPF' => ['required', 'string', 'max:14', 'min:14', Rule::unique(Pessoa::class)->ignore($this->id)]
         ];
     }
 
@@ -36,7 +36,8 @@ class PessoaRequest extends FormRequest
             'nome.required' => 'O nome deve ser preechido',
             'nome.min' => 'O nome completo deve ser informado',
             'CPF.required' => 'O CPF deve ser preechido',
-            'CPF.min' => 'O CPF está incompleto'
+            'CPF.min' => 'O CPF está incompleto',
+            'CPF.unique' => 'Este CPF já foi cadastrado'
         ];
 
     }
