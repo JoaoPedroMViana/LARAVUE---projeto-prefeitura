@@ -16,6 +16,8 @@ Route::get('/pessoas', [PessoaController::class, 'index'])->middleware(['auth', 
 
 Route::get('/pessoas/cadastro', [PessoaController::class, 'create'])->middleware(['auth'])->name('pessoas.cadastro');
 
+Route::post('/pessoas/store', [PessoaController::class, 'store'])->middleware(['auth'])->middleware([HandlePrecognitiveRequests::class])->name('pessoas.store');
+
 Route::get('/pessoas/pesquisar', [PessoaController::class, 'show'])->middleware(['auth'])->name('pessoas.pesquisar');
 
 Route::get('/pessoa/{id}', [PessoaController::class, 'edit'])->middleware(['auth'])->name('pessoa.edit');

@@ -1,7 +1,7 @@
 <script setup>
     import { useForm } from 'laravel-precognition-vue-inertia';
     import { router, usePage} from '@inertiajs/vue3';
-    import { computed, ref, watch } from 'vue';
+    import { computed, onMounted, ref, watch } from 'vue';
     import { toast } from 'vue3-toastify';
     import 'vue3-toastify/dist/index.css';
 
@@ -11,7 +11,8 @@
         values: Object,
         method: String,
         route: String,
-        text_button_submit: String
+        text_button_submit: String,
+        clear: Boolean
     })
 
     //  Definindo conteúdo
@@ -117,13 +118,17 @@
     const submit = () => {
         form.submit({onSuccess: () => {
             if(page.props.flash){
-                console.log(page.props.flash)
                 toast(`${page.props.flash}`, {
                     "autoClose": 2500,
                     "type": "success",
                     "dangerouslyHTMLString": true,
                     "position": "top-center",
                 });// Mensagem de sucesso
+            }
+            if(props.method == 'post'){
+                form.reset();
+                formated = null
+                form.submit()
             }
         }})
     }
@@ -132,7 +137,28 @@
         form.data_nascimento = formatarDataBanco(selectedDate.value)
     })
 
-        // são 3 formatos de data diferente: br(front), en(data base) e string(data picker)
+
+    // montar o form já com as validações aparecendo
+    onMounted(() => {
+        if(props.method == 'post'){
+                form.submit()
+        }
+    })
+
+    // Reset form
+    let limparForm = computed(() => {
+        return props.clear
+    })
+
+    watch(limparForm, () => {
+        if(form.isDirty || form.processing){
+            form.reset()
+            formated = null
+            form.submit()
+        }
+    })
+
+    // são 3 formatos de data diferente: br(front), en(data base) e string(data picker)
 </script>
 
 <template>
@@ -153,13 +179,11 @@
             base-color="#7CB342"
             color="#7CB342"
             id="nome"
-            @input="form.validate('nome')"
+            @change="form.validate('nome')"
             @mouseout="form.validate('nome')"
             @keydown="onlyLetras($event)"
             :error-messages="form.errors.nome"
             ></v-text-field>
-            
-
 
             <v-text-field
             class="max-w-md"
@@ -176,7 +200,7 @@
             base-color="#7CB342"
             color="#7CB342"
             id="CPF"
-            @input="form.validate('CPF')"
+            @change="form.validate('CPF')"
             @mouseout="form.validate('CPF')"
             :error-messages="form.errors.CPF"
             ></v-text-field>
@@ -188,6 +212,7 @@
                 <v-menu v-model="isMenuOpen" :close-on-content-click="false">
                     <template v-slot:activator="{ props }">
                     <v-text-field
+                        id="data_nascimento"
                         label="Data de nascimento"
                         :model-value="formated"
                         type="input"
@@ -198,20 +223,27 @@
                         base-color="#7CB342"
                         color="#7CB342"
                         required
+                        @change="form.validate('data_nascimento')"
+                        @mouseout="form.validate('data_nascimento')"   
+                        :error-messages="form.errors.data_nascimento"
                     >
                     </v-text-field>
                     </template>
-                    <v-date-picker rounded :max="new Date()" @click.self="isMenuOpen = false" v-model="selectedDate" color="#7CB342"></v-date-picker>
+                    <v-date-picker rounded :max="new Date()" @click.self="isMenuOpen = false" @click="form.validate('data_nascimento')" v-model="selectedDate" color="#7CB342"></v-date-picker>
                 </v-menu>
             </div>
 
             <v-select
+            id="sexo"
             v-model="form.sexo"
             variant="outlined"
             rounded="md"
             :items="items"
             label="Sexo"
             required
+            @input="form.validate('sexo')"
+            @mouseout="form.validate('sexo')"
+            :error-messages="form.errors.sexo"
             base-color="#7CB342"
             color="#7CB342"
             ></v-select>
@@ -286,12 +318,10 @@
 
         <v-container class="flex gap-6 py-0 items-center">
             <v-btn
-            rounded="md" color="#7CB342" prepend-icon="mdi-content-save-edit-outline" variant="flat" :disabled="!form.isDirty || form.processing || form.hasErrors"  
+            rounded="md" color="#7CB342" prepend-icon="mdi-content-save-edit-outline" variant="flat" :disabled="!form.isDirty || form.processing || form.hasErrors" type="submit"
             >
-                <button type="submit">
                     {{text_button_submit}}
                     <v-icon v-if="form.processing" icon="mdi-loading" class="animate-spin h-5 w-5 mr-3"></v-icon>
-                </button>
             </v-btn>
             <slot></slot>
                 <p v-if="form.isDirty && method == 'put'" class="text-sm p-0 m-0 opacity-55">O formulário possui alterações não salvas!</p>

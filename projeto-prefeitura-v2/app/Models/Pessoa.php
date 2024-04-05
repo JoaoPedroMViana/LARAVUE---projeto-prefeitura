@@ -9,6 +9,19 @@ class Pessoa extends Model
 { 
     use HasFactory;
 
+    protected $fillable = [
+        'nome', 
+        'data_nascimento', 
+        'CPF', 
+        'sexo', 
+        'cidade', 
+        'bairro', 
+        'rua', 
+        'numero', 
+        'complemento'
+    ];
+    
     protected $guarded = [];
+    protected $dates = ['data_nascimento'];
 
 }

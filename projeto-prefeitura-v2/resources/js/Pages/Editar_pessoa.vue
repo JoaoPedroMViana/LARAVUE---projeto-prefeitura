@@ -71,7 +71,7 @@
                              <v-btn
                                 @click="dialog = true" rounded="md" color="#B71C1C" prepend-icon="mdi-delete-outline" variant="flat"
                             >
-                                <button @click.prevent="">Excluir</button>
+                                Excluir
                             </v-btn>
                         </FormPessoa>
                 </v-card>

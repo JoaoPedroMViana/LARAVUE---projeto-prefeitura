@@ -23,6 +23,23 @@ class PessoaController extends Controller
         return Inertia::render('CadastroPessoas');
     } 
 
+    function store(PessoaRequest $request) {
+
+        Pessoa::create([
+            'nome' => $request->nome,
+            'data_nascimento' => $request->data_nascimento,
+            'CPF' => $request->CPF,
+            'sexo' => $request->sexo,
+            'cidade' => $request->cidade,
+            'bairro' => $request->bairro,
+            'rua' => $request->rua,
+            'numero' => $request->numero,
+            'complemento' => $request->complemento
+        ]);
+
+        return redirect('/pessoas/cadastro')->with('message', 'A pessoa foi criada com sucesso!');
+    }
+
     function show() {
         $query = '';
         if(request('search') != 'null') $query = request('search'); // verificar se possui uma query 
