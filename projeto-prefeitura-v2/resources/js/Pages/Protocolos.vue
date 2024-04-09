@@ -38,6 +38,11 @@
         let formatada = `${dia}/${mes}/${ano}`
         return formatada;
     }
+
+    // página de editar
+    const editar = (numero) => {
+        router.get(`/protocolo/${numero}`);
+    }
 </script>
 
 <template>
@@ -79,7 +84,7 @@
                 <div class="w-full flex justify-center">
                     <v-card elevation="4" class="w-5/6 rounded-lg">
                         <div class="w-100 flex items-center justify-between m-0 py-2">
-                            <p class="text-sm py-0 my-0 ml-8 opacity-45">Total de pessoas: {{protocolos.data.length}}</p>
+                            <p class="text-sm py-0 my-0 ml-8 opacity-45">Total de protocolos: {{protocolos.data.length}}</p>
                             <v-btn class="mr-8" rounded="lg" variant="text">
                                 <Link href="/protocolos/cadastro" ><v-icon icon="mdi-plus-circle-outline" class="mr-3"></v-icon> Cadastrar</Link>
                             </v-btn>
@@ -103,7 +108,7 @@
                                     <td>{{protocolo.prazo}}</td>
                                     <td><Link class="hover:underline text-blue-500" :href="`/pessoas/pesquisar?nome=${protocolo.pessoa.nome}`">{{protocolo.pessoa.nome}}</Link></td> 
                                     <td>
-                                        <v-btn class="mr-6 h-75" rounded="lg" color="#7CB342" prepend-icon="mdi-pencil" variant="flat">
+                                        <v-btn class="mr-6 h-75" rounded="lg" color="#7CB342" prepend-icon="mdi-pencil" variant="flat" @click.once="editar(protocolo.numero)">
                                             Editar 
                                         </v-btn>
                                         <v-btn class="h-75" rounded="lg" color="#B71C1C" prepend-icon="mdi-delete-outline" variant="flat" @click="dialog = true; protocolo_excluir.numero = protocolo.numero; protocolo_excluir.pessoa_nome = protocolo.pessoa.nome">

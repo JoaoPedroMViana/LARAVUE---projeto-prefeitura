@@ -37,6 +37,19 @@ class ProtocoloController extends Controller
         return redirect('/protocolos')->with('message', 'O protocolo foi criado com sucesso!');
     }
 
+    function edit($numero) {
+        $protocolo = Protocolo::with('pessoa')->where([['numero', $numero]])->get();
+        return Inertia::render('Editar_protocolo', [
+            'protocolo' => $protocolo,
+            'pessoas_select' => Pessoa::select('id', 'nome')->get()
+        ]);
+    }
+
+    function update(ProtocoloRequest $request) {
+        Protocolo::where([['numero', $request->numero]])->update($request->all());
+        return redirect('/protocolos')->with('message', 'O protocolo foi salvo com sucesso!');
+    }
+
     function destroy($numero) {
         try {
             $protocolo = Protocolo::where([['numero', $numero]]);

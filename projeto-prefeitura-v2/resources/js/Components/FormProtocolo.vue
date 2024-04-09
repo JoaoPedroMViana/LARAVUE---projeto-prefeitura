@@ -44,11 +44,11 @@
 
     if(props.values != null){
         data = {
-            numero: props.values.numero,
-            descricao: props.values.descricao,
-            data_registro: props.values.data_registro,
-            prazo: props.values.prazo,
-            pessoa_id: props.values.pessoa_id
+            numero: props.values[0].numero,
+            descricao: props.values[0].descricao,
+            data_registro: props.values[0].data_registro,
+            prazo: props.values[0].prazo,
+            pessoa_id: props.values[0].pessoa_id
         }
     }
 
@@ -57,7 +57,7 @@
     const isMenuOpen = ref(false)
     let selectedDate = ref()
 
-    let formated = ref(formatarData(formatarDataBanco(new Date())));// variavel que é exposta no front
+    let formated = ref(formatarData(data.data_registro));// variavel que é exposta no front
 
     watch(selectedDate, (newValue, oldValue) => {
         isMenuOpen.value = false
@@ -69,9 +69,7 @@
     const items = [
         // botar o nome dos usuarios, precisa ver um jeito de botar o id como value
     ]
-
     for(let pessoa of props.pessoas_select){
-        console.log(`${pessoa.id} & ${pessoa.nome}}`)
         items.push({title: `${pessoa.nome}`, value: `${pessoa.id}`})
     }
 
@@ -126,8 +124,21 @@
             form.submit()
         }
     })
+   
+    // gerenciamento do select
+    let select = ref()
+    if(props.values != null){
+        select.value = props.values[0].pessoa.nome;
+    }
 
+    watch(select, () => {
+        form.pessoa_id = select.value;
+    })
     // são 3 formatos de data diferente: br(front), en(data base) e string(data picker)
+
+    // v-model aponta pra uma variavel
+    // data continua do jeito que ta
+    // quando essa variavel tiver alguma alteração o form.pessoa_id recebe esse valor
 </script>
 
 <template>
@@ -135,7 +146,7 @@
         <v-container class="py-0 flex flex-col gap-4">
             <v-select
             id="pessoa_id"
-            v-model="form.pessoa_id"
+            v-model="select"
             variant="outlined"
             rounded="md"
             :items="items"

@@ -36,6 +36,10 @@ Route::get('/protocolos/cadastro', [ProtocoloController::class, 'create'])->midd
 
 Route::post('/protocolos/store', [ProtocoloController::class, 'store'])->middleware(['auth'])->middleware([HandlePrecognitiveRequests::class])->name('protocolos.store');
 
+Route::get('/protocolo/{numero}', [ProtocoloController::class, 'edit'])->middleware(['auth'])->name('protocolo.edit');
+
+Route::put('/protocolo/update', [ProtocoloController::class, 'update'])->middleware(['auth'])->middleware([HandlePrecognitiveRequests::class])->name('protocolo.update');
+
 Route::delete('/protocolo/delete/{numero}', [ProtocoloController::class, 'destroy'])->middleware(['auth'])->name('protocolo.delete');
 
 
