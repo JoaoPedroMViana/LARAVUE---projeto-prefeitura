@@ -36,6 +36,8 @@ Route::get('/protocolos/cadastro', [ProtocoloController::class, 'create'])->midd
 
 Route::post('/protocolos/store', [ProtocoloController::class, 'store'])->middleware(['auth'])->middleware([HandlePrecognitiveRequests::class])->name('protocolos.store');
 
+Route::get('/protocolos/pesquisar', [ProtocoloController::class, 'show'])->middleware(['auth'])->name('protocolos.pesquisar');
+
 Route::get('/protocolo/{numero}', [ProtocoloController::class, 'edit'])->middleware(['auth'])->name('protocolo.edit');
 
 Route::put('/protocolo/update', [ProtocoloController::class, 'update'])->middleware(['auth'])->middleware([HandlePrecognitiveRequests::class])->name('protocolo.update');

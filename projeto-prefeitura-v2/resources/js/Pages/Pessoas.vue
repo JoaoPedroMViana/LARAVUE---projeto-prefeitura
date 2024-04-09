@@ -181,7 +181,7 @@
                        <v-text-field
                             v-model="searchNome"
                             class="mx-8 mt-3 mb-2 h-12"
-                            clearable
+                            clearable 
                             label="Nome"
                             variant="underlined"
                             :autofocus="inputFocus == 'nome'"

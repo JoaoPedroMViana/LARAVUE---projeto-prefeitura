@@ -37,6 +37,32 @@ class ProtocoloController extends Controller
         return redirect('/protocolos')->with('message', 'O protocolo foi criado com sucesso!');
     }
 
+    function show() {
+        $queryNumero = '';
+        $queryDescricao = '';
+        $queryNome = '';
+
+        if(request('numero') != 'null' && request('numero') != 'undefined') $queryNumero = request('numero');
+        if(request('descricao') != 'null' && request('descricao') != 'undefined') $queryDescricao = request('descricao');
+
+        $itens_por_pag = 5;
+        if(request('itens_pag')) $itens_por_pag = request('itens_pag');
+
+        $protocolosPesquisados = Protocolo::with('pessoa')
+        ->where('numero', 'like', '%' . $queryNumero . '%')
+        ->where('descricao', 'like', '%' . $queryDescricao . '%')
+        ->whereHas('pessoa', function ($query) {
+            $query->where('nome', 'like', '%'.$queryNome.'%');
+        })
+        ->paginate($itens_por_pag);
+        return Inertia::render('Protocolos', [
+            'searchNumero' => $queryNumero,
+            'protocolos' => $protocolosPesquisados,
+            'searchDescricao' => $queryDescricao,
+            'focus' => request('inputFocus')
+        ]);
+    }
+
     function edit($numero) {
         $protocolo = Protocolo::with('pessoa')->where([['numero', $numero]])->get();
         return Inertia::render('Editar_protocolo', [

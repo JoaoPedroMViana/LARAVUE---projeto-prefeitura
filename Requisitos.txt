@@ -25,26 +25,26 @@ Cadastro de Pessoas:
 
 Cadastro de Protocolo:
 
-- Descrição (permitir pelo menos 2000), data (atual), Prazo (em dias, só números), Contribuinte (pessoa linkada)
-- Número de identificação autoincremental, coluna com nome número (é o id do protocolo)
-- Data deve ser do tipo date (no form e no banco)
-- O campo contruibuinte deve ser uma lista com as pessoas cadastradas no sistema, no banco de dados deve vincular o id da pessoa com o protocolo (chave estrangeira)
-- Inclusão, edição e exclusão
-- Todos os campos required
-- Deve possuir uma tabela paginada, nela dever ter os campos número, data, prazo e nome do demandante
-- Para cada registro botões de vizualizar e excluir
-- O visualizar deve levar até um form para editar
-- Na página de consulta um filtro com número, descrição, data de abertura e nome contribuinte
-- inclusão, edição e exclusão devem ter mensagens de confirmação/erro
-- Na exclusão um modal de confirmação da ação antes de excluir
+- Descrição (permitir pelo menos 2000), data (atual), Prazo (em dias, só números), Contribuinte (pessoa linkada) [V]
+- Número de identificação autoincremental, coluna com nome número (é o id do protocolo) [V]
+- Data deve ser do tipo date (no form e no banco) [V]
+- O campo contruibuinte deve ser uma lista com as pessoas cadastradas no sistema, no banco de dados deve vincular o id da pessoa com o protocolo (chave estrangeira) [V]
+- Inclusão, edição e exclusão [V]
+- Todos os campos required [V]
+- Deve possuir uma tabela paginada, nela dever ter os campos número, data, prazo e nome do demandante [V]
+- Para cada registro botões de vizualizar e excluir [V]
+- O visualizar deve levar até um form para editar [V]
+- Na página de consulta um filtro com número, descrição, data de abertura e nome contribuinte 
+- inclusão, edição e exclusão devem ter mensagens de confirmação/erro [V]
+- Na exclusão um modal de confirmação da ação antes de excluir [V]
 
 ---------------------------------------------
 
 Validações:
 
-- Deve ser utilizado o precognition
-- CPF deve ser único e válido
-- O prazo entre 5 e 30 dias
+- Deve ser utilizado o precognition [V]
+- CPF deve ser único e válido 
+- O prazo entre 5 e 30 dias [V]
 - Contribuintes com menos de 16 não podem ter protocolo registrado
 
 ---------------------------------------------

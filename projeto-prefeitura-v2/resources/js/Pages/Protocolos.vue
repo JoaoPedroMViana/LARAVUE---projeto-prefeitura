@@ -6,7 +6,10 @@
     import 'vue3-toastify/dist/index.css';
 
     const props = defineProps({
-        protocolos: Object
+        protocolos: Object,
+        searchNumero: String,
+        searchDescricao: String,
+        focus: String
     });
 
     const page = usePage();
@@ -49,7 +52,13 @@
     let itens_por_pag = ref(props.protocolos.per_page)
 
     watch(pagina_atual, () => {
-        router.get(`/protocolos?page=${pagina_atual.value}&itens_pag=${itens_por_pag.value}`)
+        if(props.searchNumero != null || props.searchDescricao != null) router.get(`/protocolos/pesquisar?
+        numero=${searchNumero.value}&
+        descricao=${searchDescricao.value}&
+        page=${pagina_atual.value}&
+        itens_pag=${itens_por_pag.value}`)
+
+        else router.get(`/protocolos?page=${pagina_atual.value}&itens_pag=${itens_por_pag.value}`)
     })
 
     watch(itens_por_pag, () => {
@@ -59,8 +68,42 @@
             pagina_atual.value = ultima_pagina;
             // verifica se a ultima pagina disponivel é menor que a página atual
         }
-        router.get(`/protocolos?page=${pagina_atual.value}&itens_pag=${itens_por_pag.value}`)
+
+        if(props.searchNumero != null || props.searchDescricao != null) router.get(`/protocolos/pesquisar?
+        numero=${searchNumero.value}&
+        descricao=${searchDescricao.value}&
+        page=${pagina_atual.value}&
+        itens_pag=${itens_por_pag.value}`)
+
+        else router.get(`/protocolos?page=${pagina_atual.value}&itens_pag=${itens_por_pag.value}`)
     })
+
+    // search
+    let searchNumero = ref(props.searchNumero);
+    let searchDescricao = ref(props.searchDescricao);
+
+    watch(searchNumero, () => {
+        router.get(`/protocolos/pesquisar?
+        numero=${searchNumero.value}&
+        descricao=${searchDescricao.value}&
+        inputFocus=numero&
+        itens_pag=${itens_por_pag.value}
+        `)
+    });
+
+    watch(searchDescricao, () => {
+        router.get(`/protocolos/pesquisar?
+        numero=${searchNumero.value}&
+        descricao=${searchDescricao.value}&
+        inputFocus=decricao&
+        itens_pag=${itens_por_pag.value}
+        `)
+    });
+
+
+
+    // mudar autofocus
+    let inputFocus = ref(props.focus)
 
 </script>
 
@@ -99,9 +142,37 @@
                     </template>
                 </v-card>
             </v-dialog>
-            <v-app class="w-full my-3">
+            <v-app class="w-full my-2">
                 <div class="w-full flex justify-center">
                     <v-card elevation="4" class="w-5/6 rounded-lg">
+                        <v-text-field
+                            v-model="searchNumero"
+                            class="mx-8 mt-3 mb-2 h-12"
+                            clearable 
+                            label="Número"
+                            variant="underlined"
+                            :autofocus="inputFocus == 'numero'"
+                            type="input"
+                            base-color="#7CB342"
+                            color="#7CB342"
+                        >
+                        </v-text-field>
+
+                        <div class="flex h-12 justify-between mx-8 mb-2">
+                            <v-text-field
+                            class="w-25"
+                            clearable
+                            variant="underlined"
+                            rounded="md"
+                            v-model="searchDescricao"
+                            label="Descrição"
+                            :autofocus="inputFocus == 'decricao'"                         
+                            type="input"
+                            base-color="#7CB342"
+                            color="#7CB342"
+                            ></v-text-field>
+                        </div>
+                
                         <div class="w-100 flex items-center justify-between m-0 py-2">
                             <p class="text-sm py-0 my-0 ml-8 opacity-45">Total de protocolos: {{protocolos.total}}</p> 
                             <v-btn class="mr-8" rounded="lg" variant="text">
@@ -112,17 +183,15 @@
                             <thead class="text-base">
                                 <tr>
                                     <th>Número</th>
-                                    <th>Descrição</th>
                                     <th>Data de registro</th>
                                     <th>Prazo</th>
                                     <th>Contruibuinte</th>
+                                    <th>Acões</th>
                                 </tr>
                             </thead>
                             <tbody v-if="protocolos.data.lenght != 0">
                                 <tr v-for="protocolo in protocolos.data" :key="protocolo.numero">
-                                    
                                     <td>{{protocolo.numero}}</td>
-                                    <td>{{protocolo.descricao}}</td>
                                     <td>{{formatarData(protocolo.data_registro)}}</td>
                                     <td>{{protocolo.prazo}}</td>
                                     <td><Link class="hover:underline text-blue-500" :href="`/pessoas/pesquisar?nome=${protocolo.pessoa.nome}`">{{protocolo.pessoa.nome}}</Link></td> 
@@ -150,7 +219,6 @@
                                     label="Itens por página"
                                     color="#7CB342"
                                 ></v-select>
-                                {{itens}}
                             </div>
                             <v-pagination
                                 v-if="protocolos.data.length != 0" 
