@@ -153,6 +153,7 @@
             label="Contruibuinte"
             required
             @change="form.validate('pessoa_id')"
+            @input="form.validate('pessoa_id')"
             @mouseout="form.validate('pessoa_id')"
             :error-messages="form.errors.pessoa_id"
             base-color="#7CB342"
