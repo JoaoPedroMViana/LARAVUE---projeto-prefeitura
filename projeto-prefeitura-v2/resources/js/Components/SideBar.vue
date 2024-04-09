@@ -2,9 +2,10 @@
     import { Link } from "@inertiajs/vue3";
     import { computed } from "vue";
     import ButtonLinkVue from "./ButtonLink.vue"
+    import ApplicationLogo from '@/Components/ApplicationLogo.vue';
 
     const props = defineProps({
-        pag: String,
+        pag: String, 
         active: Boolean // prop para definir se a side aparece ou não
     });
 
@@ -30,8 +31,11 @@
     <section>
         <div v-if="active" class="w-100 min-h-screen bg-lime-100 absolute top-0 z-50 opacity-50" @click="fecharSide"></div><!-- overlay -->
         <section :class="Allclasses">
-            <div>    
-                <button class="m-4 p-1 w-8 rounded-full transition-all hover:bg-lime-300 hover:text-white" @click="fecharSide"><v-icon icon="mdi-close" size="medium"></v-icon></button>
+            <div> 
+                <div class="flex justify-between items-start m-4 mb-12">
+                    <ApplicationLogo class="w-14 h-14 fill-current text-gray-500" />
+                    <button class="p-1 w-8 rounded-full transition-all hover:bg-lime-300 hover:text-white" @click="fecharSide"><v-icon icon="mdi-close" size="medium"></v-icon></button>
+                </div>
                 <button-link-vue :pag="pag" :selectedClass="selected('Pessoas')" nome="Pessoas" route="/pessoas">
                     <v-icon icon="mdi-account-multiple" class="mr-2"></v-icon>Pessoas
                 </button-link-vue>

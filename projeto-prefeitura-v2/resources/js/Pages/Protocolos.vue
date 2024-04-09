@@ -1,14 +1,121 @@
 <script setup>
-    import { Head } from '@inertiajs/vue3';
+    import { Head, Link, router, usePage } from '@inertiajs/vue3';
+    import { ref } from 'vue';
     import MainLayout from "../Layouts/MainLayout.vue";
+    import { toast } from 'vue3-toastify';
+    import 'vue3-toastify/dist/index.css';
+
+    const props = defineProps({
+        protocolos: Object
+    });
+
+    const page = usePage();
+
+    // Modal excluir
+    let dialog = ref(false)
+    let protocolo_excluir = ref({
+        numero: null,
+        pessoa_nome: null
+    })
+
+    const deletarProtocolo = (numero) => {
+        router.delete(`/protocolo/delete/${numero}`, {onSuccess: () => {
+            if(page.props.flash){
+                toast(`${page.props.flash}`, {
+                    "autoClose": 2500,
+                    "type": "success",
+                    "dangerouslyHTMLString": true,
+                    "position": "top-center",
+                });// Mensagem de sucesso
+            }
+        }});
+    }
+
+    // Formatar data tabela
+    const formatarData = (date) => {
+        const dataString = date;
+        const [ano, mes, dia] = dataString.split('-');
+        let formatada = `${dia}/${mes}/${ano}`
+        return formatada;
+    }
 </script>
 
 <template>
     <div>
-        <Head title="Pessoas" />
-        <main-layout paginaAtual="Protocolos">
-            <!-- views vão ser carregadas aqui -->
-            <h1>PROTOCOLOS</h1>
+        <Head title="Protocolos" />
+        <main-layout paginaAtual="Protocolos" class="w-full">
+            <v-dialog
+            v-model="dialog"
+            transition="dialog-top-transition"
+            class="w-50"
+            >   
+                <v-card
+                    rounded="lg"
+                >
+                    <v-card-title class="pt-6">
+                        <p class="text-2xl p-2 pb-0"><v-icon icon="mdi-delete-circle"></v-icon> Deletar protocolo {{protocolo_excluir.numero}}</p>    
+                    </v-card-title>
+                    <v-card-text class="pl-8 pt-2">Deseja excluir o protocolo vinculado a pessoa: <b class="text-red-800 underline">{{protocolo_excluir.pessoa_nome}}</b>?</v-card-text>
+                    <template v-slot:actions>
+                    <v-container class="flex justify-end gap-4">
+                        <v-btn
+                            class="px-5" size="large" rounded="lg" color="#B71C1C" variant="flat"
+                            @click="dialog = false;  deletarProtocolo(protocolo_excluir.numero)"
+                        >
+                            Deletar
+                        </v-btn>
+
+                        <v-btn
+                            class="px-5" size="large" rounded="lg" color="#0D47A1" variant="tonal"
+                            @click="dialog = false"
+                        >
+                            Cancelar
+                        </v-btn>
+                    </v-container>
+                    </template>
+                </v-card>
+            </v-dialog>
+            <v-app class="w-full my-3">
+                <div class="w-full flex justify-center">
+                    <v-card elevation="4" class="w-5/6 rounded-lg">
+                        <div class="w-100 flex items-center justify-between m-0 py-2">
+                            <p class="text-sm py-0 my-0 ml-8 opacity-45">Total de pessoas: {{protocolos.data.length}}</p>
+                            <v-btn class="mr-8" rounded="lg" variant="text">
+                                <Link href="/protocolos/cadastro" ><v-icon icon="mdi-plus-circle-outline" class="mr-3"></v-icon> Cadastrar</Link>
+                            </v-btn>
+                        </div>
+                        <v-table  density="comfortable" hover class="p-5 pt-0">
+                            <thead class="text-base">
+                                <tr>
+                                    <th>Número</th>
+                                    <th>Descrição</th>
+                                    <th>Data de registro</th>
+                                    <th>Prazo</th>
+                                    <th>Contruibuinte</th>
+                                </tr>
+                            </thead>
+                            <tbody v-if="protocolos.data.lenght != 0">
+                                <tr v-for="protocolo in protocolos.data" :key="protocolo.numero">
+                                    
+                                    <td>{{protocolo.numero}}</td>
+                                    <td>{{protocolo.descricao}}</td>
+                                    <td>{{formatarData(protocolo.data_registro)}}</td>
+                                    <td>{{protocolo.prazo}}</td>
+                                    <td><Link class="hover:underline text-blue-500" :href="`/pessoas/pesquisar?nome=${protocolo.pessoa.nome}`">{{protocolo.pessoa.nome}}</Link></td> 
+                                    <td>
+                                        <v-btn class="mr-6 h-75" rounded="lg" color="#7CB342" prepend-icon="mdi-pencil" variant="flat">
+                                            Editar 
+                                        </v-btn>
+                                        <v-btn class="h-75" rounded="lg" color="#B71C1C" prepend-icon="mdi-delete-outline" variant="flat" @click="dialog = true; protocolo_excluir.numero = protocolo.numero; protocolo_excluir.pessoa_nome = protocolo.pessoa.nome">
+                                            Apagar  
+                                        </v-btn>
+                                    </td>
+                                </tr>
+                            </tbody>     
+                        </v-table>
+                    </v-card>    
+                </div>    
+            </v-app>
         </main-layout>
     </div>
 </template>

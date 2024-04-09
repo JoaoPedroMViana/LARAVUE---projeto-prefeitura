@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\PessoaRequest;
 use Inertia\Inertia;
 use App\Models\Pessoa;
+use Illuminate\Support\Arr;
 
 
 class PessoaController extends Controller
@@ -37,20 +38,29 @@ class PessoaController extends Controller
             'complemento' => $request->complemento
         ]);
 
-        return redirect('/pessoas/cadastro')->with('message', 'A pessoa foi criada com sucesso!');
+        return redirect('/pessoas')->with('message', 'A pessoa foi criada com sucesso!');
     }
 
     function show() {
-        $query = '';
-        if(request('search') != 'null') $query = request('search'); // verificar se possui uma query 
+        $queryNome = '';
+        $queryCpf = '';
+        $querySexo = '';
+
+        // verificar se possui uma query 
+        if(request('nome') != 'undefined' && request('nome') != 'null') $queryNome = request('nome');
+        if(request('cpf') != 'undefined' && request('cpf') != 'null') $queryCpf = request('cpf');
+        if(request('sexo') != 'undefined' && request('sexo') != 'null' && request('sexo') != 'false') $querySexo = request('sexo');
 
         $itens_por_pag = 5;
         if(request('itens_pag')) $itens_por_pag = request('itens_pag');
 
-        $pessoasPesquisadas = Pessoa::where([['nome', 'like', '%'.$query.'%']])->paginate($itens_por_pag);
+        $pessoasPesquisadas = Pessoa::where([['nome', 'like', '%'.$queryNome.'%'], ['cpf', 'like', $queryCpf.'%'], ['sexo','like', $querySexo.'%']])->paginate($itens_por_pag);
         return Inertia::render('Pessoas', [
-            'pesquisa' => $query,
-            'pessoas' => $pessoasPesquisadas
+            'searchNome' => $queryNome,
+            'searchCpf' => $queryCpf,
+            'searchSexo' => $querySexo,
+            'pessoas' => $pessoasPesquisadas,
+            'focus' => request('inputFocus')
         ]);
     }
 
@@ -62,8 +72,7 @@ class PessoaController extends Controller
         ]);
     }
 
-    function update(PessoaRequest $request) {
-        
+    function update(PessoaRequest $request) {    
         Pessoa::findOrFail($request->id)->update($request->all());
         return redirect('/pessoas')->with('message', 'A pessoa foi salva com sucesso!');
     }

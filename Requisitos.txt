@@ -8,18 +8,18 @@ Interface:
 
 Cadastro de Pessoas: 
 
-- Inclusão, edição, exclusão
-- Nome (required), data de nascimento (required), CPF (required), sexo (required), cidade, bairro, rua, número e complemento
-- Id com autoincremento
-- Data de nascimento deve ser do tipo date, no banco, inclusão e edição
-- Sexo deve ser do tipo lista/radio/checkbox
-- Na edição  o CPF deve ser bloqueado
-- Tela para consultar todas as pessoas cadastradas em uma tabela paginada, na tabela de pessoas precisa ter ID, nome, CPF, data de nascimento e sexo
-- Cada registro na tabela deve ter botões de vizualizar e excluir
-- A opção visualizar deve levar a um form para editar a pessoa com um botão de salvar
-- Na tela de consulta filtro com nome, data de nascimento, CPF e sexo
-- Inclusão, edição e exclusão devem ter mensagens de confirmação/erro
-- Na exclusão fazer um modal de confirmação de ação antes de excluir
+- Inclusão, edição, exclusão [V]
+- Nome (required), data de nascimento (required), CPF (required), sexo (required), cidade, bairro, rua, número e complemento [V]
+- Id com autoincremento [V]
+- Data de nascimento deve ser do tipo date, no banco, inclusão e edição [V]
+- Sexo deve ser do tipo lista/radio/checkbox [V]
+- Na edição  o CPF deve ser bloqueado [V]
+- Tela para consultar todas as pessoas cadastradas em uma tabela paginada, na tabela de pessoas precisa ter ID, nome, CPF, data de nascimento e sexo [V]
+- Cada registro na tabela deve ter botões de vizualizar e excluir [V]
+- A opção visualizar deve levar a um form para editar a pessoa com um botão de salvar [V]
+- Na tela de consulta filtro com nome, data de nascimento, CPF e sexo [falta o de data]
+- Inclusão, edição e exclusão devem ter mensagens de confirmação/erro [V]
+- Na exclusão fazer um modal de confirmação de ação antes de excluir [V]
 
 ---------------------------------------------
 

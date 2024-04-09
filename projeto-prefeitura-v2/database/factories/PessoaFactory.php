@@ -35,7 +35,7 @@ class PessoaFactory extends Factory
             'nome' => fake()->name(),
             'data_nascimento' => fake()->date('Y-m-d'),
             'CPF' => $this->cpf(),
-            'sexo' => $this->sexo()
+            'sexo' => $this->sexo() 
         ];
     }
 }

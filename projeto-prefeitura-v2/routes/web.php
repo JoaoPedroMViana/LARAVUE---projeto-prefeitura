@@ -6,6 +6,7 @@ use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\PessoaController;
+use App\Http\Controllers\ProtocoloController;
 
 Route::get('/', function () {
     return to_route('login');
@@ -29,10 +30,13 @@ Route::delete('/pessoa/delete/{id}', [PessoaController::class, 'destroy'])->midd
 
 
 // Rotas para protocolos:
-Route::get('/protocolos', function() {
-    return Inertia::render('Protocolos');
-})->middleware(['auth'])->name('protocolos');
+Route::get('/protocolos', [ProtocoloController::class, 'index'])->middleware(['auth'])->name('protocolos');
 
+Route::get('/protocolos/cadastro', [ProtocoloController::class, 'create'])->middleware(['auth'])->name('protocolos.cadastro');
+
+Route::post('/protocolos/store', [ProtocoloController::class, 'store'])->middleware(['auth'])->middleware([HandlePrecognitiveRequests::class])->name('protocolos.store');
+
+Route::delete('/protocolo/delete/{numero}', [ProtocoloController::class, 'destroy'])->middleware(['auth'])->name('protocolo.delete');
 
 
 Route::middleware('auth')->group(function () {

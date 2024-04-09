@@ -9,8 +9,11 @@
  
     const props = defineProps({
         pessoas: Object,
-        pesquisa: String,
-        itens: Number
+        searchNome: String,
+        itens: Number,
+        searchCpf: String,
+        focus: String,
+        searchSexo: String
     });
 
     // páginação
@@ -18,7 +21,12 @@
     let itens_por_pag = ref(props.pessoas.per_page)
 
     watch(pagina_atual, () => {
-        if(props.pesquisa != null) router.get(`/pessoas/pesquisar?search=${props.pesquisa}&page=${pagina_atual.value}&itens_pag=${itens_por_pag.value}`);
+        if(props.searchNome != null || props.searchSexo != null || props.searchCpf != null) router.get(`/pessoas/pesquisar?
+            nome=${searchNome.value}&
+            cpf=${searchCpf.value}&
+            page=${pagina_atual.value}&
+            itens_pag=${itens_por_pag.value}&
+            sexo=${searchSexo.value}`);
         else router.get(`/pessoas?page=${pagina_atual.value}&itens_pag=${itens_por_pag.value}`)
     })
 
@@ -29,17 +37,46 @@
             pagina_atual.value = ultima_pagina;
             // verifica se a ultima pagina disponivel é menor que a página atual
         }
-        if(props.pesquisa != null) router.get(`/pessoas/pesquisar?search=${props.pesquisa}&page=${pagina_atual.value}&itens_pag=${itens_por_pag.value}`);
+        if(props.searchNome != null || props.searchSexo != null || props.searchCpf != null) router.get(`/pessoas/pesquisar?
+            nome=${searchNome.value}&
+            cpf=${searchCpf.value}&
+            page=${pagina_atual.value}&
+            itens_pag=${itens_por_pag.value}&
+            sexo=${searchSexo.value}`);
         else router.get(`/pessoas?page=${pagina_atual.value}&itens_pag=${itens_por_pag.value}`)
     })
 
     
     // search
-    let search = ref(props.pesquisa);
+    let searchNome = ref(props.searchNome);
+    let searchCpf = ref(props.searchCpf);
+    let searchSexo = ref(props.searchSexo);
 
-    watch(search, () => {
-        router.get(`/pessoas/pesquisar?search=${search.value}&itens_pag=${itens_por_pag.value}`)
+    watch(searchNome, () => {
+        router.get(`/pessoas/pesquisar?
+        nome=${searchNome.value}&
+        cpf=${searchCpf.value}&
+        itens_pag=${itens_por_pag.value}&
+        inputFocus=nome&
+        sexo=${searchSexo.value}`)
     });
+
+    watch(searchCpf, () => {
+        router.get(`/pessoas/pesquisar?
+        nome=${searchNome.value}&
+        cpf=${searchCpf.value}&
+        itens_pag=${itens_por_pag.value}&
+        inputFocus=cpf&
+        sexo=${searchSexo.value}`)
+    });
+
+    watch(searchSexo, () => {
+        router.get(`/pessoas/pesquisar?
+        nome=${searchNome.value}&
+        cpf=${searchCpf.value}&
+        itens_pag=${itens_por_pag.value}&
+        sexo=${searchSexo.value}`)
+    })
 
     // página de editar
     const editar = (id) => {
@@ -74,15 +111,39 @@
         }});
     }
 
+    // formatação do cpf
+    const formatarCpf = (event) => {
+        if(event.key == 'Backspace'){
+            // se for backspace faz nada
+        }else if(searchCpf.value != null && /^[\d]+$/.test(event.key) ){
+            // testa de a tecla clicada é um numero/-/.
+            if(searchCpf.value.length == 3 || searchCpf.value.length == 7){    
+            // add o ponto/traço dinamicamente
+                searchCpf.value += '.'
+            }else if(searchCpf.value.length == 11) {
+                searchCpf.value += '-';
+            }
+        }else if(searchCpf.value == null && (/^[\d]+$/.test(event.key))){
+            return;
+        }else{
+            // se for alguma letra não escreve
+            event.preventDefault()
+        }
+    }
+
+    // mudar autofocus
+    let inputFocus = ref(props.focus);
+
     // botar o preserveScroll na páginação e no número por página
-    // fazer as mensagens de erro do deletar pessoa
+    // fazer as mensagens de erro das pessoa
+    // tentar passar uma array por parametro
+    // filtro de data 
 </script>
 
 <template>
-
     <div>
         <Head title="Pessoas" />
-        <main-layout paginaAtual="Pessoas" class="w-full">
+        <main-layout paginaAtual="Pessoas" class="w-full" >
             <v-dialog
             v-model="dialog"
             transition="dialog-top-transition"
@@ -114,20 +175,61 @@
                     </template>
                 </v-card>
             </v-dialog>
-            <v-app class="w-full my-4">
+            <v-app class="w-full my-3">
                 <div class="w-full flex justify-center">
-                    
-                    <v-card elevation="4" class="w-5/6 rounded-lg">
-                        <v-text-field
-                            v-model="search"
-                            class="mx-8 mt-3"
+                    <v-card elevation="4" class="w-5/6 rounded-lg"> 
+                       <v-text-field
+                            v-model="searchNome"
+                            class="mx-8 mt-3 mb-2 h-12"
                             clearable
-                            label="Pesquisar"
-                            prepend-inner-icon="mdi-text-search"
+                            label="Nome"
                             variant="underlined"
-                            autofocus
+                            :autofocus="inputFocus == 'nome'"
+                            @click="inputFocus = 'nome'"
+                            type="input"
+                            base-color="#7CB342"
+                            color="#7CB342"
                         >
                         </v-text-field>
+                        <div class="flex h-12 justify-between mx-8 mb-2">
+                            <v-text-field
+                            class="w-25"
+                            clearable
+                            variant="underlined"
+                            rounded="md"
+                            v-model="searchCpf"
+                            label="CPF"
+                            maxlength="14"
+                            @keydown="formatarCpf($event)"
+                            :autofocus="inputFocus == 'cpf'"
+                            @click="inputFocus = 'cpf'"
+                            type="input"
+                            base-color="#7CB342"
+                            color="#7CB342"
+                            ></v-text-field>
+                            <div class="w-75 flex justify-end mt-2">
+                                <v-checkbox
+                                    v-model="searchSexo"
+                                    label="Masculino"
+                                    value="masculino"
+                                    color="green"
+                                ></v-checkbox>
+                                <v-checkbox
+                                    v-model="searchSexo"
+                                    label="Feminino"
+                                    value="feminino"
+                                    color="green"
+                                ></v-checkbox>
+                                <v-checkbox
+                                    v-model="searchSexo"
+                                    label="Outro"
+                                    value="outro"
+                                    color="green"
+                                ></v-checkbox>
+                            </div>
+                        </div>
+                
+                        
                         <div class="w-100 flex items-center justify-between m-0 py-2">
                             <p class="text-sm py-0 my-0 ml-8 opacity-45">Total de pessoas: {{pessoas.total}}</p>
                             <v-btn class="mr-8" rounded="lg" variant="text">
@@ -144,7 +246,7 @@
                                     <th>Sexo</th>
                                     <th>Ações</th>
                                 </tr>
-                            </thead>
+                            </thead> 
                             <tbody v-if="pessoas.data.length != 0">
                                 <tr v-for="pessoa in pessoas.data" :key="pessoa.id">
                                     <td>{{pessoa.id}}</td>
@@ -164,7 +266,7 @@
                             </tbody>
                                 
                         </v-table>
-                        <p v-if="pessoas.data.length == 0" ><v-icon icon="mdi-alert-circle" class="ml-6 m-4"></v-icon> Nenhuma pessoa encontrada com: "{{ pesquisa }}"</p>
+                        <p v-if="pessoas.data.length == 0" ><v-icon icon="mdi-alert-circle" class="ml-6 m-4"></v-icon> Nenhuma pessoa encontrada"</p>
                         <div class="flex w-100 justify-center relative">
                             <div v-if="pessoas.data.length != 0"  class="w-40 absolute left-8 flex gap-4 items-center justify-center">    
                                 <v-select

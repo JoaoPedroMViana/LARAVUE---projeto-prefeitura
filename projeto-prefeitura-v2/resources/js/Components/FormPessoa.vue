@@ -193,7 +193,7 @@
             :counter="14"
             label="CPF"
             required
-            clearable
+            :clearable="method == 'post'"
             maxlength="14"
             @keydown="formatarCpf($event)"
             type="input"
@@ -203,6 +203,7 @@
             @change="form.validate('CPF')"
             @mouseout="form.validate('CPF')"
             :error-messages="form.errors.CPF"
+            :readonly="method == 'put'"
             ></v-text-field>
             
 
