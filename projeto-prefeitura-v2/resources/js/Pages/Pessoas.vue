@@ -12,6 +12,7 @@
         searchNome: String,
         itens: Number,
         searchCpf: String,
+        searchData: String,
         focus: String,
         searchSexo: String
     });
@@ -21,9 +22,10 @@
     let itens_por_pag = ref(props.pessoas.per_page)
 
     watch(pagina_atual, () => {
-        if(props.searchNome != null || props.searchSexo != null || props.searchCpf != null) router.get(`/pessoas/pesquisar?
+        if(props.searchNome != null || props.searchSexo != null || props.searchCpf != null || props.searchData != null) router.get(`/pessoas/pesquisar?
             nome=${searchNome.value}&
             cpf=${searchCpf.value}&
+            data=${searchData.value}&
             page=${pagina_atual.value}&
             itens_pag=${itens_por_pag.value}&
             sexo=${searchSexo.value}`);
@@ -37,9 +39,10 @@
             pagina_atual.value = ultima_pagina;
             // verifica se a ultima pagina disponivel é menor que a página atual
         }
-        if(props.searchNome != null || props.searchSexo != null || props.searchCpf != null) router.get(`/pessoas/pesquisar?
+        if(props.searchNome != null || props.searchSexo != null || props.searchCpf != null || props.searchData != null) router.get(`/pessoas/pesquisar?
             nome=${searchNome.value}&
             cpf=${searchCpf.value}&
+            data=${searchData.value}&
             page=${pagina_atual.value}&
             itens_pag=${itens_por_pag.value}&
             sexo=${searchSexo.value}`);
@@ -51,11 +54,13 @@
     let searchNome = ref(props.searchNome);
     let searchCpf = ref(props.searchCpf);
     let searchSexo = ref(props.searchSexo);
+    let searchData = ref(props.searchData);
 
     watch(searchNome, () => {
         router.get(`/pessoas/pesquisar?
         nome=${searchNome.value}&
         cpf=${searchCpf.value}&
+        data=${searchData.value}&
         itens_pag=${itens_por_pag.value}&
         inputFocus=nome&
         sexo=${searchSexo.value}`)
@@ -65,6 +70,7 @@
         router.get(`/pessoas/pesquisar?
         nome=${searchNome.value}&
         cpf=${searchCpf.value}&
+        data=${searchData.value}&
         itens_pag=${itens_por_pag.value}&
         inputFocus=cpf&
         sexo=${searchSexo.value}`)
@@ -74,6 +80,16 @@
         router.get(`/pessoas/pesquisar?
         nome=${searchNome.value}&
         cpf=${searchCpf.value}&
+        data=${searchData.value}&
+        itens_pag=${itens_por_pag.value}&
+        sexo=${searchSexo.value}`)
+    })
+
+    watch(searchData, () => {
+        router.get(`/pessoas/pesquisar?
+        nome=${searchNome.value}&
+        cpf=${searchCpf.value}&
+        data=${searchData.value}&
         itens_pag=${itens_por_pag.value}&
         sexo=${searchSexo.value}`)
     })
@@ -83,13 +99,24 @@
         router.get(`/pessoa/${id}`);
     }
 
-    // Formatar data tabela
+    // Formatar datas
     const formatarData = (date) => {
+        if(date == null || date == undefined) return '';
         const dataString = date;
         const [ano, mes, dia] = dataString.split('-');
         let formatada = `${dia}/${mes}/${ano}`
         return formatada;
     }
+
+    let formatarDataBanco = (date) => {
+        if(date == null || date == undefined) return '';
+        let data = new Date(date);
+        let ano = data.getFullYear();
+        let mes = ('0' + (data.getMonth() + 1)).slice(-2);
+        let dia = ('0' + data.getDate()).slice(-2);
+        let formatada = `${ano}-${mes}-${dia}`
+        return formatada;
+    };
 
     // Modal excluir
     let dialog = ref(false)
@@ -133,6 +160,28 @@
 
     // mudar autofocus
     let inputFocus = ref(props.focus);
+
+     // Date picker
+    const isMenuOpen = ref(false)
+    let selectedDate = ref()
+
+    let formated = ref(formatarData(searchData.value));// variavel que é exposta no front
+    if(formated.value == 'undefined/undefined/'){
+        formated = '';
+    }
+
+    watch(selectedDate, (newValue, oldValue) => {
+        isMenuOpen.value = false
+
+        if(newValue == null){
+            formated.value = '';
+            searchData.value = '';
+        }else{            
+            searchData.value = formatarDataBanco(selectedDate.value)
+            formated = formatarData(formatarDataBanco(selectedDate.value))
+        }
+
+    })
 
     // botar o preserveScroll na páginação e no número por página
     // fazer as mensagens de erro das pessoa
@@ -185,13 +234,12 @@
                             label="Nome"
                             variant="underlined"
                             :autofocus="inputFocus == 'nome'"
-                            @click="inputFocus = 'nome'"
                             type="input"
                             base-color="#7CB342"
                             color="#7CB342"
                         >
                         </v-text-field>
-                        <div class="flex h-12 justify-between mx-8 mb-2">
+                        <div class="flex h-12 justify-between mx-8 mb-2 gap-8">
                             <v-text-field
                             class="w-25"
                             clearable
@@ -202,12 +250,34 @@
                             maxlength="14"
                             @keydown="formatarCpf($event)"
                             :autofocus="inputFocus == 'cpf'"
-                            @click="inputFocus = 'cpf'"
                             type="input"
                             base-color="#7CB342"
                             color="#7CB342"
                             ></v-text-field>
-                            <div class="w-75 flex justify-end mt-2">
+                            <div class="w-25">
+                                <v-menu v-model="isMenuOpen" :close-on-content-click="false">
+                                    <template v-slot:activator="{ props }">
+                                    <div class="flex items-center">
+                                        <v-text-field
+                                            id="data_nascimento"
+                                            label="Data de nascimento"
+                                            :model-value="formated"
+                                            type="input"
+                                            readonly
+                                            v-bind="props"
+                                            variant="underlined"
+                                            rounded="md"
+                                            base-color="#7CB342"
+                                            color="#7CB342"
+                                        >
+                                        </v-text-field>
+                                        <v-btn size="sm" :disabled="formated == ''" variant="text" color="grey" @click="selectedDate = null"> <v-icon icon="mdi-close-circle"></v-icon> </v-btn>
+                                    </div>
+                                    </template>
+                                    <v-date-picker rounded :max="new Date()" @click.self="isMenuOpen = false" v-model="selectedDate" color="#7CB342"></v-date-picker>
+                                </v-menu>
+                            </div>
+                            <div class="flex mt-2">
                                 <v-checkbox
                                     v-model="searchSexo"
                                     label="Masculino"

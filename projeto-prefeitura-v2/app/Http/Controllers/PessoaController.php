@@ -45,20 +45,31 @@ class PessoaController extends Controller
         $queryNome = '';
         $queryCpf = '';
         $querySexo = '';
+        $queryData = '';
 
         // verificar se possui uma query 
         if(request('nome') != 'undefined' && request('nome') != 'null') $queryNome = request('nome');
         if(request('cpf') != 'undefined' && request('cpf') != 'null') $queryCpf = request('cpf');
         if(request('sexo') != 'undefined' && request('sexo') != 'null' && request('sexo') != 'false') $querySexo = request('sexo');
+        if(request('data') != 'null' && request('data') != 'undefined') $queryData = request('data');
 
         $itens_por_pag = 5;
         if(request('itens_pag')) $itens_por_pag = request('itens_pag');
 
-        $pessoasPesquisadas = Pessoa::where([['nome', 'like', '%'.$queryNome.'%'], ['cpf', 'like', $queryCpf.'%'], ['sexo','like', $querySexo.'%']])->paginate($itens_por_pag);
+        $query = Pessoa::where('nome', 'like', '%' . $queryNome . '%')
+        ->where('cpf', 'like', $queryCpf . '%')
+        ->where('sexo', 'like', $querySexo . '%');
+
+        if (!empty($queryData)) {
+            $query->whereDate('data_nascimento', '=', $queryData);
+        }
+        
+        $pessoasPesquisadas = $query->paginate($itens_por_pag);
         return Inertia::render('Pessoas', [
             'searchNome' => $queryNome,
             'searchCpf' => $queryCpf,
             'searchSexo' => $querySexo,
+            'searchData' => $queryData,
             'pessoas' => $pessoasPesquisadas,
             'focus' => request('inputFocus')
         ]);

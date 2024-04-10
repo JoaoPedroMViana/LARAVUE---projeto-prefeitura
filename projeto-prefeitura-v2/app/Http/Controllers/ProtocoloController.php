@@ -41,24 +41,32 @@ class ProtocoloController extends Controller
         $queryNumero = '';
         $queryDescricao = '';
         $queryNome = '';
+        $queryData = '';
 
         if(request('numero') != 'null' && request('numero') != 'undefined') $queryNumero = request('numero');
         if(request('descricao') != 'null' && request('descricao') != 'undefined') $queryDescricao = request('descricao');
+        if(request('pessoa') != 'null' && request('pessoa') != 'undefined') $queryNome = request('pessoa');
+        if(request('data') != 'null' && request('data') != 'undefined') $queryData = request('data');
 
         $itens_por_pag = 5;
         if(request('itens_pag')) $itens_por_pag = request('itens_pag');
-
+ 
         $protocolosPesquisados = Protocolo::with('pessoa')
         ->where('numero', 'like', '%' . $queryNumero . '%')
         ->where('descricao', 'like', '%' . $queryDescricao . '%')
-        ->whereHas('pessoa', function ($query) {
-            $query->where('nome', 'like', '%'.$queryNome.'%');
+        ->whereHas('pessoa', function ($query) use ($queryNome) {
+            $query->where('nome', 'like', '%' . $queryNome . '%');
+        })
+        ->when($queryData, function ($query) use ($queryData) {
+            return $query->whereDate('data_registro', $queryData);
         })
         ->paginate($itens_por_pag);
         return Inertia::render('Protocolos', [
             'searchNumero' => $queryNumero,
             'protocolos' => $protocolosPesquisados,
             'searchDescricao' => $queryDescricao,
+            'searchPessoa' => $queryNome,
+            'searchData' => $queryData,
             'focus' => request('inputFocus')
         ]);
     }

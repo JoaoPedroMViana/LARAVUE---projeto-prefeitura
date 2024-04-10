@@ -9,6 +9,8 @@
         protocolos: Object,
         searchNumero: String,
         searchDescricao: String,
+        searchPessoa: String,
+        searchData: String,
         focus: String
     });
 
@@ -34,13 +36,24 @@
         }});
     }
 
-    // Formatar data tabela
+    // Formatar datas
     const formatarData = (date) => {
+        if(date == null || date == undefined) return '';
         const dataString = date;
         const [ano, mes, dia] = dataString.split('-');
         let formatada = `${dia}/${mes}/${ano}`
         return formatada;
     }
+
+    let formatarDataBanco = (date) => {
+        if(date == null || date == undefined) return '';
+        let data = new Date(date);
+        let ano = data.getFullYear();
+        let mes = ('0' + (data.getMonth() + 1)).slice(-2);
+        let dia = ('0' + data.getDate()).slice(-2);
+        let formatada = `${ano}-${mes}-${dia}`
+        return formatada;
+    };
 
     // página de editar
     const editar = (numero) => {
@@ -52,9 +65,11 @@
     let itens_por_pag = ref(props.protocolos.per_page)
 
     watch(pagina_atual, () => {
-        if(props.searchNumero != null || props.searchDescricao != null) router.get(`/protocolos/pesquisar?
+        if(props.searchNumero != null || props.searchDescricao != null || props.searchPessoa != null || props.searchData != null) router.get(`/protocolos/pesquisar?
         numero=${searchNumero.value}&
         descricao=${searchDescricao.value}&
+        pessoa=${searchPessoa.value}&
+        data=${searchData.value}&
         page=${pagina_atual.value}&
         itens_pag=${itens_por_pag.value}`)
 
@@ -69,9 +84,11 @@
             // verifica se a ultima pagina disponivel é menor que a página atual
         }
 
-        if(props.searchNumero != null || props.searchDescricao != null) router.get(`/protocolos/pesquisar?
+        if(props.searchNumero != null || props.searchDescricao != null  || props.searchPessoa != null || props.searchData != null) router.get(`/protocolos/pesquisar?
         numero=${searchNumero.value}&
         descricao=${searchDescricao.value}&
+        pessoa=${searchPessoa.value}&
+        data=${searchData.value}&
         page=${pagina_atual.value}&
         itens_pag=${itens_por_pag.value}`)
 
@@ -81,11 +98,15 @@
     // search
     let searchNumero = ref(props.searchNumero);
     let searchDescricao = ref(props.searchDescricao);
+    let searchPessoa = ref(props.searchPessoa);
+    let searchData = ref(props.searchData);
 
     watch(searchNumero, () => {
         router.get(`/protocolos/pesquisar?
         numero=${searchNumero.value}&
         descricao=${searchDescricao.value}&
+        pessoa=${searchPessoa.value}&
+        data=${searchData.value}&
         inputFocus=numero&
         itens_pag=${itens_por_pag.value}
         `)
@@ -95,15 +116,59 @@
         router.get(`/protocolos/pesquisar?
         numero=${searchNumero.value}&
         descricao=${searchDescricao.value}&
+        pessoa=${searchPessoa.value}&
+        data=${searchData.value}&
         inputFocus=decricao&
         itens_pag=${itens_por_pag.value}
         `)
     });
+    
+    watch(searchPessoa, () => {
+        router.get(`/protocolos/pesquisar?
+        numero=${searchNumero.value}&
+        descricao=${searchDescricao.value}&
+        pessoa=${searchPessoa.value}&
+        data=${searchData.value}&
+        inputFocus=pessoa&
+        itens_pag=${itens_por_pag.value}
+        `)
+    });
 
-
+    watch(searchData, () => {
+        router.get(`/protocolos/pesquisar?
+        numero=${searchNumero.value}&
+        descricao=${searchDescricao.value}&
+        pessoa=${searchPessoa.value}&
+        data=${searchData.value}&
+        itens_pag=${itens_por_pag.value}
+        `)
+    });
 
     // mudar autofocus
     let inputFocus = ref(props.focus)
+
+
+     // Date picker
+    const isMenuOpen = ref(false)
+    let selectedDate = ref()
+
+    let formated = ref(formatarData(searchData.value));// variavel que é exposta no front
+    if(formated.value == 'undefined/undefined/'){
+        formated = '';
+    }
+
+    watch(selectedDate, (newValue, oldValue) => {
+        isMenuOpen.value = false
+
+        if(newValue == null){
+            formated.value = '';
+            searchData.value = '';
+        }else{            
+            searchData.value = formatarDataBanco(selectedDate.value)
+            formated = formatarData(formatarDataBanco(selectedDate.value))
+        }
+
+    })
 
 </script>
 
@@ -158,7 +223,7 @@
                         >
                         </v-text-field>
 
-                        <div class="flex h-12 justify-between mx-8 mb-2">
+                        <div class="flex h-12 justify-between mx-8 mb- gap-8">
                             <v-text-field
                             class="w-25"
                             clearable
@@ -171,6 +236,43 @@
                             base-color="#7CB342"
                             color="#7CB342"
                             ></v-text-field>
+
+                            <v-text-field
+                            class="w-25"
+                            clearable
+                            variant="underlined"
+                            rounded="md"
+                            v-model="searchPessoa"
+                            label="Contruibuinte"
+                            :autofocus="inputFocus == 'pessoa'"                         
+                            type="input"
+                            base-color="#7CB342"
+                            color="#7CB342"
+                            ></v-text-field>
+
+                            <div class="w-25">
+                                <v-menu v-model="isMenuOpen" :close-on-content-click="false">
+                                    <template v-slot:activator="{ props }">
+                                    <div class="flex items-center">
+                                        <v-text-field
+                                            id="data_nascimento"
+                                            label="Data de registro"
+                                            :model-value="formated"
+                                            type="input"
+                                            readonly
+                                            v-bind="props"
+                                            variant="underlined"
+                                            rounded="md"
+                                            base-color="#7CB342"
+                                            color="#7CB342"
+                                        >
+                                        </v-text-field>
+                                        <v-btn size="sm" :disabled="formated == ''" variant="text" color="grey" @click="selectedDate = null"> <v-icon icon="mdi-close-circle"></v-icon> </v-btn>
+                                    </div>
+                                    </template>
+                                    <v-date-picker rounded :max="new Date()" @click.self="isMenuOpen = false" v-model="selectedDate" color="#7CB342"></v-date-picker>
+                                </v-menu>
+                            </div>
                         </div>
                 
                         <div class="w-100 flex items-center justify-between m-0 py-2">
