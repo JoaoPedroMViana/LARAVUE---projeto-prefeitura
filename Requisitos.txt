@@ -17,7 +17,7 @@ Cadastro de Pessoas:
 - Tela para consultar todas as pessoas cadastradas em uma tabela paginada, na tabela de pessoas precisa ter ID, nome, CPF, data de nascimento e sexo [V]
 - Cada registro na tabela deve ter botões de vizualizar e excluir [V]
 - A opção visualizar deve levar a um form para editar a pessoa com um botão de salvar [V]
-- Na tela de consulta filtro com nome, data de nascimento, CPF e sexo [falta o de data]
+- Na tela de consulta filtro com nome, data de nascimento, CPF e sexo [V]
 - Inclusão, edição e exclusão devem ter mensagens de confirmação/erro [V]
 - Na exclusão fazer um modal de confirmação de ação antes de excluir [V]
 
@@ -34,7 +34,7 @@ Cadastro de Protocolo:
 - Deve possuir uma tabela paginada, nela dever ter os campos número, data, prazo e nome do demandante [V]
 - Para cada registro botões de vizualizar e excluir [V]
 - O visualizar deve levar até um form para editar [V]
-- Na página de consulta um filtro com número, descrição, data de abertura e nome contribuinte 
+- Na página de consulta um filtro com número, descrição, data de abertura e nome contribuinte [V]
 - inclusão, edição e exclusão devem ter mensagens de confirmação/erro [V]
 - Na exclusão um modal de confirmação da ação antes de excluir [V]
 

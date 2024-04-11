@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\ProtocoloRequest;
 use Inertia\Inertia;
 use App\Models\Protocolo;
+use App\Models\Arq_anexado;
 use App\Models\Pessoa;
 
 class ProtocoloController extends Controller
@@ -26,13 +28,31 @@ class ProtocoloController extends Controller
     }
 
     function store(ProtocoloRequest $request) {
-
-        Protocolo::create([
+        $protocolo = Protocolo::create([
             'descricao' => $request->descricao,
             'data_registro' => $request->data_registro,
             'prazo' => $request->prazo,
             'pessoa_id' => $request->pessoa_id
         ]);
+        
+        $file = null;
+        $url = '';
+
+
+        if($request->hasFile('files')){
+            foreach($request->file('files') as $e){
+                if($e->isValid()){
+                    $file = $e;
+                    $file->storePublicly('public');
+                    $name = $file->hashName();
+                    $url = Storage::url('public/'.$name);
+                    Arq_anexado::create([
+                        'path' => $url,
+                        'protocolo_id' => $protocolo->id
+                    ]);
+                };
+            }
+        }
 
         return redirect('/protocolos')->with('message', 'O protocolo foi criado com sucesso!');
     }
@@ -73,14 +93,38 @@ class ProtocoloController extends Controller
 
     function edit($numero) {
         $protocolo = Protocolo::with('pessoa')->where([['numero', $numero]])->get();
+        $anexados = Arq_anexado::where([['protocolo_id', $numero]])->get();
         return Inertia::render('Editar_protocolo', [
             'protocolo' => $protocolo,
+            'anexados' => $anexados,
             'pessoas_select' => Pessoa::select('id', 'nome')->get()
         ]);
     }
 
     function update(ProtocoloRequest $request) {
-        Protocolo::where([['numero', $request->numero]])->update($request->all());
+
+        $newData = $request->only(['descricao', 'data_registro', 'prazo','pessoa_id']);
+        
+        Protocolo::where([['numero', $request->numero]])->update($newData);
+
+        $file = null;
+        $url = '';
+
+        if($request->hasFile('files')){
+            foreach($request->file('files') as $e){
+                if($e->isValid()){
+                    $file = $e;
+                    $file->storePublicly('public');
+                    $name = $file->hashName();
+                    $url = Storage::url('public/'.$name);
+                    Arq_anexado::create([
+                        'path' => $url,
+                        'protocolo_id' => $request->numero
+                    ]);
+                };
+            }
+        }
+
         return redirect('/protocolos')->with('message', 'O protocolo foi salvo com sucesso!');
     }
 

@@ -25,6 +25,6 @@ class Pessoa extends Model
     protected $dates = ['data_nascimento'];
 
     public function protocolos() {
-        return $this->hasMany('App\Models\Protocolo');
+        return $this->hasMany('App\Models\Protocolo'); 
     }
 }

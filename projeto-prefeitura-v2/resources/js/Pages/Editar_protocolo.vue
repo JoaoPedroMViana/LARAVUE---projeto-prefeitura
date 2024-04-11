@@ -10,6 +10,7 @@
 
     const props = defineProps({
         protocolo: Object,
+        anexados: Array,
         pessoas_select: Object
     })
 
@@ -65,10 +66,10 @@
                     </template>
                 </v-card>
             </v-dialog>
-         <v-app class="w-full mt-4">
+         <v-app class="w-full mt-2">
             <div class="w-full flex justify-center">
                 <v-card elevation="4" class="w-5/6 rounded-lg">
-                    <FormProtocolo :pessoas_select="pessoas_select" :values='protocolo' route="/protocolo/update" method="put" text_button_submit="Salvar">
+                    <FormProtocolo :anexados="anexados" :pessoas_select="pessoas_select" :values='protocolo' route="/protocolo/update" method="put" text_button_submit="Salvar">
                             <v-btn
                             @click="dialog = true" rounded="md" color="#B71C1C" prepend-icon="mdi-delete-outline" variant="flat"
                         >

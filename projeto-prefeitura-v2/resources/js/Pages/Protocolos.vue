@@ -170,6 +170,20 @@
 
     })
 
+
+    // arquivos: 
+    // Criar uma tabela só para os documentos, com id, path, id do protocolo [V]]
+    // Criar um Model pros docs [V]
+    // protocolos precisam hasMany e documentos precisam belonsTo [V]
+    // input [V]
+    // salvar no banco de dados e no storage local [V]
+    // resgatar do banco o arquivo com base no storage [V]
+    // validação [V]
+    // verificar se no create e no update ta funcionando
+    // excluir anexados no update
+    // deixar a pessoa baixar o arquivo
+
+    // fazer as validações nas rotas gets para caso o usurio digite algo nelas
 </script>
 
 <template>
