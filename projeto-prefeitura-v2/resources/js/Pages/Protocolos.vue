@@ -234,6 +234,7 @@
                             type="input"
                             base-color="#7CB342"
                             color="#7CB342"
+                            density="comfortable"
                         >
                         </v-text-field>
 
@@ -249,6 +250,7 @@
                             type="input"
                             base-color="#7CB342"
                             color="#7CB342"
+                            density="comfortable"
                             ></v-text-field>
 
                             <v-text-field
@@ -262,6 +264,7 @@
                             type="input"
                             base-color="#7CB342"
                             color="#7CB342"
+                            density="comfortable"
                             ></v-text-field>
 
                             <div class="w-25">
@@ -279,6 +282,7 @@
                                             rounded="md"
                                             base-color="#7CB342"
                                             color="#7CB342"
+                                            density="comfortable"
                                         >
                                         </v-text-field>
                                         <v-btn size="sm" :disabled="formated == ''" variant="text" color="grey" @click="selectedDate = null"> <v-icon icon="mdi-close-circle"></v-icon> </v-btn>
@@ -347,7 +351,7 @@
                                 rounded
                             ></v-pagination>
                         </div>
-                    </v-card>    
+                    </v-card>  
                 </div>    
             </v-app>
         </main-layout>

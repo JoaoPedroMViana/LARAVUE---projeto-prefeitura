@@ -28,7 +28,6 @@ Route::put('/pessoa/update', [PessoaController::class, 'update'])->middleware(['
 Route::delete('/pessoa/delete/{id}', [PessoaController::class, 'destroy'])->middleware(['auth'])->name('pessoa.delete');
 
 
-
 // Rotas para protocolos:
 Route::get('/protocolos', [ProtocoloController::class, 'index'])->middleware(['auth'])->name('protocolos');
 
@@ -43,6 +42,14 @@ Route::get('/protocolo/{numero}', [ProtocoloController::class, 'edit'])->middlew
 Route::put('/protocolo/update', [ProtocoloController::class, 'update'])->middleware(['auth'])->middleware([HandlePrecognitiveRequests::class])->name('protocolo.update');
 
 Route::delete('/protocolo/delete/{numero}', [ProtocoloController::class, 'destroy'])->middleware(['auth'])->name('protocolo.delete');
+
+
+// Rotas para anexos
+Route::post('/anexos/{numero}', [ProtocoloController::class, 'storeAnexo'])->middleware(['auth'])->middleware([HandlePrecognitiveRequests::class])->name('anexos.store');
+
+Route::delete('/anexo/delete/{id}', [ProtocoloController::class, 'deleteAnexo'])->middleware(['auth'])->name('anexo.delete');
+
+Route::get('/anexo/download/{path}', [ProtocoloController::class, 'downloadAnexo'])->middleware(['auth'])->name('anexo.download');
 
 
 Route::middleware('auth')->group(function () {

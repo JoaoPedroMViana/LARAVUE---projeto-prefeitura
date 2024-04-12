@@ -13,8 +13,7 @@
         route: String,
         text_button_submit: String,
         clear: Boolean,
-        pessoas_select: Object,
-        anexados: Array
+        pessoas_select: Object
     })
 
     // formatar datas
@@ -65,7 +64,7 @@
     watch(selectedDate, (newValue, oldValue) => {
         isMenuOpen.value = false
         formated = formatarData(formatarDataBanco(selectedDate.value))
-        console.log(selectedDate.value);
+
     })
 
     // valores do select
@@ -86,7 +85,6 @@
     const form = useForm(props.method, props.route, data);
 
     const submit = () => {
-        console.log(form);
         form.submit({onSuccess: () => {
             if(page.props.flash){
                 toast(`${page.props.flash}`, {
@@ -141,15 +139,11 @@
     })
     // são 3 formatos de data diferente: br(front), en(data base) e string(data picker)
 
-    // quando faz o update sem um file funciona normalmente, quando adiciona um o sistema volta e mostra os erros como se os inputs estivessem vazios, mas eu verifiquei e o form e o values tao com os valores normalmente, dai se eu mudo o valor deles, as mensagens de erro continuam
-    // outra coisa que acontece é que no update as validações dos files não funcionam, quando eu adiciono um arquivo o sistema diz que ele sempre ta valido, mas adiciona um erro no prazo de não preenchido, se eu apago o arquivo o prazo volta a ficar normal
-
 </script>
 
 <template>
     <form action="post" enctype="multipart/form-data" @submit.prevent="submit" class="p-8 pb-4">
         <v-container class="py-0 flex flex-col gap-4">
-            <p @click="console.log(`${form.pessoa_id}|${form.descricao}|${form.data_registro}|${form.prazo}`)">click</p>
             <v-select
             id="pessoa_id"
             v-model="select"
@@ -164,7 +158,7 @@
             :error-messages="form.errors.pessoa_id"
             base-color="#7CB342"
             color="#7CB342"
-
+            density="comfortable"
             ></v-select>
 
             <v-textarea
@@ -185,6 +179,7 @@
             @change="form.validate('descricao')"
             @mouseout="form.validate('descricao')"
             :error-messages="form.errors.descricao"
+            density="comfortable"
             ></v-textarea>      
 
             <div class="flex gap-8">
@@ -206,6 +201,7 @@
                             @change="form.validate('data_registro')"
                             @mouseout="form.validate('data_registro')"   
                             :error-messages="form.errors.data_registro"
+                             density="comfortable"
                         >
                         </v-text-field>
                         </template>
@@ -229,11 +225,12 @@
                 @change="form.validate('prazo')"
                 @mouseout="form.validate('prazo')"   
                 :error-messages="form.errors.prazo"
+                density="comfortable"
                 ></v-text-field>
             </div>
 
         </v-container>
-        <v-container class="flex gap-6 py-0 items-center mt-2 relative">
+        <v-container v-if="props.method == 'post'" class="flex gap-6 py-0 items-center mt-2 relative">
             <v-file-input
                 id="files"
                 v-model="form.files"
@@ -247,22 +244,15 @@
                 multiple
                 show-size
                :clearable="false"
-                @change="form.validate('files'); form.validate('files.0'); form.validateFiles(); console.log(form);"
+                @change="form.validate('files'); form.validate('files.0'); form.validateFiles();"
                 @input="form.validate('files');  form.validate('files.0'); form.validateFiles();"
                 :error-messages="form.errors.files || form.errors['files.0']"
+                density="comfortable"
             ></v-file-input>
             <div class="absolute right-8 h-full flex items-center mb-4 z-50">
                 <v-btn  size="lg" :disabled="form.files == null" variant="text" color="grey" @click="form.files = null; form.validate('files'); form.validate('files.0'); form.validateFiles()"> <v-icon icon="mdi-close-circle"></v-icon> </v-btn>
             </div>
         </v-container>
-        <div v-if="props.method == 'put'" class="flex flex-row">
-            <div v-for="anexo in anexados" :key="anexo.id">
-                <v-card elevation="4" class="w-44 m-4 my-6">
-                    <v-btn class="m-2" rounded variant="plain" size="lg" color="grey"><v-icon class="m-3 hover:bg-lime" icon="mdi-delete"></v-icon></v-btn>
-                    <img  :src="`${anexo.path}`" alt="">
-                </v-card>
-            </div>
-        </div>
          
         <v-container class="flex gap-6 py-0 items-center mt-2">
             <v-btn

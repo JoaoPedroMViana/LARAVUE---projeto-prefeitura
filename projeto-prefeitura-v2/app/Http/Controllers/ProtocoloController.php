@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\ProtocoloRequest;
+use App\Http\Requests\RequestAnexos;
 use Inertia\Inertia;
 use App\Models\Protocolo;
 use App\Models\Arq_anexado;
@@ -139,5 +140,53 @@ class ProtocoloController extends Controller
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             return redirect()->back()->with('message', 'Protocolo não encontrado');
         }
+    }
+
+    // Anexos:
+
+    function storeAnexo(RequestAnexos $request) {
+        $anexados = Arq_anexado::where([['protocolo_id', '=',request('numero')]])->get();
+        if(count($anexados) == 5) return redirect()->back()->with('message_error', 'O protocolo já possui o tamanho máximo (5) de arquivos anexados');// verifica se o protocolo já possui 5 arquivos anexados
+
+        $file = null;
+        $url = '';
+
+        if($request->hasFile('files')){
+            foreach($request->file('files') as $e){
+                if($e->isValid()){
+                    $file = $e;
+                    $file->storePublicly('public');
+                    $name = $file->hashName();
+                    $url = Storage::url('public/'.$name);
+                    Arq_anexado::create([
+                        'path' => $url,
+                        'protocolo_id' => request('numero')
+                    ]);
+                };
+            }
+        }
+
+        return redirect()->back()->with('message', 'Anexo adicionado ao protocolo com sucesso!');
+    }
+
+    function deleteAnexo($id) {
+        $anexo = Arq_Anexado::find($id);
+        $path = str_replace("/storage", "public", $anexo->path);
+
+        if($anexo){
+            $anexo->delete();
+            if(Storage::exists($path)){
+                Storage::delete($path);
+            }
+            return redirect()->back()->with('message', 'Anexo excluido com sucesso!');
+        }else{
+            return redirect()->back()->with('message_error', 'Anexo não encontrado');
+        }
+    }
+
+    function downloadAnexo($path) {
+        if(Storage::exists("public/".$path)){
+          return Storage::download("public/".$path);
+        }// não ta baixando 
     }
 }

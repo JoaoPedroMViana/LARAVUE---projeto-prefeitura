@@ -51,11 +51,11 @@ Validações:
 
 Anexar Documentos: 
 
-- No cadastro de protocolo campo para anexar documentos (documentos da pessoa, fotos)
-- No máximo 5 documentos por protocolo
-- Arquivos permitidos: JPG, JPEG, PNG e PDFs
-- O tamanho máximo de cada arquivo deve ser 3MB
-- É possível excluir o documento anexado, caso seja anexado indevidamente
+- No cadastro de protocolo campo para anexar documentos (documentos da pessoa, fotos) [V]
+- No máximo 5 documentos por protocolo [V]
+- Arquivos permitidos: JPG, JPEG, PNG e PDFs [V]
+- O tamanho máximo de cada arquivo deve ser 3MB [V]
+- É possível excluir o documento anexado, caso seja anexado indevidamente [V]
 
 ---------------------------------------------
 
