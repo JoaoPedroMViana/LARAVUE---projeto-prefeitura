@@ -42,6 +42,9 @@
                 <button-link-vue :pag="pag" :selectedClass="selected('Protocolos')" nome="Protocolos" route="/protocolos">
                     <v-icon icon="mdi-file-sign" class="mr-2"></v-icon>Protocolos
                 </button-link-vue>
+                <button-link-vue :pag="pag" :selectedClass="selected('Usuarios')" nome="Usuarios" route="/usuarios">
+                    <v-icon icon="mdi-account-circle" class="mr-2"></v-icon>Usuários
+                </button-link-vue>
             </div>
             <Link as="button"
                 method="post"

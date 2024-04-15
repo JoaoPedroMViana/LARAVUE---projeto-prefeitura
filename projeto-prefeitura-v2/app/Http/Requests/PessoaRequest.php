@@ -35,9 +35,9 @@ class PessoaRequest extends FormRequest
     {
 
         return [
-            'nome.required' => 'O nome deve ser preechido',
+            'nome.required' => 'O nome deve ser preenchido',
             'nome.min' => 'O nome completo deve ser informado',
-            'CPF.required' => 'O CPF deve ser preechido',
+            'CPF.required' => 'O CPF deve ser preenchido',
             'CPF.min' => 'O CPF está incompleto',
             'CPF.unique' => 'Este CPF já foi cadastrado',
             'data_nascimento.required' => 'A data de nascimento deve ser informada',

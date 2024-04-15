@@ -187,6 +187,7 @@ class ProtocoloController extends Controller
     function downloadAnexo($path) {
         if(Storage::exists("public/".$path)){
           return Storage::download("public/".$path);
+          //return Storage::disk('public')->download($path);  
         }// não ta baixando 
     }
 }

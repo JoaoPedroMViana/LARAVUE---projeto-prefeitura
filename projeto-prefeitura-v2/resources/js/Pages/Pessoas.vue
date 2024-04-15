@@ -186,7 +186,7 @@
     // botar o preserveScroll na páginação e no número por página
     // fazer as mensagens de erro das pessoa
     // tentar passar uma array por parametro
-    // filtro de data 
+
 </script>
 
 <template>

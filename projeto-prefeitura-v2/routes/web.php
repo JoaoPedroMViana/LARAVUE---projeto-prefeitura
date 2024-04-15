@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\PessoaController;
 use App\Http\Controllers\ProtocoloController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\Auth\RegisteredUserController;
 
 Route::get('/', function () {
     return to_route('login');
@@ -51,6 +53,10 @@ Route::delete('/anexo/delete/{id}', [ProtocoloController::class, 'deleteAnexo'])
 
 Route::get('/anexo/download/{path}', [ProtocoloController::class, 'downloadAnexo'])->middleware(['auth'])->name('anexo.download');
 
+// Rotas para usuários
+Route::get('/usuarios', [RegisteredUserController::class, 'index'])->middleware(['auth'])->name('usuarios');
+Route::get('/usuarios/cadastro', [RegisteredUserController::class, 'create'])->middleware(['auth'])->name('usuarios.cadastro');
+Route::post('/register', [RegisteredUserController::class, 'store'])->middleware([HandlePrecognitiveRequests::class])->middleware(['auth'])->name('usuarios.store');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

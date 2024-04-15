@@ -15,7 +15,7 @@
         clear: Boolean
     })
 
-    //  Definindo conteúdo
+    //  Definindo conteúdo 
     let data = {
         nome: null,
         sexo: null,

@@ -11,8 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('arq_anexados', function (Blueprint $table) {
-            $table->foreignId('id_protocolo')->constrained();
+        Schema::table('users', function (Blueprint $table) {
+            $table->char('perfil');
+            $table->string('cpf', 14)->unique();
+            $table->char('ativo');
         });
     }
 
@@ -21,8 +23,10 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('arq_anexados', function (Blueprint $table) {
-            $table->foreignId('id_protocolo')->constrained()->onDelete('cacade');
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn('perfil');
+            $table->dropColumn('cpf');
+            $table->dropColumn('ativo');
         });
     }
 };

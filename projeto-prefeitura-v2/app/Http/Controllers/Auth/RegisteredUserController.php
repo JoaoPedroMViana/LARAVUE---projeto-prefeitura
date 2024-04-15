@@ -12,9 +12,19 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Inertia\Inertia;
 use Inertia\Response;
+use App\Http\Requests\UserRequest;
 
 class RegisteredUserController extends Controller
 {
+
+    public function index() 
+    {
+        $itens_por_pag = 5;
+        if(request('itens_pag')) $itens_por_pag = request('itens_pag');
+        return Inertia::render('Usuarios', [
+            'users' => User::paginate($itens_por_pag)
+        ]);
+    }
     /**
      * Display the registration view.
      */
@@ -28,24 +38,18 @@ class RegisteredUserController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request): RedirectResponse
+    public function store(UserRequest $request): RedirectResponse
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|lowercase|email|max:255|unique:'.User::class,
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
-        ]);
 
-        $user = User::create([
+        User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'perfil' => $request->perfil,
+            'cpf' => $request->cpf,
+            'ativo' => $request->ativo
         ]);
 
-        event(new Registered($user));
-
-        Auth::login($user);
-
-        return redirect(route('pessoas', absolute: false));
+        return redirect('/usuarios')->with('message', 'Usuário criado com sucesso!');
     }
 }
