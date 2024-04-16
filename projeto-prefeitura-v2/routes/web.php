@@ -8,13 +8,14 @@ use Inertia\Inertia;
 use App\Http\Controllers\PessoaController;
 use App\Http\Controllers\ProtocoloController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\DepartamentosController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 
 Route::get('/', function () {
     return to_route('login');
 });
 
-// Rotas para pessoas:
+// Rotas para pessoas -----------------------------------------
 Route::get('/pessoas', [PessoaController::class, 'index'])->middleware(['auth', 'verified'])->name('pessoas');
 
 Route::get('/pessoas/cadastro', [PessoaController::class, 'create'])->middleware(['auth'])->name('pessoas.cadastro');
@@ -30,7 +31,7 @@ Route::put('/pessoa/update', [PessoaController::class, 'update'])->middleware(['
 Route::delete('/pessoa/delete/{id}', [PessoaController::class, 'destroy'])->middleware(['auth'])->name('pessoa.delete');
 
 
-// Rotas para protocolos:
+// Rotas para protocolos -----------------------------------------
 Route::get('/protocolos', [ProtocoloController::class, 'index'])->middleware(['auth'])->name('protocolos');
 
 Route::get('/protocolos/cadastro', [ProtocoloController::class, 'create'])->middleware(['auth'])->name('protocolos.cadastro');
@@ -46,14 +47,14 @@ Route::put('/protocolo/update', [ProtocoloController::class, 'update'])->middlew
 Route::delete('/protocolo/delete/{numero}', [ProtocoloController::class, 'destroy'])->middleware(['auth'])->name('protocolo.delete');
 
 
-// Rotas para anexos
+// Rotas para anexos -----------------------------------------
 Route::post('/anexos/{numero}', [ProtocoloController::class, 'storeAnexo'])->middleware(['auth'])->middleware([HandlePrecognitiveRequests::class])->name('anexos.store');
 
 Route::delete('/anexo/delete/{id}', [ProtocoloController::class, 'deleteAnexo'])->middleware(['auth'])->name('anexo.delete');
 
 Route::get('/anexo/download/{path}', [ProtocoloController::class, 'downloadAnexo'])->middleware(['auth'])->name('anexo.download');
 
-// Rotas para usuários
+// Rotas para usuários -----------------------------------------
 Route::get('/usuarios', [RegisteredUserController::class, 'index'])->middleware(['auth'])->name('usuarios');
 
 Route::get('/usuarios/cadastro', [RegisteredUserController::class, 'create'])->middleware(['auth'])->name('usuarios.cadastro');
@@ -69,6 +70,13 @@ Route::post('/user/desativar/{id}', [RegisteredUserController::class, 'desativar
 Route::post('/user/ativar/{id}', [RegisteredUserController::class, 'ativar'])->middleware(['auth'])->name('user.ativar');
 
 Route::put('/user/mudar_senha', [RegisteredUserController::class, 'mudar_senha'])->middleware([HandlePrecognitiveRequests::class])->middleware(['auth'])->name('user.mudar.senha');
+
+// Rotas departamentos -----------------------------------------
+Route::get('/departamentos', [DepartamentosController::class, 'index'])->middleware(['auth'])->name('departamentos');
+
+Route::get('/departamentos/cadastro', [DepartamentosController::class, 'create'])->middleware(['auth'])->name('departamentos.cadastro');
+
+Route::post('/departamentos/store', [DepartamentosController::class, 'store'])->middleware([HandlePrecognitiveRequests::class])->middleware(['auth'])->name('departamentos.store');
 
 
 Route::middleware('auth')->group(function () {

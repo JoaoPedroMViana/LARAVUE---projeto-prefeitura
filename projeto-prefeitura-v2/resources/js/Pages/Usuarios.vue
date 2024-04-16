@@ -32,7 +32,7 @@
         router.get(`/usuario/${id}`);
     };
 
-    // usuarios desativados não podem fazer login
+    // mostrar o nome do perfil e não a letra
 </script>
 
 <template>

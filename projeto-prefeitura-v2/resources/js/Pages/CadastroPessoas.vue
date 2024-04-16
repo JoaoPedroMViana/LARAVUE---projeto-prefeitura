@@ -4,7 +4,7 @@
     import FormPessoa from '../Components/FormPessoa.vue'
     import { ref } from 'vue';
 
-    let limparForm = ref(false);
+    let limparForm = ref(false); 
 </script>
 
 <template>
