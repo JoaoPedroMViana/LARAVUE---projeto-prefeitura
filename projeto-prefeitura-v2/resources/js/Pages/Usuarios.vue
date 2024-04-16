@@ -47,7 +47,7 @@
                             <v-btn class="mr-8" rounded="lg" variant="text">
                                 <Link href="/usuarios/cadastro" ><v-icon icon="mdi-plus-circle-outline" class="mr-3"></v-icon> Cadastrar</Link>
                             </v-btn>
-                        </div>
+                        </div> 
                         <v-table  density="comfortable" hover class="p-5 pt-0">
                             <thead class="text-base">
                                 <tr>
