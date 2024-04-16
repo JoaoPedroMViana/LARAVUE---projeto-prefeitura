@@ -27,6 +27,11 @@
         router.get(`/usuarios?page=${pagina_atual.value}&itens_pag=${itens_por_pag.value}`);
     });
 
+    // Página individual
+    const editar = (id) => {
+        router.get(`/usuario/${id}`);
+    };
+
     // usuarios desativados não podem fazer login
 </script>
 
@@ -62,7 +67,7 @@
                                     <td>{{user.perfil}}</td>
                                     <td>{{user.ativo}}</td>
                                     <td>
-                                        <v-btn class="mr-6 h-75" rounded="lg" color="#7CB342" prepend-icon="mdi-pencil" variant="flat" @click.once="console.log('editar user')">
+                                        <v-btn class="mr-6 h-75" rounded="lg" color="#7CB342" prepend-icon="mdi-eye-outline" variant="flat" @click.once="editar(user.id)">
                                             Visualizar 
                                         </v-btn>
                                     </td>
@@ -94,7 +99,7 @@
                                 rounded
                             ></v-pagination>
                         </div>
-                    </v-card>
+                    </v-card> 
                 </div>
             </v-app>
         </main-layout>

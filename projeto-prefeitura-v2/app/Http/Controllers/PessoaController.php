@@ -79,7 +79,6 @@ class PessoaController extends Controller
         $pessoa = Pessoa::findOrFail($id);
         return Inertia::render('Editar_pessoa', [
             'pessoa' => $pessoa,
-            
         ]);
     }
 

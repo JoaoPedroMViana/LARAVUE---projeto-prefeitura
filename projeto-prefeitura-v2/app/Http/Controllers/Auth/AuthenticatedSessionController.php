@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Inertia\Response;
+use App\Models\User;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -29,11 +30,16 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     { 
-        $request->authenticate();
-
-        $request->session()->regenerate();
-
-        return redirect()->intended(route('pessoas', absolute: false)); 
+        $user = User::where([['email', '=', $request->email]])->get()->first();
+        if($user->ativo == 'N'){
+            return redirect()->back();
+        }else{
+            $request->authenticate();
+    
+            $request->session()->regenerate();
+    
+            return redirect()->intended(route('pessoas', absolute: false)); 
+        }
     }
 
     /**

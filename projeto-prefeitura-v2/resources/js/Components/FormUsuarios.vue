@@ -8,11 +8,14 @@
     const page = usePage();
 
     const props = defineProps({
+        values: Object,
+        ativo: String,
         method: String,
         route: String,
         text_button_submit: String,
     });
 
+    //  Definindo conteúdo 
     let data = {
         name: null,
         email: null,
@@ -22,6 +25,17 @@
         password: null,
         password_confirmation: null,
     };
+
+    if(props.values != null){
+        data = {
+            id: props.values.id,
+            name: props.values.name,
+            email: props.values.email,
+            perfil: props.values.perfil,
+            cpf: props.values.cpf,
+            password: '00000000'
+        }
+    }
 
     const form = useForm(props.method, props.route, data);
 
@@ -50,7 +64,7 @@
         }
     }
 
-     // formatação do cpf
+    // formatação do cpf
     const formatarCpf = (event) => {
         if(event.key == 'Backspace'){
             // se for backspace faz nada
@@ -80,24 +94,33 @@
         }
     })
 
-    let upperCase = () => {
-        form.perfil = form.perfil.toUpperCase()
-    }
+    let userPerfil = ref(form.perfil);
+    watch(userPerfil, () => {
+        form.perfil = userPerfil.value
+        console.log(form.perfil)
+    });
+
+    let items = [
+            {title: 'Administrador da TI', value: 'T'}, 
+            {title: 'Administrador do sistema', value: 'S'}, 
+            {title: 'Atendente', value: 'A'}
+        ]
 </script>
 
 <template>
         <form action="post" @submit.prevent="submit" class="p-8">
-        <v-container class=" flex flex-column gap-8 justify-between">          
+        <v-container class=" flex flex-column gap-8 justify-between">       
             <div class="flex gap-8">
                 <v-text-field
                 variant="outlined"
                 rounded="md"
                 v-model="form.name"
+                :readonly="ativo == 'N'"
                 :counter="255"
                 label="Nome"
                 required
                 maxlength="255"
-                clearable
+                :clearable="ativo == 'S'"
                 type="input"
                 base-color="#7CB342"
                 color="#7CB342"
@@ -123,6 +146,7 @@
                 @change="form.validate('email')"
                 @mouseout="form.validate('email')"
                 :error-messages="form.errors.email"
+                :readonly="method == 'put'"
                 ></v-text-field>
             </div>
             <div class="flex gap-8">
@@ -145,27 +169,29 @@
                 :error-messages="form.errors.cpf"
                 :readonly="method == 'put'"
                 ></v-text-field>
-                
-                <v-text-field
+
+                <v-select
+                id="perfil"
+                v-model="userPerfil"
+                :readonly="ativo == 'N'"
+                label="Perfil"
                 variant="outlined"
                 rounded="md"
-                v-model="form.perfil"
-                label="Perfil"
-                required
                 maxlength="1"
                 :counter="1"
-                type="input"
-                base-color="#7CB342"
-                color="#7CB342"
-                id="perfil"
+                :items="items"
+                required
                 @change="form.validate('perfil')"
                 @mouseout="form.validate('perfil')"
-                @input="upperCase"
+                @input="form.validate('perfil')"
                 :error-messages="form.errors.perfil"
-                ></v-text-field>
+                base-color="#7CB342"
+                color="#7CB342"
+                ></v-select>
             </div>
 
             <v-text-field
+                v-if="method == 'post'"
                 v-model="form.password"
                 variant="outlined"
                 rounded="md"
@@ -182,11 +208,12 @@
                 @mouseout="form.validate('password')"
                 :error-messages="form.errors.password"
           ></v-text-field>
+          
         </v-container>
-
+ 
         <v-container class="flex gap-6 py-0 items-center">
             <v-btn
-            rounded="md" color="#7CB342" prepend-icon="mdi-content-save-edit-outline" variant="flat" :disabled="!form.isDirty || form.processing || form.hasErrors" type="submit"
+            rounded="md" color="#7CB342" prepend-icon="mdi-content-save-edit-outline" variant="flat" :disabled="!form.isDirty || form.processing || form.hasErrors || ativo == 'N'" type="submit"
             >
                     {{text_button_submit}}
                     <v-icon v-if="form.processing" icon="mdi-loading" class="animate-spin h-5 w-5 mr-3"></v-icon>

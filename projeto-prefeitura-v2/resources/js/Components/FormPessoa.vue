@@ -142,7 +142,7 @@
     onMounted(() => {
         if(props.method == 'post'){
                 form.submit()
-        }
+        } 
     })
 
     // Reset form

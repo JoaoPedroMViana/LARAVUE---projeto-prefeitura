@@ -13,6 +13,7 @@ use Illuminate\Validation\Rules;
 use Inertia\Inertia;
 use Inertia\Response;
 use App\Http\Requests\UserRequest;
+use App\Http\Requests\PasswordRequest;
 
 class RegisteredUserController extends Controller
 {
@@ -51,5 +52,58 @@ class RegisteredUserController extends Controller
         ]);
 
         return redirect('/usuarios')->with('message', 'Usuário criado com sucesso!');
+    }
+
+    public function edit($id): Response
+    {
+        $user = User::findOrFail($id);
+        return Inertia::render('Editar_usuario', [
+            'user' => $user,
+        ]);
+    }
+
+    public function update(UserRequest $request): RedirectResponse
+    {
+        $user = User::findOrFail($request->id);
+        $user->update([
+            'name'=> $request->name,
+            'perfil' => $request->perfil
+        ]);
+
+        return redirect('/usuarios')->with('message', 'Usuário salvo com sucesso!');
+    }
+
+    public function desativar($id): RedirectResponse 
+    {
+        $user = User::findOrFail($id);
+       
+        if($user->ativo == 'S'){
+            $user->update(['ativo' => 'N']);
+            return redirect()->back()->with('message', 'Usuário desativado');
+        }else{
+            return redirect()->back()->with('message', 'O usuário já está desativado');
+        }
+    }
+
+    public function ativar($id): RedirectResponse 
+    {
+        $user = User::findOrFail($id);
+       
+        if($user->ativo == 'N'){
+            $user->update(['ativo' => 'S']);
+            return redirect()->back()->with('message', 'Usuário ativado');
+        }else{
+            return redirect()->back()->with('message', 'O usuário já está ativado');
+        }
+    }
+
+    public function mudar_senha(PasswordRequest $request): RedirectResponse 
+    {
+        $user = User::findOrFail($request->id);
+        $user->update([
+            'password' => $request->password,
+        ]);
+
+        return redirect()->back()->with('message', 'Senha alterada com sucesso');
     }
 }

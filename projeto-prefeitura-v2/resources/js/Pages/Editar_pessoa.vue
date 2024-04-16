@@ -29,7 +29,7 @@
     }
 
 </script>
-
+ 
 <template>
     <main-layout paginaAtual="Editar Pessoa" class="w-full">
         <Head title="Editar pessoa"/>

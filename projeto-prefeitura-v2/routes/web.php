@@ -55,8 +55,21 @@ Route::get('/anexo/download/{path}', [ProtocoloController::class, 'downloadAnexo
 
 // Rotas para usuários
 Route::get('/usuarios', [RegisteredUserController::class, 'index'])->middleware(['auth'])->name('usuarios');
+
 Route::get('/usuarios/cadastro', [RegisteredUserController::class, 'create'])->middleware(['auth'])->name('usuarios.cadastro');
+
 Route::post('/register', [RegisteredUserController::class, 'store'])->middleware([HandlePrecognitiveRequests::class])->middleware(['auth'])->name('usuarios.store');
+
+Route::get('/usuario/{id}', [RegisteredUserController::class, 'edit'])->middleware(['auth'])->name('usuario.edit');
+
+Route::put('/user/update', [RegisteredUserController::class, 'update'])->middleware([HandlePrecognitiveRequests::class])->middleware(['auth'])->name('users.store');
+
+Route::post('/user/desativar/{id}', [RegisteredUserController::class, 'desativar'])->middleware(['auth'])->name('user.desativar');
+
+Route::post('/user/ativar/{id}', [RegisteredUserController::class, 'ativar'])->middleware(['auth'])->name('user.ativar');
+
+Route::put('/user/mudar_senha', [RegisteredUserController::class, 'mudar_senha'])->middleware([HandlePrecognitiveRequests::class])->middleware(['auth'])->name('user.mudar.senha');
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

@@ -26,10 +26,10 @@ class UserRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255', 
-            'email' => 'required|string|email|max:255|unique:'.User::class,
+            'email' => ['required', 'string', 'email', 'max:255', Rule::unique(User::class)->ignore($this->id)],
             'password' => ['required', Rules\Password::defaults()],
-            'cpf' => 'required|string|max:14|min:14|unique:'.User::class,
-            'perfil' => 'required|max:1|min:1|'.Rule::in(['T', 'S', 'A']),
+            'cpf' => ['required', 'string', 'max:14', 'min:14', Rule::unique(User::class)->ignore($this->id)],
+            'perfil' => 'required|max:1|min:1|'.Rule::in(['T', 'S', 'A']), 
         ];
     }
 
@@ -46,6 +46,7 @@ class UserRequest extends FormRequest
             'password.required' => 'A senha deve ser preenchida',
             'perfil.required' => 'O perfil do usuário deve ser informado',
             'perfil.in' => 'O perfil deve ser T, S ou A',
+            'password' => 'A senha deve ter pelo menos 8 caracteres'
         ];
     }
 }
