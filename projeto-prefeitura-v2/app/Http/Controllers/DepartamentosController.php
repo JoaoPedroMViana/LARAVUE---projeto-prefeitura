@@ -77,4 +77,17 @@ class DepartamentosController extends Controller
             return redirect()->back()->with('message', 'Permissão liberada com sucesso!');
         }
     }
+
+    public function removerPermissao($id) {
+        try {
+            $permissao = Permissoe::findOrFail($id);
+            if($permissao->delete()){
+                return redirect()->back()->with('message', 'Permissão removida com sucesso!');
+            }else{
+                return redirect()->back()->with('message_error', 'Erro ao remover permissão');
+            }
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return redirect()->back()->with('message_error', 'Permissão não encontrada');
+        }
+    }
 }

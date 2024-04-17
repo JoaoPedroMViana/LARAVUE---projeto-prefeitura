@@ -85,6 +85,9 @@ Route::put('/departamento/update', [DepartamentosController::class, 'update'])->
 // Rotas permissões
 Route::post('/permissoes/liberar', [DepartamentosController::class, 'liberarPermissao'])->middleware(['auth'])->name('permissoes.liberar');
 
+Route::delete('/permissoes/remover/{id}', [DepartamentosController::class, 'removerPermissao'])->middleware(['auth'])->name('permissoes.remover');
+
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

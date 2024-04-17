@@ -1,5 +1,5 @@
 <script setup>
-    import { usePage } from "@inertiajs/vue3";
+    import { router, usePage } from "@inertiajs/vue3";
     import { useForm } from "laravel-precognition-vue-inertia";
     import { ref } from "vue";
     import { toast } from 'vue3-toastify';
@@ -73,6 +73,27 @@
         }})
     }
 
+    const removerPermissao = (id) => {
+        router.delete(`/permissoes/remover/${id}`, {onSuccess: () => {
+            if(page.props.flash){
+                toast(`${page.props.flash}`, {
+                    "autoClose": 2500,
+                    "type": "success",
+                    "dangerouslyHTMLString": true,
+                    "position": "top-center",
+                });// Mensagem de sucesso
+          
+            }
+            if(page.props.error_msg){
+                toast(`${page.props.error_msg}`, {
+                    "autoClose": 2500,
+                    "type": "error",
+                    "dangerouslyHTMLString": true,
+                    "position": "top-center",
+                });// Mensagem de erro
+            }
+        }});
+    }
 </script>
 
 <template>
@@ -104,7 +125,7 @@
         <section class="p-10 pt-0">
             <h2 class="text-lg">Usuários com acesso:</h2>
             <p class="pt-2 opacity-55" v-if="permitidos.length == 0">Nenhum usuário com acesso</p>
-            <v-table hover>
+            <v-table v-if="permitidos.length != 0" hover>
                 <thead>
                     <tr>
                         <th class="text-center">ID</th>
@@ -118,7 +139,7 @@
                         <td class="text-center">{{permitido.user.id}}</td>
                         <td class="text-left ">{{permitido.user.name}}</td>
                         <td class="text-center">{{formatarData(permitido.data)}}</td>
-                        <td class="text-center"><v-btn color="#B71C1C" prepend-icon="mdi-link-variant-off" rounded="md">Remover acesso</v-btn></td>
+                        <td class="text-center"><v-btn @click="removerPermissao(permitido.id)" color="#B71C1C" prepend-icon="mdi-link-variant-off" rounded="md">Remover acesso</v-btn></td>
                     </tr>
                 </tbody>
             </v-table>
