@@ -56,7 +56,7 @@
                                     v-model="form.nome"
                                     :counter="255"
                                     label="Nome"
-                                    required
+                                    required 
                                     maxlength="255"
                                     clearable
                                     type="input"

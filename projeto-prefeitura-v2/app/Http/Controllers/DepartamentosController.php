@@ -33,4 +33,26 @@ class DepartamentosController extends Controller
             return redirect('/departamentos')->with('message', 'Departamento cadastrado com sucesso!');
         }
     }
+
+    public function edit($id) {
+        $departamento = Departamento::findOrFail($id);
+
+        return Inertia::render('EditarDepartamento', [
+            'departamento' => $departamento
+        ]);
+    }
+
+    public function update(DepartamentosRequest $request) {
+        $departamento = Departamento::where([['nome', '=', $request->nome]])->get()->first();
+
+        if($departamento) {
+            return redirect()->back()->with('message_error', 'Departamento já cadastrado');
+        }else{
+            $departamento = Departamento::findOrFail($request->id);
+            $departamento->update([
+                'nome' => $request->nome,
+            ]);
+            return redirect('/departamentos')->with('message', 'Departamento salvo com sucesso!');
+        }
+    }
 }

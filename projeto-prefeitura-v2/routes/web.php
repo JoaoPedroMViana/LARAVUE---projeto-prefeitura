@@ -63,7 +63,7 @@ Route::post('/register', [RegisteredUserController::class, 'store'])->middleware
 
 Route::get('/usuario/{id}', [RegisteredUserController::class, 'edit'])->middleware(['auth'])->name('usuario.edit');
 
-Route::put('/user/update', [RegisteredUserController::class, 'update'])->middleware([HandlePrecognitiveRequests::class])->middleware(['auth'])->name('users.store');
+Route::put('/user/update', [RegisteredUserController::class, 'update'])->middleware([HandlePrecognitiveRequests::class])->middleware(['auth'])->name('users.update');
 
 Route::post('/user/desativar/{id}', [RegisteredUserController::class, 'desativar'])->middleware(['auth'])->name('user.desativar');
 
@@ -77,6 +77,10 @@ Route::get('/departamentos', [DepartamentosController::class, 'index'])->middlew
 Route::get('/departamentos/cadastro', [DepartamentosController::class, 'create'])->middleware(['auth'])->name('departamentos.cadastro');
 
 Route::post('/departamentos/store', [DepartamentosController::class, 'store'])->middleware([HandlePrecognitiveRequests::class])->middleware(['auth'])->name('departamentos.store');
+
+Route::get('/departamento/{id}', [DepartamentosController::class, 'edit'])->middleware(['auth'])->name('departamento.edit');
+
+Route::put('/departamento/update', [DepartamentosController::class, 'update'])->middleware([HandlePrecognitiveRequests::class])->middleware(['auth'])->name('departamento.update');
 
 
 Route::middleware('auth')->group(function () {

@@ -3,7 +3,6 @@
     import { ref, watch } from 'vue';
     import MainLayout from '../Layouts/MainLayout.vue'
 
-
     const props = defineProps({
         departamentos: Object,
     });
@@ -25,8 +24,9 @@
         router.get(`/departamentos?page=${pagina_atual.value}&itens_pag=${itens_por_pag.value}`)
     });
 
-    console.log(pagina_atual.value)
-    console.log(itens_por_pag.value)
+    const editarDepartamento = (id) => {
+        router.get(`/departamento/${id}`);
+    }
 </script> 
 
 <template>
@@ -54,7 +54,7 @@
                                 <td>{{departamento.id}}</td>
                                 <td>{{departamento.nome}}</td>
                                 <td>
-                                    <v-btn class="mr-6 h-75" rounded="lg" color="#7CB342" prepend-icon="mdi-eye-outline" variant="flat" @click.once="console.log(departamento.nome)">
+                                    <v-btn class="mr-6 h-75" rounded="lg" color="#7CB342" prepend-icon="mdi-eye-outline" variant="flat" @click.once="editarDepartamento(departamento.id)">
                                         Visualizar 
                                     </v-btn>
                                 </td>
