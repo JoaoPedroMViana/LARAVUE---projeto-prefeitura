@@ -13,7 +13,8 @@ class Protocolo extends Model
         'descricao',
         'data_registro',
         'prazo',
-        'pessoa_id'
+        'pessoa_id',
+        'departamento_id'
     ];
 
     protected $guarded = [];
