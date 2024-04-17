@@ -47,4 +47,8 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+    
+    public function permissoes() {
+        return $this->hasMany('App\Models\Permissoe');
+    }
 }

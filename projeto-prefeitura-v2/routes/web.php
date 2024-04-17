@@ -82,6 +82,8 @@ Route::get('/departamento/{id}', [DepartamentosController::class, 'edit'])->midd
 
 Route::put('/departamento/update', [DepartamentosController::class, 'update'])->middleware([HandlePrecognitiveRequests::class])->middleware(['auth'])->name('departamento.update');
 
+// Rotas permissões
+Route::post('/permissoes/liberar', [DepartamentosController::class, 'liberarPermissao'])->middleware(['auth'])->name('permissoes.liberar');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

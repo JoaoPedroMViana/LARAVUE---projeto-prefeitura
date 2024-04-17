@@ -44,16 +44,16 @@
                     <v-table  density="comfortable" hover class="p-5 pt-0">
                         <thead class="text-base">
                             <tr>
-                                <th>#</th>
-                                <th>Nome</th>
-                                <th>Ações</th>
+                                <th class="text-center">#</th>
+                                <th class="text-left">Nome</th>
+                                <th class="text-center">Ações</th>
                             </tr>
                         </thead> 
                         <tbody v-if="departamentos.data.length != 0">
                             <tr v-for="departamento in departamentos.data" :key="departamento.id">
-                                <td>{{departamento.id}}</td>
-                                <td>{{departamento.nome}}</td>
-                                <td>
+                                <td class="text-center">{{departamento.id}}</td>
+                                <td class="text-left">{{departamento.nome}}</td>
+                                <td class="text-center">
                                     <v-btn class="mr-6 h-75" rounded="lg" color="#7CB342" prepend-icon="mdi-eye-outline" variant="flat" @click.once="editarDepartamento(departamento.id)">
                                         Visualizar 
                                     </v-btn>

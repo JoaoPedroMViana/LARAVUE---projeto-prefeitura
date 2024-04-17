@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests\DepartamentosRequest;
 use App\Models\Departamento;
+use App\Models\Permissoe;
+use App\Models\User;
 use Inertia\Inertia;
 
 class DepartamentosController extends Controller
@@ -36,9 +38,13 @@ class DepartamentosController extends Controller
 
     public function edit($id) {
         $departamento = Departamento::findOrFail($id);
+        $atendentes = User::where([['perfil', '=','A']])->get(); 
+        $permitidos = Permissoe::with('user')->where('departamento_id', '=',$id)->get();
 
         return Inertia::render('EditarDepartamento', [
-            'departamento' => $departamento
+            'departamento' => $departamento,
+            'usuarios' => $atendentes,
+            'permitidos' => $permitidos
         ]);
     }
 
@@ -53,6 +59,22 @@ class DepartamentosController extends Controller
                 'nome' => $request->nome,
             ]);
             return redirect('/departamentos')->with('message', 'Departamento salvo com sucesso!');
+        }
+    }
+
+    public function liberarPermissao(Request $request) {
+        $hasPermissoe =  Permissoe::where([['departamento_id', '=', $request->departamento_id], ['user_id', '=',$request->user_id]])->get()->first();
+
+        if($hasPermissoe){
+            return redirect()->back()->with('message_error', 'O usuário já possui esta permissão');
+        }else{
+            Permissoe::create([
+                'departamento_id' => $request->departamento_id,
+                'user_id' => $request->user_id,
+                'data' => $request->data_liberacao
+            ]);
+    
+            return redirect()->back()->with('message', 'Permissão liberada com sucesso!');
         }
     }
 }

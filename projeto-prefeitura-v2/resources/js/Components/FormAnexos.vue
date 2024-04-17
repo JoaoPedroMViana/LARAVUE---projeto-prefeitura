@@ -57,9 +57,9 @@
                     multiple
                     show-size
                     :clearable="false"
-                    @change="form.validate('files'); form.validate('files.0'); form.validateFiles();"
-                    @input="form.validate('files');  form.validate('files.0'); form.validateFiles();"
-                    :error-messages="form.errors.files || form.errors['files.0']"
+                    @change="form.validate('files'); form.validate('files.0'); form.validate('files.1'); form.validate('files.2'); form.validate('files.3'); form.validate('files.4');form.validateFiles();"
+                    @input="form.validate('files');  form.validate('files.0'); form.validate('files.1'); form.validate('files.2'); form.validate('files.3'); form.validate('files.4'); form.validateFiles();"
+                    :error-messages="form.errors.files || form.errors['files.0'] || form.errors['files.1'] || form.errors['files.2'] || form.errors['files.3' || form.errors['files.4']]"
                     density="comfortable"
                 ></v-file-input>
                 <!-- <div class="absolute right-8 top-9 flex items-center mb-4 z-50">
