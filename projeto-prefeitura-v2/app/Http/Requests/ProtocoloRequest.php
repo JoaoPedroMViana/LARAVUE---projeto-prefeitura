@@ -27,7 +27,8 @@ class ProtocoloRequest extends FormRequest
             'prazo' => ['required', 'numeric', 'between:5,30'],
             'pessoa_id' => ['required'],
             'files.*' => ['mimes:jpg,jpeg,pdf,png', 'max:3072', 'file'],
-            'files' => ['max:5']
+            'files' => ['max:5'],
+            'departamento_id' => ['required']
         ];
     }
 
@@ -41,7 +42,8 @@ class ProtocoloRequest extends FormRequest
             'pessoa_id.required' => 'O campo contribuinte deve ser preechido',
             'files.max' => 'A quantidade de arquivos anexados deve ser menor ou igual a 5',
             'files.*.mimes' => 'A extenção do arquivo deve ser jpg, jpeg, png ou pdf',
-            'files.*.max' => 'O tamanho individual dos arquivos não deve passar de 3MB'
+            'files.*.max' => 'O tamanho individual dos arquivos não deve passar de 3MB',
+            'departamento_id.required' => 'O departamento deve ser informado' 
         ];
     }
 }

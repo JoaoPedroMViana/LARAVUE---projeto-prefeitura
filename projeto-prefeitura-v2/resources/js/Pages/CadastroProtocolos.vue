@@ -5,7 +5,8 @@
     import FormProtocolo from '../Components/FormProtocolo.vue'
 
     const props = defineProps({
-        pessoas_select: Object
+        pessoas_select: Object,
+        departamentos_select: Object
     });
 
     let limparForm = ref(false);
@@ -17,7 +18,7 @@
             <v-app class="w-full mt-2"> 
                 <div class="w-full flex justify-center">
                     <v-card elevation="4" class="w-5/6 rounded-lg">
-                        <FormProtocolo :pessoas_select="pessoas_select" :clear="limparForm" :values='null' route="/protocolos/store" method="post" text_button_submit="Cadastrar">
+                        <FormProtocolo :pessoas_select="pessoas_select" :departamentos_select="departamentos_select" :clear="limparForm" :values='null' route="/protocolos/store" method="post" text_button_submit="Cadastrar">
                              <v-btn
                               rounded="md" prepend-icon="mdi-delete-outline" variant="flat"
                               @click="limparForm = !limparForm"

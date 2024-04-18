@@ -9,6 +9,7 @@ use App\Http\Requests\RequestAnexos;
 use Inertia\Inertia;
 use App\Models\Protocolo;
 use App\Models\Arq_anexado;
+use App\Models\Departamento;
 use App\Models\Pessoa;
 
 class ProtocoloController extends Controller
@@ -24,7 +25,8 @@ class ProtocoloController extends Controller
 
     function create() {
         return Inertia::render('CadastroProtocolos', [
-            'pessoas_select' => Pessoa::select('id', 'nome')->get()
+            'pessoas_select' => Pessoa::select('id', 'nome')->get(),
+            'departamentos_select' => Departamento::select('id', 'nome')->get()
         ]);
     }
 
@@ -33,7 +35,8 @@ class ProtocoloController extends Controller
             'descricao' => $request->descricao,
             'data_registro' => $request->data_registro,
             'prazo' => $request->prazo,
-            'pessoa_id' => $request->pessoa_id
+            'pessoa_id' => $request->pessoa_id,
+            'departamento_id' => $request->departamento_id
         ]);
         
         $file = null;
@@ -93,18 +96,19 @@ class ProtocoloController extends Controller
     }
 
     function edit($numero) {
-        $protocolo = Protocolo::with('pessoa')->where([['numero', $numero]])->get();
+        $protocolo = Protocolo::with('pessoa', 'departamento')->where([['numero', $numero]])->get();
         $anexados = Arq_anexado::where([['protocolo_id', $numero]])->get();
         return Inertia::render('Editar_protocolo', [
             'protocolo' => $protocolo,
             'anexados' => $anexados,
-            'pessoas_select' => Pessoa::select('id', 'nome')->get()
+            'pessoas_select' => Pessoa::select('id', 'nome')->get(),
+            'departamentos_select' => Departamento::select('id', 'nome')->get(),
         ]);
     }
 
     function update(ProtocoloRequest $request) {
 
-        $newData = $request->only(['descricao', 'data_registro', 'prazo','pessoa_id']);
+        $newData = $request->only(['descricao', 'data_registro', 'prazo','pessoa_id', 'departamento_id']);
         
         Protocolo::where([['numero', $request->numero]])->update($newData);
 

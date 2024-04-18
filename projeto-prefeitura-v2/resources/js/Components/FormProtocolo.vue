@@ -13,7 +13,8 @@
         route: String,
         text_button_submit: String,
         clear: Boolean,
-        pessoas_select: Object
+        pessoas_select: Object,
+        departamentos_select: Object
     })
 
     // formatar datas
@@ -40,7 +41,8 @@
         data_registro: formatarDataBanco(new Date()),
         prazo: null,
         pessoa_id: null,
-        files: null
+        files: null,
+        departamento_id: null
     };
 
     if(props.values != null){
@@ -50,7 +52,8 @@
             data_registro: props.values[0].data_registro,
             prazo: props.values[0].prazo,
             pessoa_id: props.values[0].pessoa_id,
-            files: null
+            files: null,
+            departamento_id: props.values[0].departamento_id
         }
     }
 
@@ -71,8 +74,14 @@
     const items = [
         // botar o nome dos usuarios, precisa ver um jeito de botar o id como value
     ]
+    const items_departamento = [
+
+    ]
     for(let pessoa of props.pessoas_select){
         items.push({title: `${pessoa.nome}`, value: `${pessoa.id}`})
+    }
+    for(let departamento of props.departamentos_select){
+        items_departamento.push({title: `${departamento.nome}`, value: `${departamento.id}`})
     }
 
 
@@ -130,12 +139,17 @@
    
     // gerenciamento do select
     let select = ref(null)
+    let select_departamento = ref(null);
     if(props.values != null){
         select.value = props.values[0].pessoa.nome;
+        select_departamento.value = props.values[0].departamento.nome;
     }
 
     watch(select, () => {
         form.pessoa_id = select.value;
+    })
+    watch(select_departamento, () => {
+        form.departamento_id = select_departamento.value;
     })
     // são 3 formatos de data diferente: br(front), en(data base) e string(data picker)
 
@@ -156,6 +170,23 @@
             @input="form.validate('pessoa_id')"
             @mouseout="form.validate('pessoa_id')"
             :error-messages="form.errors.pessoa_id"
+            base-color="#7CB342"
+            color="#7CB342"
+            density="comfortable"
+            ></v-select>
+            
+             <v-select
+            id="departamento_id"
+            v-model="select_departamento"
+            variant="outlined"
+            rounded="md"
+            :items="items_departamento"
+            label="Departamento"
+            required
+            @change="form.validate('departamento_id')"
+            @input="form.validate('departamento_id')"
+            @mouseout="form.validate('departamento_id')"
+            :error-messages="form.errors.departamento_id"
             base-color="#7CB342"
             color="#7CB342"
             density="comfortable"

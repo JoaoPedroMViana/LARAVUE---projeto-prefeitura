@@ -27,4 +27,8 @@ class Protocolo extends Model
     public function anexados() {
         return $this->hasMany('App\Models\Arq_anexado');
     }
+
+    public function departamento() {
+        return $this->belongsTo('App\Models\Departamento');
+    }
 }

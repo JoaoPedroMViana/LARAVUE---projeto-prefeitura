@@ -13,7 +13,8 @@
     const props = defineProps({
         protocolo: Object,
         anexados: Array,
-        pessoas_select: Object
+        pessoas_select: Object,
+        departamentos_select: Object
     })
 
     // Modal excluir
@@ -70,7 +71,7 @@
          <v-app class="w-full mt-2">
             <div class="w-full flex flex-column justify-center items-center">
                 <v-card elevation="4" class="w-5/6 rounded-lg">
-                    <FormProtocolo :pessoas_select="pessoas_select" :values='protocolo' route="/protocolo/update" method="put" text_button_submit="Salvar">
+                    <FormProtocolo :pessoas_select="pessoas_select" :departamentos_select="departamentos_select" :values='protocolo' route="/protocolo/update" method="put" text_button_submit="Salvar">
                             <v-btn
                             @click="dialog = true" rounded="md" color="#B71C1C" prepend-icon="mdi-delete-outline" variant="flat"
                         >
