@@ -63,7 +63,8 @@ class ProtocoloController extends Controller
             'data_registro' => $request->data_registro,
             'prazo' => $request->prazo,
             'pessoa_id' => $request->pessoa_id,
-            'departamento_id' => $request->departamento_id
+            'departamento_id' => $request->departamento_id,
+            'situacao' => $request->situacao
         ]);
         
         $file = null;
@@ -157,7 +158,7 @@ class ProtocoloController extends Controller
 
     function update(ProtocoloRequest $request) {
 
-        $newData = $request->only(['descricao', 'data_registro', 'prazo','pessoa_id', 'departamento_id']);
+        $newData = $request->only(['descricao', 'data_registro', 'prazo','pessoa_id', 'departamento_id', 'situacao']);
         
         Protocolo::where([['numero', $request->numero]])->update($newData);
 

@@ -42,7 +42,8 @@
         prazo: null,
         pessoa_id: null,
         files: null,
-        departamento_id: null
+        departamento_id: null,
+        situacao: 'A'
     };
 
     if(props.values != null){
@@ -53,7 +54,8 @@
             prazo: props.values[0].prazo,
             pessoa_id: props.values[0].pessoa_id,
             files: null,
-            departamento_id: props.values[0].departamento_id
+            departamento_id: props.values[0].departamento_id,
+            situacao: props.values[0].situacao
         }
     }
 
@@ -83,7 +85,6 @@
     for(let departamento of props.departamentos_select){
         items_departamento.push({title: `${departamento.nome}`, value: `${departamento.id}`})
     }
-
 
     // número só aceita números
     const onlyNumbers = (event) => {
@@ -191,6 +192,31 @@
             color="#7CB342"
             density="comfortable"
             ></v-select>
+
+            <v-radio-group
+                v-model="form.situacao"
+                inline
+                density="compact"
+                v-if="method == 'put'"
+            >
+            <v-radio
+                label="Aberto"
+                value="A"
+                color="red"
+                class="pr-2"
+            ></v-radio>
+            <v-radio
+                label="Em atendimento"
+                value="E"
+                color="yellow"
+                class="pr-2"
+            ></v-radio>
+            <v-radio
+                label="Solucionado"
+                value="S"
+                color="green"
+            ></v-radio>
+            </v-radio-group>
 
             <v-textarea
             class="w-full"

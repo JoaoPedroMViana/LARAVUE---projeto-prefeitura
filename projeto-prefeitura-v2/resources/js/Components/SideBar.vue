@@ -42,13 +42,12 @@
         <div v-if="active" class="w-100 min-h-screen bg-lime-100 absolute top-0 z-50 opacity-50" @click="fecharSide"></div><!-- overlay -->
         <section :class="Allclasses">
             <div> 
-                <div class="flex justify-between items-start m-4 mb-8">
+                <div class="flex justify-between items-start m-4 mb-1">
                     <ApplicationLogo class="w-14 h-14 fill-current text-gray-500" />
                     <button class="p-1 w-8 rounded-full transition-all hover:bg-lime-300 hover:text-white" @click="fecharSide"><v-icon icon="mdi-close" size="medium"></v-icon></button>
                 </div>
-                <div class="flex flex-column opacity-55 text-sm justify-between items-start m-4 mt-0">
-                    <p>Usuário: {{page.props.auth.user.name}}</p>
-                    <p>Perfil: {{perfil(page.props.auth.user.perfil)}}</p>
+                <div class="flex flex-column opacity-55 text-sm justify-between items-start m-4 mt-0 mb-12">
+                    <p>Usuário: {{page.props.auth.user.name}} | {{perfil(page.props.auth.user.perfil)}}</p>
                 </div>
                 <button-link-vue :pag="pag" :selectedClass="selected('Pessoas')" nome="Pessoas" route="/pessoas">
                     <v-icon icon="mdi-account-multiple" class="mr-2"></v-icon>Pessoas

@@ -170,18 +170,13 @@
 
     })
 
+    // Exibir cor da situação
 
-    // arquivos: 
-    // Criar uma tabela só para os documentos, com id, path, id do protocolo [V]]
-    // Criar um Model pros docs [V]
-    // protocolos precisam hasMany e documentos precisam belonsTo [V]
-    // input [V]
-    // salvar no banco de dados e no storage local [V]
-    // resgatar do banco o arquivo com base no storage [V]
-    // validação [V]
-    // verificar se no create e no update ta funcionando
-    // excluir anexados no update
-    // deixar a pessoa baixar o arquivo
+    const cor = (situacao) => {
+        if(situacao == 'A') return {color: 'red', text: 'Aberto'} 
+        else if(situacao == 'E') return {color: 'yellow', text: 'Em atendimento'} 
+        else return {color: 'green', text: 'Solucionado'} 
+    }
 
     // fazer as validações nas rotas gets para caso o usurio digite algo nelas
 </script>
@@ -223,7 +218,7 @@
             </v-dialog>
             <v-app class="w-full my-2">
                 <div class="w-full flex justify-center">
-                    <v-card elevation="4" class="w-5/6 rounded-lg">
+                    <v-card elevation="4" class="w-11/12 rounded-lg">
                         <v-text-field
                             v-model="searchNumero"
                             class="mx-8 mt-3 mb-2 h-12"
@@ -307,6 +302,7 @@
                                     <th>Departamento</th>
                                     <th>Data de registro</th>
                                     <th>Prazo</th>
+                                    <th>Situação</th>
                                     <th class="text-center">Acões</th>
                                 </tr>
                             </thead>
@@ -317,6 +313,7 @@
                                     <td>{{protocolo.departamento.nome}}</td>
                                     <td>{{formatarData(protocolo.data_registro)}}</td>
                                     <td>{{protocolo.prazo}}</td>
+                                    <td><v-icon :color="cor(protocolo.situacao).color" icon="mdi-circle"></v-icon> {{cor(protocolo.situacao).text}}</td>
                                     <td class="text-center">
                                         <v-btn class="mr-6 h-75" rounded="lg" color="#7CB342" prepend-icon="mdi-pencil" variant="flat" @click.once="editar(protocolo.numero)">
                                             Editar 
