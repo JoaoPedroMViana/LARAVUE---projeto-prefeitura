@@ -1,8 +1,10 @@
 <script setup>
-    import { Link } from "@inertiajs/vue3";
+    import { Link, usePage } from "@inertiajs/vue3";
     import { computed } from "vue";
     import ButtonLinkVue from "./ButtonLink.vue"
     import ApplicationLogo from '@/Components/ApplicationLogo.vue';
+    
+    const page = usePage();
 
     const props = defineProps({
         pag: String, 
@@ -42,10 +44,10 @@
                 <button-link-vue :pag="pag" :selectedClass="selected('Protocolos')" nome="Protocolos" route="/protocolos">
                     <v-icon icon="mdi-file-sign" class="mr-2"></v-icon>Protocolos
                 </button-link-vue>
-                <button-link-vue :pag="pag" :selectedClass="selected('Usuarios')" nome="Usuarios" route="/usuarios">
+                <button-link-vue v-if="page.props.auth.user.perfil != 'A'" :pag="pag" :selectedClass="selected('Usuarios')" nome="Usuarios" route="/usuarios">
                     <v-icon icon="mdi-account-circle" class="mr-2"></v-icon>Usuários
                 </button-link-vue>
-                <button-link-vue :pag="pag" :selectedClass="selected('Departamentos')" nome="Departamentos" route="/departamentos">
+                <button-link-vue v-if="page.props.auth.user.perfil != 'A'" :pag="pag" :selectedClass="selected('Departamentos')" nome="Departamentos" route="/departamentos">
                     <v-icon icon="mdi-domain" class="mr-2"></v-icon>Departamentos
                 </button-link-vue>
             </div>

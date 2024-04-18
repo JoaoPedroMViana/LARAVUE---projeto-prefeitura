@@ -8,10 +8,12 @@ use App\Models\Departamento;
 use App\Models\Permissoe;
 use App\Models\User;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Gate;
 
 class DepartamentosController extends Controller
 {
     public function index() {
+        if(Gate::allows('isAtendente')) return redirect()->back();
         $itens_por_pag = 5;
         if(request('itens_pag')) $itens_por_pag = request('itens_pag');
         return Inertia::render('Departamentos', [
@@ -20,10 +22,12 @@ class DepartamentosController extends Controller
     }
 
     public function create() {
+        if(Gate::allows('isAtendente')) return redirect()->back();
         return Inertia::render('CadastroDepartamentos');
     }
 
     public function store(DepartamentosRequest $request) {
+        if(Gate::allows('isAtendente')) return redirect()->back();
         $departamento = Departamento::where([['nome', '=', $request->nome]])->get()->first();
 
         if($departamento) {
@@ -37,6 +41,7 @@ class DepartamentosController extends Controller
     }
 
     public function edit($id) {
+        if(Gate::allows('isAtendente')) return redirect()->back();
         $departamento = Departamento::findOrFail($id);
         $atendentes = User::where([['perfil', '=','A']])->get(); 
         $permitidos = Permissoe::with('user')->where('departamento_id', '=',$id)->get();
@@ -49,6 +54,7 @@ class DepartamentosController extends Controller
     }
 
     public function update(DepartamentosRequest $request) {
+        if(Gate::allows('isAtendente')) return redirect()->back();
         $departamento = Departamento::where([['nome', '=', $request->nome]])->get()->first();
 
         if($departamento) {
@@ -63,6 +69,7 @@ class DepartamentosController extends Controller
     }
 
     public function liberarPermissao(Request $request) {
+        if(Gate::allows('isAtendente')) return redirect()->back();
         $hasPermissoe =  Permissoe::where([['departamento_id', '=', $request->departamento_id], ['user_id', '=',$request->user_id]])->get()->first();
 
         if($hasPermissoe){
@@ -79,6 +86,7 @@ class DepartamentosController extends Controller
     }
 
     public function removerPermissao($id) {
+        if(Gate::allows('isAtendente')) return redirect()->back();
         try {
             $permissao = Permissoe::findOrFail($id);
             if($permissao->delete()){

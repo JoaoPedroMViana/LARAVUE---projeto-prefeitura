@@ -49,6 +49,14 @@
                     "position": "top-center",
                 });// Mensagem de sucesso
             }
+            if(page.props.error_msg){
+                toast(`${page.props.error_msg}`, {
+                    "autoClose": 2500,
+                    "type": "error",
+                    "dangerouslyHTMLString": true,
+                    "position": "top-center",
+                });// Mensagem de erro
+            }
             if(props.method == 'post'){
                 form.reset();
                 formated = null
@@ -100,15 +108,27 @@
         console.log(form.perfil)
     });
 
-    let items = [
+    let items = []
+
+    // Validação do tipo de usuário
+    if(page.props.auth.user.perfil == 'S') {
+        items = [
+            {title: 'Atendente', value: 'A'}
+        ]
+    }else{
+        items = [
             {title: 'Administrador da TI', value: 'T'}, 
             {title: 'Administrador do sistema', value: 'S'}, 
             {title: 'Atendente', value: 'A'}
         ]
+    }
+
+    // no editar usuario botar o texto e não a letra
 </script>
 
 <template>
         <form action="post" @submit.prevent="submit" class="p-8">
+    
         <v-container class=" flex flex-column gap-8 justify-between">       
             <div class="flex gap-8">
                 <v-text-field

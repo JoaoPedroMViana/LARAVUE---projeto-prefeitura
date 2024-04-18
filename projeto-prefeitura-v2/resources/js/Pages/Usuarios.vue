@@ -32,7 +32,13 @@
         router.get(`/usuario/${id}`);
     };
 
-    // mostrar o nome do perfil e não a letra
+    // Mostrar o nome do perfil e não a letra
+    const perfil = (letra) => {
+        if(letra == 'T') return 'Administrador da TI'
+        else if(letra == 'S') return 'Administrador do sistema'
+        else return 'Atendente'
+        
+    };
 </script>
 
 <template>
@@ -56,7 +62,7 @@
                                     <th>E-mail</th>
                                     <th>Perfil</th>
                                     <th>Ativo</th>
-                                    <th>Ações</th>
+                                    <th class="text-center">Ações</th>
                                 </tr>
                             </thead> 
                             <tbody v-if="users.data.length != 0">
@@ -64,9 +70,9 @@
                                     <td>{{user.id}}</td>
                                     <td>{{user.name}}</td>
                                     <td>{{user.email}}</td>
-                                    <td>{{user.perfil}}</td>
+                                    <td>{{perfil(user.perfil)}}</td>
                                     <td>{{user.ativo}}</td>
-                                    <td>
+                                    <td class="text-center">
                                         <v-btn class="mr-6 h-75" rounded="lg" color="#7CB342" prepend-icon="mdi-eye-outline" variant="flat" @click.once="editar(user.id)">
                                             Visualizar 
                                         </v-btn>

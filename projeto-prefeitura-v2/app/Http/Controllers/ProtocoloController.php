@@ -10,7 +10,10 @@ use Inertia\Inertia;
 use App\Models\Protocolo;
 use App\Models\Arq_anexado;
 use App\Models\Departamento;
+use App\Models\User;
 use App\Models\Pessoa;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Auth;
 
 class ProtocoloController extends Controller
 {
@@ -18,15 +21,39 @@ class ProtocoloController extends Controller
     function index() {
         $itens_por_pag = 5;
         if(request('itens_pag')) $itens_por_pag = request('itens_pag');
+
+        $protocolos = Protocolo::with('pessoa', 'departamento')->paginate($itens_por_pag);
+         
+        if(Gate::allows('isAtendente')){
+            $user = User::with('permissoes')->find(Auth::user()->id);
+            $permitidos_id = [];
+            foreach($user->permissoes as $permissao){
+                array_push($permitidos_id, $permissao->departamento_id);
+            }
+        
+            $protocolos = Protocolo::with('pessoa', 'departamento')->whereIn('departamento_id', $permitidos_id)->paginate($itens_por_pag);  
+            // Pega só os procolocos com o departamento_id igual aos departamento_id das permissões do usuário
+        }
+        
         return Inertia::render('Protocolos', [
-           'protocolos' => Protocolo::with('pessoa')->paginate($itens_por_pag)
+           'protocolos' => $protocolos,
         ]);
     }
 
     function create() {
+        $departamentos_select = Departamento::select('id', 'nome')->get();
+        if(Gate::allows('isAtendente')){
+            $user = User::with('permissoes')->find(Auth::user()->id);
+            $permitidos_id = [];
+            foreach($user->permissoes as $permissao){
+                array_push($permitidos_id, $permissao->departamento_id);
+            }
+            $departamentos_select = Departamento::select('id', 'nome')->whereIn('id', $permitidos_id)->get();   
+            // pega só os departamentos que o usuário tem permissão
+        }
         return Inertia::render('CadastroProtocolos', [
             'pessoas_select' => Pessoa::select('id', 'nome')->get(),
-            'departamentos_select' => Departamento::select('id', 'nome')->get()
+            'departamentos_select' => $departamentos_select
         ]);
     }
 
@@ -75,7 +102,7 @@ class ProtocoloController extends Controller
         $itens_por_pag = 5;
         if(request('itens_pag')) $itens_por_pag = request('itens_pag');
  
-        $protocolosPesquisados = Protocolo::with('pessoa')
+        $protocolosPesquisados = Protocolo::with('pessoa', 'departamento')
         ->where('numero', 'like', '%' . $queryNumero . '%')
         ->where('descricao', 'like', '%' . $queryDescricao . '%')
         ->whereHas('pessoa', function ($query) use ($queryNome) {
@@ -96,13 +123,23 @@ class ProtocoloController extends Controller
     }
 
     function edit($numero) {
+        $departamentos_select = Departamento::select('id', 'nome')->get();
+        if(Gate::allows('isAtendente')){
+            $user = User::with('permissoes')->find(Auth::user()->id);
+            $permitidos_id = [];
+            foreach($user->permissoes as $permissao){
+                array_push($permitidos_id, $permissao->departamento_id);
+            }
+            $departamentos_select = Departamento::select('id', 'nome')->whereIn('id', $permitidos_id)->get();   
+            // pega só os departamentos que o usuário tem permissão
+        }
         $protocolo = Protocolo::with('pessoa', 'departamento')->where([['numero', $numero]])->get();
         $anexados = Arq_anexado::where([['protocolo_id', $numero]])->get();
         return Inertia::render('Editar_protocolo', [
             'protocolo' => $protocolo,
             'anexados' => $anexados,
             'pessoas_select' => Pessoa::select('id', 'nome')->get(),
-            'departamentos_select' => Departamento::select('id', 'nome')->get(),
+            'departamentos_select' => $departamentos_select,
         ]);
     }
 

@@ -303,19 +303,21 @@
                             <thead class="text-base">
                                 <tr>
                                     <th>Número</th>
+                                    <th>Contruibuinte</th>
+                                    <th>Departamento</th>
                                     <th>Data de registro</th>
                                     <th>Prazo</th>
-                                    <th>Contruibuinte</th>
-                                    <th>Acões</th>
+                                    <th class="text-center">Acões</th>
                                 </tr>
                             </thead>
                             <tbody v-if="protocolos.data.lenght != 0">
                                 <tr v-for="protocolo in protocolos.data" :key="protocolo.numero">
                                     <td>{{protocolo.numero}}</td>
+                                    <td><Link class="hover:underline text-blue-500" :href="`/pessoas/pesquisar?nome=${protocolo.pessoa.nome}`">{{protocolo.pessoa.nome}}</Link></td> 
+                                    <td>{{protocolo.departamento.nome}}</td>
                                     <td>{{formatarData(protocolo.data_registro)}}</td>
                                     <td>{{protocolo.prazo}}</td>
-                                    <td><Link class="hover:underline text-blue-500" :href="`/pessoas/pesquisar?nome=${protocolo.pessoa.nome}`">{{protocolo.pessoa.nome}}</Link></td> 
-                                    <td>
+                                    <td class="text-center">
                                         <v-btn class="mr-6 h-75" rounded="lg" color="#7CB342" prepend-icon="mdi-pencil" variant="flat" @click.once="editar(protocolo.numero)">
                                             Editar 
                                         </v-btn>
