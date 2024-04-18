@@ -99,10 +99,22 @@ class ProtocoloController extends Controller
         if(request('pessoa') != 'null' && request('pessoa') != 'undefined') $queryNome = request('pessoa');
         if(request('data') != 'null' && request('data') != 'undefined') $queryData = request('data');
 
+        $permitidos_id = [];
+        if(Gate::allows('isAtendente')){
+            $user = User::with('permissoes')->find(Auth::user()->id);
+            foreach($user->permissoes as $permissao){
+                array_push($permitidos_id, $permissao->departamento_id);
+            }
+
+        }else{
+            $permitidos_id = Departamento::select('id')->get();
+        }
+
         $itens_por_pag = 5;
         if(request('itens_pag')) $itens_por_pag = request('itens_pag');
  
         $protocolosPesquisados = Protocolo::with('pessoa', 'departamento')
+        ->whereIn('departamento_id', $permitidos_id)
         ->where('numero', 'like', '%' . $queryNumero . '%')
         ->where('descricao', 'like', '%' . $queryDescricao . '%')
         ->whereHas('pessoa', function ($query) use ($queryNome) {
