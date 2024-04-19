@@ -157,7 +157,7 @@
 </script>
 
 <template>
-    <form action="post" enctype="multipart/form-data" @submit.prevent="submit" class="p-8 pb-4">
+    <form enctype="multipart/form-data" @submit.prevent="submit" class="p-8 pb-4">
         <v-container class="py-0 flex flex-col gap-4">
             <v-select
             id="pessoa_id"

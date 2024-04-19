@@ -10,6 +10,7 @@ use Inertia\Inertia;
 use App\Models\Protocolo;
 use App\Models\Arq_anexado;
 use App\Models\Departamento;
+use App\Models\Acompanhamento;
 use App\Models\User;
 use App\Models\Pessoa;
 use Illuminate\Support\Facades\Gate;
@@ -148,9 +149,11 @@ class ProtocoloController extends Controller
         }
         $protocolo = Protocolo::with('pessoa', 'departamento')->where([['numero', $numero]])->get();
         $anexados = Arq_anexado::where([['protocolo_id', $numero]])->get();
+        $acompanhamentos = Acompanhamento::where([['protocolo_id', $numero]])->orderBy('data', 'desc')->get();
         return Inertia::render('Editar_protocolo', [
             'protocolo' => $protocolo,
             'anexados' => $anexados,
+            'acompanhamentos' => $acompanhamentos,
             'pessoas_select' => Pessoa::select('id', 'nome')->get(),
             'departamentos_select' => $departamentos_select,
         ]);
