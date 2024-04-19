@@ -219,9 +219,10 @@
             <v-app class="w-full my-2">
                 <div class="w-full flex justify-center">
                     <v-card elevation="4" class="w-11/12 rounded-lg">
+                     <div class="flex h-12 justify-between mx-8 gap-8">
                         <v-text-field
                             v-model="searchNumero"
-                            class="mx-8 mt-3 mb-2 h-12"
+                            class="mt-3 mb-2 h-12"
                             clearable 
                             label="Número"
                             variant="underlined"
@@ -231,25 +232,10 @@
                             color="#7CB342"
                             density="comfortable"
                         >
+                        
                         </v-text-field>
-
-                        <div class="flex h-12 justify-between mx-8 mb- gap-8">
-                            <v-text-field
-                            class="w-25"
-                            clearable
-                            variant="underlined"
-                            rounded="md"
-                            v-model="searchDescricao"
-                            label="Descrição"
-                            :autofocus="inputFocus == 'decricao'"                         
-                            type="input"
-                            base-color="#7CB342"
-                            color="#7CB342"
-                            density="comfortable"
-                            ></v-text-field>
-
-                            <v-text-field
-                            class="w-25"
+                        <v-text-field
+                            class="mt-3 mb-2 h-12"
                             clearable
                             variant="underlined"
                             rounded="md"
@@ -261,6 +247,10 @@
                             color="#7CB342"
                             density="comfortable"
                             ></v-text-field>
+                            
+                     </div>
+
+                        <div class="flex h-12 justify-between mx-8 mt-4 gap-8">
 
                             <div class="w-25">
                                 <v-menu v-model="isMenuOpen" :close-on-content-click="false">
@@ -286,13 +276,34 @@
                                     <v-date-picker rounded :max="new Date()" @click.self="isMenuOpen = false" v-model="selectedDate" color="#7CB342"></v-date-picker>
                                 </v-menu>
                             </div>
+                            <v-text-field
+                            class="w-25"
+                            clearable
+                            variant="underlined"
+                            rounded="md"
+                            v-model="searchDescricao"
+                            label="Descrição"
+                            :autofocus="inputFocus == 'decricao'"                         
+                            type="input"
+                            base-color="#7CB342"
+                            color="#7CB342"
+                            density="comfortable"
+                            ></v-text-field>
+                            
                         </div>
                 
                         <div class="w-100 flex items-center justify-between m-0 py-2">
-                            <p class="text-sm py-0 my-0 ml-8 opacity-45">Total de protocolos: {{protocolos.total}}</p> 
-                            <v-btn class="mr-8" rounded="lg" variant="text">
-                                <Link href="/protocolos/cadastro" ><v-icon icon="mdi-plus-circle-outline" class="mr-3"></v-icon> Cadastrar</Link>
-                            </v-btn>
+                            <p class="text-sm py-0 my-0 ml-8 opacity-45">Total de protocolos: {{protocolos.total}}</p>
+                            <div>
+                                <v-btn rounded="lg" variant="text" color="grey">
+                                    <a href="/download/pdf">
+                                        <v-icon icon="mdi-download-outline" class="mr-3"></v-icon> Baixar protocolos
+                                    </a>
+                                </v-btn>
+                                <v-btn class="mr-8" rounded="lg" variant="text">
+                                    <Link href="/protocolos/cadastro" ><v-icon icon="mdi-plus-circle-outline" class="mr-3"></v-icon> Cadastrar</Link>
+                                </v-btn>
+                            </div> 
                         </div>
                         <v-table  density="comfortable" hover class="p-5 pt-0">
                             <thead class="text-base">

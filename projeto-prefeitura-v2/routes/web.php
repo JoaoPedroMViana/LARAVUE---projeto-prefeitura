@@ -11,6 +11,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\DepartamentosController;
 use App\Http\Controllers\AcompanhamentoController;
 use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\PdfController;
 
 Route::get('/', function () {
     return to_route('login');
@@ -83,13 +84,17 @@ Route::get('/departamento/{id}', [DepartamentosController::class, 'edit'])->midd
 
 Route::put('/departamento/update', [DepartamentosController::class, 'update'])->middleware([HandlePrecognitiveRequests::class])->middleware(['auth'])->name('departamento.update');
 
-// Rotas permissões
+// Rotas permissões -----------------------------------------
 Route::post('/permissoes/liberar', [DepartamentosController::class, 'liberarPermissao'])->middleware(['auth'])->name('permissoes.liberar');
 
 Route::delete('/permissoes/remover/{id}', [DepartamentosController::class, 'removerPermissao'])->middleware(['auth'])->name('permissoes.remover');
 
-// Rotas acompanhamentos
+// Rotas acompanhamentos -----------------------------------------
 Route::post('/acompanhamento/store', [AcompanhamentoController::class, 'store'])->middleware([HandlePrecognitiveRequests::class])->middleware(['auth'])->name('acompanhamento.store');
+
+
+// Rotas download PDF -----------------------------------------
+Route::get('/download/pdf', [PdfController::class, 'downloadPdf'])->middleware(['auth'])->name('downloadPdf');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

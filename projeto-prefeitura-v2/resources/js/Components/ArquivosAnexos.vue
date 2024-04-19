@@ -38,10 +38,9 @@
     // download file
     const anexo_download = ref('');
 
-    watch(anexo_download, () => {
-        console.log(anexo_download.value);
-        router.get(`/anexo/download/${anexo_download.value.replace("/storage/","")}`);
-    });
+    // watch(anexo_download, () => {
+    //     router.get(`/anexo/download/${anexo_download.value.replace("/storage/","")}`);
+    // });
 
     // dialog
     let dialog = ref(false);
@@ -58,7 +57,11 @@
                 <v-card elevation="4" class="m-4 my-6 overscroll-x">
                     <div class="flex justify-between">
                         <v-btn class="m-2" rounded variant="plain" size="lg" color="grey"><v-icon class="m-3 hover:bg-lime" icon="mdi-delete" @click="anexo_deletado = anexo.id"></v-icon></v-btn>
-                        <v-btn class="m-2" rounded variant="plain" size="lg" color="grey"><v-icon class="m-3 hover:bg-lime" icon="mdi-download" @click="anexo_download = anexo.path"></v-icon></v-btn>
+                        <v-btn class="m-2" rounded variant="plain" size="lg" color="grey">
+                            <a :href="`/anexo/download/${anexo.path.replace('/storage/','')}`">
+                                <v-icon class="m-3 hover:bg-lime" icon="mdi-download"></v-icon>
+                            </a>
+                        </v-btn>
                         <v-btn class="m-2" rounded variant="plain" size="lg" color="grey"><v-icon class="m-3 hover:bg-lime" icon="mdi-eye" @click="dialog = true; anexo_vizu = anexo.path"></v-icon></v-btn>
                     </div>
                     <embed :src="anexo.path" class="w-44 overscroll-x-none p-2">
