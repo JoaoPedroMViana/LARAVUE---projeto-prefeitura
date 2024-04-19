@@ -226,7 +226,7 @@
             </v-dialog>
             <v-app class="w-full my-3">
                 <div class="w-full flex justify-center">
-                    <v-card elevation="4" class="w-5/6 rounded-lg"> 
+                    <v-card elevation="4" class="w-11/12 rounded-lg"> 
                        <v-text-field
                             v-model="searchNome"
                             class="mx-8 mt-3 mb-2 h-12"

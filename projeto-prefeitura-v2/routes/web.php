@@ -9,6 +9,7 @@ use App\Http\Controllers\PessoaController;
 use App\Http\Controllers\ProtocoloController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DepartamentosController;
+use App\Http\Controllers\AcompanhamentoController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 
 Route::get('/', function () {
@@ -87,6 +88,8 @@ Route::post('/permissoes/liberar', [DepartamentosController::class, 'liberarPerm
 
 Route::delete('/permissoes/remover/{id}', [DepartamentosController::class, 'removerPermissao'])->middleware(['auth'])->name('permissoes.remover');
 
+// Rotas acompanhamentos
+Route::post('/acompanhamento/store', [AcompanhamentoController::class, 'store'])->middleware([HandlePrecognitiveRequests::class])->middleware(['auth'])->name('acompanhamento.store');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

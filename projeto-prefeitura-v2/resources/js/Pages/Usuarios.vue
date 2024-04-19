@@ -47,7 +47,7 @@
         <main-layout paginaAtual="Usuarios" class="w-full">
             <v-app class="w-full my-3">
                 <div class="w-full flex justify-center">
-                    <v-card elevation="4" class="w-5/6 rounded-lg"> 
+                    <v-card elevation="4" class="w-11/12 rounded-lg pt-4"> 
                         <div class="w-100 flex items-center justify-between m-0 py-2">
                             <p class="text-sm py-0 my-0 ml-8 opacity-45">Total de Usuários: {{users.total}}</p>
                             <v-btn class="mr-8" rounded="lg" variant="text">

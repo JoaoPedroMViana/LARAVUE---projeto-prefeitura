@@ -4,6 +4,7 @@
     import FormProtocolo from "../Components/FormProtocolo.vue"
     import FormAnexos from "../Components/FormAnexos.vue"
     import ArquivosAnexos from "../Components/ArquivosAnexos.vue"
+    import FormAcompanhamentos from '../Components/FormAcompanhamentos.vue';
     import { ref } from 'vue';
     import { toast } from 'vue3-toastify';
     import 'vue3-toastify/dist/index.css';
@@ -32,6 +33,9 @@
             }
         }});
     }
+
+    // tab
+    let tab = ref('protocolo');
 </script>
 
 <template>
@@ -70,14 +74,32 @@
             </v-dialog>
          <v-app class="w-full mt-2">
             <div class="w-full flex flex-column justify-center items-center">
-                <v-card elevation="4" class="w-5/6 rounded-lg">
-                    <FormProtocolo :pessoas_select="pessoas_select" :departamentos_select="departamentos_select" :values='protocolo' route="/protocolo/update" method="put" text_button_submit="Salvar">
-                            <v-btn
-                            @click="dialog = true" rounded="md" color="#B71C1C" prepend-icon="mdi-delete-outline" variant="flat"
-                        >
-                            Excluir
-                        </v-btn>
-                    </FormProtocolo>
+                <v-card elevation="4" class="w-5/6 rounded-lg">   
+                    <v-tabs
+                        v-model="tab"
+                        class="m-2"
+                        color="#7CB342"
+                    >
+                        <v-tab value="protocolo">Protocolo</v-tab>
+                        <v-tab value="acompanhamentos">Acompanhamentos</v-tab>
+                    </v-tabs>
+
+                    <v-window v-model="tab">
+                        <v-window-item value="protocolo">
+                            <FormProtocolo :pessoas_select="pessoas_select" :departamentos_select="departamentos_select" :values='protocolo' route="/protocolo/update" method="put" text_button_submit="Salvar">
+                                    <v-btn
+                                    @click="dialog = true" rounded="md" color="#B71C1C" prepend-icon="mdi-delete-outline" variant="flat"
+                                >
+                                    Excluir
+                                </v-btn>
+                            </FormProtocolo>
+                        </v-window-item>
+
+                        <v-window-item value="acompanhamentos">
+                            <FormAcompanhamentos :protocolo_id="protocolo[0].numero"></FormAcompanhamentos>
+                        </v-window-item>
+                    </v-window>
+
                 </v-card>
                 <v-card elevation="4" class="w-5/6 rounded-lg mt-5 mb-6">
                         <FormAnexos :numero_protocolo="protocolo[0].numero"/>  

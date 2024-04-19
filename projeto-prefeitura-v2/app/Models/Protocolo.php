@@ -32,4 +32,8 @@ class Protocolo extends Model
     public function departamento() {
         return $this->belongsTo('App\Models\Departamento');
     }
+
+    public function acompanhamentos() {
+        return $this->hasMany('App\Models\Acompanhamento');
+    }
 }

@@ -162,7 +162,7 @@
 </script>
 
 <template>
-    <form action="post" @submit.prevent="submit" class="p-8">
+    <form @submit.prevent="submit" class="p-8">
         <v-container class="flex gap-8 justify-between">
                     
             <v-text-field
