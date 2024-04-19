@@ -89,6 +89,11 @@
                     <v-window v-model="tab" >
                         <v-window-item value="protocolo" class="flex flex-column items-center">
                              <v-card elevation="4" class="w-5/6 rounded-lg mt-2 mb-3">
+                                <v-btn rounded="lg" variant="text" color="grey">
+                                    <a :href="`/download/pdf/${protocolo[0].numero}`">
+                                        <v-icon icon="mdi-download-outline" class="mr-3"></v-icon> Baixar protocolo
+                                    </a>
+                                </v-btn>
                                 <FormProtocolo :pessoas_select="pessoas_select" :departamentos_select="departamentos_select" :values='protocolo' route="/protocolo/update" method="put" text_button_submit="Salvar">
                                         <v-btn
                                         @click="dialog = true" rounded="md" color="#B71C1C" prepend-icon="mdi-delete-outline" variant="flat"

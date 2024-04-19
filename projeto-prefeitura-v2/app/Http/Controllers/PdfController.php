@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Protocolo;
+use App\Models\Acompanhamento;
 use Barryvdh\DomPDF\Facade\Pdf;
 
 class PdfController extends Controller
@@ -11,13 +12,15 @@ class PdfController extends Controller
     public function downloadPdf() {
         $protocolos = Protocolo::with('pessoa')->get();
 
-        $pdf = Pdf::loadView('invoice', ['protocolos' => $protocolos]);
-        return $pdf->download('protocolos.pdf');
-        // return response()->streamDownload(
-        //     function () use ($pdf) {
-        //         echo $pdf->output();
-        //     },
-        //     'protocolos.pdf'
-        // );
+        $pdf = Pdf::loadView('pdfprotocolos', ['protocolos' => $protocolos]);
+        return $pdf->stream('protocolos.pdf');
+    }
+
+    public function downloadPdfIndividual($id) {
+        $protocolo = Protocolo::with('pessoa', 'departamento')->where([['numero', '=', $id]])->get()->first();
+        $acompanhamentos = Acompanhamento::where([['protocolo_id', '=', $protocolo->numero]])->get();
+
+        $pdf = Pdf::loadView('pdfprotocoloindiviadual', ['protocolo' => $protocolo, 'acompanhamentos' => $acompanhamentos]);
+        return $pdf->stream('protocolos.pdf');
     }
 }

@@ -94,7 +94,8 @@ Route::post('/acompanhamento/store', [AcompanhamentoController::class, 'store'])
 
 
 // Rotas download PDF -----------------------------------------
-Route::get('/download/pdf', [PdfController::class, 'downloadPdf'])->middleware(['auth'])->name('downloadPdf');
+Route::get('/download/pdf/', [PdfController::class, 'downloadPdf'])->middleware(['auth'])->name('downloadPdf');
+Route::get('/download/pdf/{id}', [PdfController::class, 'downloadPdfIndividual'])->middleware(['auth'])->name('downloadPdfIndividual');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
