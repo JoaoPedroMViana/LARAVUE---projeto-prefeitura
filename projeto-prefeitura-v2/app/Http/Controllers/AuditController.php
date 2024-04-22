@@ -13,10 +13,20 @@ class AuditController extends Controller
 {
     public function index() {
         if(Gate::allows('isAtendente')) return redirect()->back();
+
         $itens_por_pag = 5;
         if(request('itens_pag')) $itens_por_pag = request('itens_pag');
         return Inertia::render('Auditoria', [
-            'audit' => Audit::with('user')->paginate($itens_por_pag)
+            'audits' => Audit::with('user')->paginate($itens_por_pag)
+        ]);
+    }
+
+    public function individual($id) {
+        if(Gate::allows('isAtendente')) return redirect()->back();
+
+        $audit = Audit::with('user')->where([['id', '=', $id]])->get()->first();
+        return Inertia::render('AuditoriaIndividual', [
+            'audit' => $audit,
         ]);
     }
 }

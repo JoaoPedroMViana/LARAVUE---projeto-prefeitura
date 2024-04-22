@@ -21,6 +21,7 @@
             <Link v-else-if="pag == 'Editar Protocolo' || pag == 'Cadastrar Protocolos'" class="mr-2 text-lime-100" href="/protocolos">Protocolos > </Link>     
             <Link v-else-if="pag == 'Editar Usuário' || pag == 'Cadastrar Usuários'" class="mr-2 text-lime-100" href="/usuarios">Usuários > </Link>     
             <Link v-else-if="pag == 'Editar Departamento' || pag == 'Cadastrar Departamentos'" class="mr-2 text-lime-100" href="/departamentos">Departamentos > </Link> 
+            <Link v-else-if="pag == 'Visualizar Auditoria'" class="mr-2 text-lime-100" href="/auditorias">Auditorias > </Link> 
                 
             <h1 class="font-semibold text-lg text-white">{{ pag }}</h1>
             <button class="m-4 p-2 rounded-full transition-all hover:bg-lime-300" @click="eventSideBar"><v-icon icon="mdi-menu" size="large" color="white"></v-icon></button>
