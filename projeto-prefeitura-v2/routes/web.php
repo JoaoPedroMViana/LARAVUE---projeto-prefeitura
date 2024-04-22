@@ -12,6 +12,7 @@ use App\Http\Controllers\DepartamentosController;
 use App\Http\Controllers\AcompanhamentoController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\PdfController;
+use App\Http\Controllers\AuditController;
 
 Route::get('/', function () {
     return to_route('login');
@@ -101,6 +102,10 @@ Route::post('/acompanhamento/store', [AcompanhamentoController::class, 'store'])
 // Rotas download PDF -----------------------------------------
 Route::get('/download/pdf/', [PdfController::class, 'downloadPdf'])->middleware(['auth'])->name('downloadPdf');
 Route::get('/download/pdf/{id}', [PdfController::class, 'downloadPdfIndividual'])->middleware(['auth'])->name('downloadPdfIndividual');
+
+
+// Rotas auditorias -----------------------------------------
+Route::get('/auditorias', [AuditController::class, 'index'])->middleware(['auth'])->name('auditorias');
 
 
 Route::middleware('auth')->group(function () {

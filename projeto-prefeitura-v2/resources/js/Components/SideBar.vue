@@ -61,6 +61,9 @@
                 <button-link-vue v-if="page.props.auth.user.perfil != 'A'" :pag="pag" :selectedClass="selected('Departamentos')" nome="Departamentos" route="/departamentos">
                     <v-icon icon="mdi-domain" class="mr-2"></v-icon>Departamentos
                 </button-link-vue>
+                <button-link-vue v-if="page.props.auth.user.perfil != 'A'" :pag="pag" :selectedClass="selected('Auditorias')" nome="Auditorias" route="/auditorias">
+                    <v-icon icon="mdi-target-account" class="mr-2"></v-icon>Auditorias
+                </button-link-vue>
             </div>
             <Link as="button"
                 method="post"
