@@ -13,7 +13,7 @@ class PdfController extends Controller
         $protocolos = Protocolo::with('pessoa')->get();
 
         $pdf = Pdf::loadView('pdfprotocolos', ['protocolos' => $protocolos]);
-        return $pdf->stream('protocolos.pdf');
+        return $pdf->download('protocolos.pdf');
     }
 
     public function downloadPdfIndividual($id) {
@@ -21,6 +21,6 @@ class PdfController extends Controller
         $acompanhamentos = Acompanhamento::where([['protocolo_id', '=', $protocolo->numero]])->get();
 
         $pdf = Pdf::loadView('pdfprotocoloindiviadual', ['protocolo' => $protocolo, 'acompanhamentos' => $acompanhamentos]);
-        return $pdf->stream('protocolos.pdf');
+        return $pdf->download('protocolos.pdf');
     }
 }

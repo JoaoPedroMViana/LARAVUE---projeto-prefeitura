@@ -89,7 +89,7 @@
                     <v-window v-model="tab" >
                         <v-window-item value="protocolo" class="flex flex-column items-center">
                              <v-card elevation="4" class="w-5/6 rounded-lg mt-2 mb-3">
-                                <v-btn rounded="lg" variant="text" color="grey">
+                                <v-btn rounded="lg" variant="text" color="grey" class="m-3 mx-2">
                                     <a :href="`/download/pdf/${protocolo[0].numero}`">
                                         <v-icon icon="mdi-download-outline" class="mr-3"></v-icon> Baixar protocolo
                                     </a>

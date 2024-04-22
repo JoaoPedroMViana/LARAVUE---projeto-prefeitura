@@ -57,7 +57,7 @@
     @foreach($protocolos as $protocolo)
     <div>
         <br><br>
-        <h2>Protocolo número {{$protocolo->numero}}:</h2>
+        <h2>Protocolo n° {{$protocolo->numero}}:</h2>
         <h4>Constribuinte: {{$protocolo->pessoa->nome}}</h4>
         <h3>Descrição: </h3>
         <p>{{ $protocolo->descricao }}</p>
@@ -73,5 +73,9 @@
         <hr>
     </div>
     @endforeach
+
+    @if (count($protocolos) == 0)
+            <p>Não há protocolos no sistema.</p>  
+    @endif
 </body>
 </html>

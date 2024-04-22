@@ -92,15 +92,25 @@
         </p>
         <p>Prazo: {{$protocolo->prazo}}</p>
         <br><br>
-        <h2>Acompanhemantos:</h2>
+        <h2>Acompanhamentos:</h2>
         @foreach($acompanhamentos as $acompanhamento)
         <div class="acompanhamentos">
             <p>Descrição: <br><br>{{$acompanhamento->descricao}}</p>
             <br>
-            <p>Data: {{$acompanhamento->data}}</p>
+            <p> Data: 
+            <?php
+                    $dataString = $acompanhamento->data;
+                    list($ano, $mes, $dia) = explode('-', $dataString);
+                    $formatada = "$dia/$mes/$ano";
+                    echo $formatada;  
+            ?>
+        </p>
         </div>
         <hr>
         @endforeach
+        @if (count($acompanhamentos) == 0)
+            <p>O protocolo não possui acompanhamentos.</p>  
+        @endif
     </div>
 
 </body>
