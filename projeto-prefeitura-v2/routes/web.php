@@ -17,6 +17,7 @@ Route::get('/', function () {
     return to_route('login');
 });
 
+
 // Rotas para pessoas -----------------------------------------
 Route::get('/pessoas', [PessoaController::class, 'index'])->middleware(['auth', 'verified'])->name('pessoas');
 
@@ -56,6 +57,7 @@ Route::delete('/anexo/delete/{id}', [ProtocoloController::class, 'deleteAnexo'])
 
 Route::get('/anexo/download/{path}', [ProtocoloController::class, 'downloadAnexo'])->middleware(['auth'])->name('anexo.download');
 
+
 // Rotas para usuários -----------------------------------------
 Route::get('/usuarios', [RegisteredUserController::class, 'index'])->middleware(['auth'])->name('usuarios');
 
@@ -73,6 +75,7 @@ Route::post('/user/ativar/{id}', [RegisteredUserController::class, 'ativar'])->m
 
 Route::put('/user/mudar_senha', [RegisteredUserController::class, 'mudar_senha'])->middleware([HandlePrecognitiveRequests::class])->middleware(['auth'])->name('user.mudar.senha');
 
+
 // Rotas departamentos -----------------------------------------
 Route::get('/departamentos', [DepartamentosController::class, 'index'])->middleware(['auth'])->name('departamentos');
 
@@ -84,10 +87,12 @@ Route::get('/departamento/{id}', [DepartamentosController::class, 'edit'])->midd
 
 Route::put('/departamento/update', [DepartamentosController::class, 'update'])->middleware([HandlePrecognitiveRequests::class])->middleware(['auth'])->name('departamento.update');
 
+
 // Rotas permissões -----------------------------------------
 Route::post('/permissoes/liberar', [DepartamentosController::class, 'liberarPermissao'])->middleware(['auth'])->name('permissoes.liberar');
 
 Route::delete('/permissoes/remover/{id}', [DepartamentosController::class, 'removerPermissao'])->middleware(['auth'])->name('permissoes.remover');
+
 
 // Rotas acompanhamentos -----------------------------------------
 Route::post('/acompanhamento/store', [AcompanhamentoController::class, 'store'])->middleware([HandlePrecognitiveRequests::class])->middleware(['auth'])->name('acompanhamento.store');
@@ -96,6 +101,7 @@ Route::post('/acompanhamento/store', [AcompanhamentoController::class, 'store'])
 // Rotas download PDF -----------------------------------------
 Route::get('/download/pdf/', [PdfController::class, 'downloadPdf'])->middleware(['auth'])->name('downloadPdf');
 Route::get('/download/pdf/{id}', [PdfController::class, 'downloadPdfIndividual'])->middleware(['auth'])->name('downloadPdfIndividual');
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
