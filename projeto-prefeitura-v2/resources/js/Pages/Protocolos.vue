@@ -147,7 +147,6 @@
     // mudar autofocus
     let inputFocus = ref(props.focus)
 
-
      // Date picker
     const isMenuOpen = ref(false)
     let selectedDate = ref()

@@ -29,4 +29,43 @@ class AuditController extends Controller
             'audit' => $audit,
         ]);
     }
+
+    public function show() {
+
+        $queryUsuario = '';
+        $queryEvent = '';
+        $queryTabela = '';
+        $queryData = '';
+
+        if(request('usuario') != 'null' && request('usuario') != 'undefined') $queryUsuario = request('usuario');
+        if(request('evento') != 'null' && request('evento') != 'undefined') $queryEvent = request('evento');
+        if(request('tabela') != 'null' && request('tabela') != 'undefined') $queryTabela = request('tabela');
+        if(request('data') != 'null' && request('data') != 'undefined') $queryData = request('data');
+
+        $itens_por_pag = 5;
+        if(request('itens_pag')) $itens_por_pag = request('itens_pag');
+
+        $auditPesquisadas = Audit::with('user')
+        ->whereHas('user', function($query) use($queryUsuario) {
+            $query->where('name', 'like', '%'.$queryUsuario.'%');
+        })
+        ->where([['event', 'like', '%'.$queryEvent.'%']])
+        ->where([['auditable_type', 'like', '%'.$queryTabela.'%']])
+        ->when($queryData, function($query) use ($queryData) {
+            return $query->whereDate('created_at', $queryData);
+        })
+        ->paginate($itens_por_pag);
+
+        if(request('tabela') == 'null') $queryTabela = null;
+        if(request('evento') == 'null') $queryEvent = null;
+
+        return Inertia::render('Auditoria', [
+            'searchUsuario' => $queryUsuario,
+            'searchEvent' => $queryEvent,
+            'searchTabela' => $queryTabela,
+            'searchData' => $queryData,
+            'audits' => $auditPesquisadas,
+            'inputFocus' => request('inputFocus')
+        ]);
+    }
 }

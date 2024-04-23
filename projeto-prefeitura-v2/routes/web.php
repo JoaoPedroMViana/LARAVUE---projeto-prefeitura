@@ -107,6 +107,7 @@ Route::get('/download/pdf/{id}', [PdfController::class, 'downloadPdfIndividual']
 // Rotas auditorias -----------------------------------------
 Route::get('/auditorias', [AuditController::class, 'index'])->middleware(['auth'])->name('auditorias');
 Route::get('/auditoria/{id}', [AuditController::class, 'individual'])->middleware(['auth'])->name('auditoria.individual');
+Route::get('/auditorias/pesquisar', [AuditController::class, 'show'])->middleware(['auth'])->name('auditorias.pesquisar');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

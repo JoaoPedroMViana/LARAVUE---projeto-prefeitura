@@ -11,11 +11,16 @@ import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 import '@mdi/font/css/materialdesignicons.css'
 import { md1 } from 'vuetify/blueprints'
+import { pt } from 'vuetify/locale'
 
 const vuetify = createVuetify({
     components,
     directives,
     blueprint: md1,
+    locale: {
+        locale: 'pt',
+        messages: { pt }
+    }
   })  
 
 createInertiaApp({
