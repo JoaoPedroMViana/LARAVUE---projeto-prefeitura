@@ -49,7 +49,9 @@
 
 <template>
     <div>
-        <Head title="Usuários"/>
+        <Head title="Usuários">
+            <link rel="icon" type="image/x-icon" href="/logo.ico" />
+        </Head>
         <main-layout paginaAtual="Usuarios" class="w-full">
             <v-app class="w-full my-3">
                 <div class="w-full flex justify-center">

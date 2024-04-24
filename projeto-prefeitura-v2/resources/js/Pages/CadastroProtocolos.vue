@@ -13,7 +13,9 @@
 </script>
 
 <template>
-    <section><Head title="Cadastrar Protocolos" />
+    <section><Head title="Cadastrar Protocolos">
+        <link rel="icon" type="image/x-icon" href="/logo.ico" />
+    </Head>
         <main-layout paginaAtual="Cadastrar Protocolos" class="w-full">
             <v-app class="w-full mt-2"> 
                 <div class="w-full flex justify-center">

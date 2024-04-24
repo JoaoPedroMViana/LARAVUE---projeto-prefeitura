@@ -46,7 +46,9 @@
 
 <template>
     <main-layout paginaAtual="Editar Departamento" class="w-full">
-        <Head title="Editar Departamento"/>
+        <Head title="Editar Departamento">
+            <link rel="icon" type="image/x-icon" href="/logo.ico" />
+        </Head>
         <v-app class="w-full mt-4">
             <div class="w-full flex flex-column justify-center items-center gap-6">
                 <v-card elevation="4" class="w-5/6 rounded-lg">

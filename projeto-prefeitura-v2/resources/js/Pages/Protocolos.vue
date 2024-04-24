@@ -182,7 +182,9 @@
 
 <template>
     <div>
-        <Head title="Protocolos" />
+        <Head title="Protocolos">
+            <link rel="icon" type="image/x-icon" href="/logo.ico" />
+        </Head>
         <main-layout paginaAtual="Protocolos" class="w-full">
             <v-dialog
             v-model="dialog"

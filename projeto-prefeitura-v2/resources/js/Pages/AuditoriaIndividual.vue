@@ -1,5 +1,6 @@
 <script setup>
     import MainLayout from '../Layouts/MainLayout.vue'
+    import { Head } from '@inertiajs/vue3';
 
     const props = defineProps({
         audit: Object
@@ -18,6 +19,9 @@
 
 <template>
     <main-layout paginaAtual="Visualizar Auditoria" class="w-full">
+        <Head title="Visualizar auditoria">
+            <link rel="icon" type="image/x-icon" href="/logo.ico" />
+        </Head> 
         <v-app class="w-full my-2">
                 <div class="w-full flex justify-center">
                     <v-card elevation="4" class="w-11/12 rounded-lg">

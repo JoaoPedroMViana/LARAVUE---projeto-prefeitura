@@ -48,7 +48,9 @@
 
 <template>
     <main-layout paginaAtual="Editar Usuário" class="w-full">
-        <Head title="Editar Usuário"/>
+        <Head title="Editar Usuário">
+            <link rel="icon" type="image/x-icon" href="/logo.ico" />
+        </Head>
         <v-dialog
             v-model="dialog"
             transition="dialog-top-transition"

@@ -6,7 +6,9 @@
 
 <template> 
     <main-layout paginaAtual="Cadastrar Usuários">
-        <Head title="Cadastrar usuário"/>
+        <Head title="Cadastrar usuário">
+            <link rel="icon" type="image/x-icon" href="/logo.ico" />
+        </Head>
         <v-app class="w-full mt-2 mb-2"> 
                 <div class="w-full flex justify-center">
                     <v-card elevation="4" class="w-5/6 rounded-lg">

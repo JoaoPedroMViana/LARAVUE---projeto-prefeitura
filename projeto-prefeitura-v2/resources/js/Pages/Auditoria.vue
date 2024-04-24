@@ -145,7 +145,9 @@
 
 <template>
     <main-layout paginaAtual="Auditorias" class="w-full">
-        <Head title="Auditorias"/>    
+        <Head title="Auditorias">
+            <link rel="icon" type="image/x-icon" href="/logo.ico" />
+        </Head>    
        <v-app class="w-full my-3">
             <div class="w-full flex justify-center">
                 <v-card elevation="4" class="w-11/12 rounded-lg  pt-4">

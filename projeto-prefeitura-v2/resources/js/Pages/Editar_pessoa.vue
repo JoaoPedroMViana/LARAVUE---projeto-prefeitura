@@ -32,7 +32,9 @@
  
 <template>
     <main-layout paginaAtual="Editar Pessoa" class="w-full">
-        <Head title="Editar pessoa"/>
+        <Head title="Editar pessoa">
+            <link rel="icon" type="image/x-icon" href="/logo.ico" />
+        </Head>
         <v-dialog
             v-model="dialog"
             transition="dialog-top-transition"

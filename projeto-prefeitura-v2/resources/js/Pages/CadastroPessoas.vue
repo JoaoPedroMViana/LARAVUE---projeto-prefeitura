@@ -9,7 +9,9 @@
 
 <template>
     <section>
-        <Head title="Cadastrar Pessoas" />
+        <Head title="Cadastrar Pessoas">
+            <link rel="icon" type="image/x-icon" href="/logo.ico" />
+        </Head>
         <main-layout paginaAtual="Cadastrar Pessoas" class="w-full">
             <v-app class="w-full mt-4">
                 <div class="w-full flex justify-center">

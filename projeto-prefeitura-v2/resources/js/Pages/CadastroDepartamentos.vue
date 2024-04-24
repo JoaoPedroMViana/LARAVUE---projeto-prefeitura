@@ -43,7 +43,9 @@
 
 <template>
     <section>
-        <Head title="Cadastrar Departamentos" />
+        <Head title="Cadastrar Departamentos" >
+            <link rel="icon" type="image/x-icon" href="/logo.ico" />
+        </Head>
         <main-layout paginaAtual="Cadastrar Departamentos" class="w-full">
             <v-app class="w-full mt-4">
                 <div class="w-full flex justify-center">
