@@ -159,11 +159,18 @@ class ProtocoloController extends Controller
         $protocolo = Protocolo::with('pessoa', 'departamento')->where([['numero', $numero]])->get();
         $anexados = Arq_anexado::where([['protocolo_id', $numero]])->get();
         $acompanhamentos = Acompanhamento::where([['protocolo_id', $numero]])->orderBy('data', 'desc')->get();
+
+        $today = date('Y-m-d'); // data atual
+        $minYear = intval(date('Y')) - 16; // ano min para 16 anos
+        $minDate = strval($minYear).'-'. date('m-d'); // data min = ano min + dia e mes atuais
+
+        $pessoas_select = Pessoa::select('id', 'nome')->whereDate('data_nascimento', '<=', $minDate)->get();
+
         return Inertia::render('Editar_protocolo', [
             'protocolo' => $protocolo,
             'anexados' => $anexados,
             'acompanhamentos' => $acompanhamentos,
-            'pessoas_select' => Pessoa::select('id', 'nome')->get(),
+            'pessoas_select' => $pessoas_select,
             'departamentos_select' => $departamentos_select,
         ]);
     }

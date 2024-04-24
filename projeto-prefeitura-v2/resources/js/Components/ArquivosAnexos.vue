@@ -41,6 +41,11 @@
     let dialog = ref(false);
 
     let anexo_vizu = '';
+
+    const pdfOrPhoto = (path) => {
+        if(path.endsWith('.pdf')) return 'w-full h-full overscroll-x-none p-2'
+        else return 'h-full overscroll-x-none p-8'
+    }// verifica se é um pdf ou outro tipo de arquivo, para ajustar o embed
 </script>
 
 <template>
@@ -82,10 +87,11 @@
                     </v-container>
                     </template>
                     <div class="flex items-center justify-center h-full w-full absolute">
-                        <embed :src="anexo_vizu" class="w-full h-full overscroll-x-none p-2">
+                        <embed :src="anexo_vizu" :class="pdfOrPhoto(anexo_vizu)">
                     </div>
                 </v-card>
             </v-dialog>
+            
             <v-dialog
             v-model="dialog_deletar"
             transition="dialog-top-transition"
