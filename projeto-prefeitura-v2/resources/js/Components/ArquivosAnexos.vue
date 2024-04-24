@@ -14,8 +14,8 @@
     // deletar arquivo
     const anexo_deletado = ref('');
 
-    watch(anexo_deletado, () => {
-        router.delete(`/anexo/delete/${anexo_deletado.value}`, {onSuccess: () => {
+    const deletar_anexo = (id) => {
+        router.delete(`/anexo/delete/${id}`, {onSuccess: () => {
             if(page.props.flash){
                 toast(`${page.props.flash}`, {
                     "autoClose": 2500,
@@ -33,16 +33,11 @@
                 });// Mensagem de erro
             }
         }});
-    });
+    };
 
-    // download file
-    const anexo_download = ref('');
+    let dialog_deletar = ref(false);
 
-    // watch(anexo_download, () => {
-    //     router.get(`/anexo/download/${anexo_download.value.replace("/storage/","")}`);
-    // });
-
-    // dialog
+    // dialog visualizar arq
     let dialog = ref(false);
 
     let anexo_vizu = '';
@@ -56,7 +51,7 @@
             <div v-for="anexo in anexados" :key="anexo.id">
                 <v-card elevation="4" class="m-4 my-6 overscroll-x">
                     <div class="flex justify-between">
-                        <v-btn class="m-2" rounded variant="plain" size="lg" color="grey"><v-icon class="m-3 hover:bg-lime" icon="mdi-delete" @click="anexo_deletado = anexo.id"></v-icon></v-btn>
+                        <v-btn class="m-2" rounded variant="plain" size="lg" color="grey"><v-icon class="m-3 hover:bg-lime" icon="mdi-delete" @click="anexo_deletado = anexo.id; dialog_deletar = true"></v-icon></v-btn>
                         <v-btn class="m-2" rounded variant="plain" size="lg" color="grey">
                             <a :href="`/anexo/download/${anexo.path.replace('/storage/','')}`">
                                 <v-icon class="m-3 hover:bg-lime" icon="mdi-download"></v-icon>
@@ -89,6 +84,36 @@
                     <div class="flex items-center justify-center h-full w-full absolute">
                         <embed :src="anexo_vizu" class="w-full h-full overscroll-x-none p-2">
                     </div>
+                </v-card>
+            </v-dialog>
+            <v-dialog
+            v-model="dialog_deletar"
+            transition="dialog-top-transition"
+            class="w-50"
+            >   
+                <v-card
+                    rounded="lg"
+                >   
+                    <v-card-title class="pt-6">
+                        <p class="text-2xl p-2 pb-0"><v-icon icon="mdi-delete-circle"></v-icon> Deletar anexo</p>    
+                    </v-card-title>
+                    <v-card-text class="pl-8 pt-2">Deseja excluir este arquivo?</v-card-text>
+                    <template v-slot:actions>
+                    <v-container class="flex justify-end gap-4">
+                        <v-btn
+                            class="px-5" size="large" rounded="lg" color="#B71C1C" variant="flat"
+                            @click="deletar_anexo(anexo_deletado); dialog_deletar = false"
+                        >
+                            Deletar
+                        </v-btn>
+                        <v-btn
+                            class="px-5" size="large" rounded="lg" variant="tonal"
+                            @click="dialog_deletar = false;"
+                        >
+                            Fechar
+                        </v-btn>
+                    </v-container>
+                    </template>
                 </v-card>
             </v-dialog>
         </div>
