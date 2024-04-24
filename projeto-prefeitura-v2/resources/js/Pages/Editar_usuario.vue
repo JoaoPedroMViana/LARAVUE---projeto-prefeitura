@@ -10,7 +10,8 @@
     const page = usePage()
 
     const props = defineProps({
-        user: Object
+        user: Object,
+        canEdit: Boolean
     })
 
     // Modal desativar/ativar
@@ -88,20 +89,20 @@
         <v-app class="w-full mt-4">
             <div class="w-full flex flex-column justify-center items-center">
                 <v-card elevation="4" class="w-5/6 rounded-lg">
-                    <FormUsuarios :ativo="user.ativo" :values='user' route="/user/update" method="put" text_button_submit="Salvar">
+                    <FormUsuarios :canEdit="canEdit" :ativo="user.ativo" :values='user' route="/user/update" method="put" text_button_submit="Salvar">
                              <v-btn
-                                v-if="user.ativo == 'S'" @click="dialog = true" rounded="md" color="#B71C1C" prepend-icon="mdi-account-off" variant="flat"
+                                v-if="user.ativo == 'S' && canEdit" @click="dialog = true" rounded="md" color="#B71C1C" prepend-icon="mdi-account-off" variant="flat"
                             > 
                                 Desativar
                             </v-btn>
                              <v-btn
-                                v-if="user.ativo == 'N'" @click="dialog = true" rounded="md" prepend-icon="mdi-account-check" variant="flat"
+                                v-if="user.ativo == 'N' && canEdit" @click="dialog = true" rounded="md" prepend-icon="mdi-account-check" variant="flat"
                             > 
                                 Ativar
                             </v-btn>
                         </FormUsuarios>
                 </v-card>
-                <v-card elevation="4" class="w-5/6 rounded-lg mt-4">
+                <v-card v-if="canEdit" elevation="4" class="w-5/6 rounded-lg mt-4">
                     <MudarSenha :user_id="user.id" :user_ativo="user.ativo"/>
                 </v-card>
             </div>

@@ -13,6 +13,7 @@
         method: String,
         route: String,
         text_button_submit: String,
+        canEdit: Boolean
     });
 
     //  Definindo conteúdo 
@@ -102,10 +103,18 @@
         }
     })
 
+    const showPerfil = (perfil) => {
+        if(perfil == 'T') return 'Administrador da TI'
+        else if(perfil == 'S') return 'Administrador do sistema'
+        else return 'Atendente'
+    }
+
     let userPerfil = ref(form.perfil);
+    if(props.method == 'put'){
+        userPerfil.value = showPerfil(form.perfil);
+    }
     watch(userPerfil, () => {
         form.perfil = userPerfil.value
-        console.log(form.perfil)
     });
 
     let items = []
@@ -135,12 +144,12 @@
                 variant="outlined"
                 rounded="md"
                 v-model="form.name"
-                :readonly="ativo == 'N'"
+                :readonly="ativo == 'N' || !canEdit && method == 'put'"
                 :counter="255"
                 label="Nome"
                 required
                 maxlength="255"
-                :clearable="ativo == 'S'"
+                :clearable="ativo == 'S' && canEdit"
                 type="input"
                 base-color="#7CB342"
                 color="#7CB342"
@@ -193,7 +202,7 @@
                 <v-select
                 id="perfil"
                 v-model="userPerfil"
-                :readonly="ativo == 'N'"
+                :readonly="ativo == 'N' || !canEdit && method == 'put'"
                 label="Perfil"
                 variant="outlined"
                 rounded="md"
@@ -233,7 +242,7 @@
  
         <v-container class="flex gap-6 py-0 items-center">
             <v-btn
-            rounded="md" color="#7CB342" prepend-icon="mdi-content-save-edit-outline" variant="flat" :disabled="!form.isDirty || form.processing || form.hasErrors || ativo == 'N'" type="submit"
+            v-if="canEdit || method == 'post'" rounded="md" color="#7CB342" prepend-icon="mdi-content-save-edit-outline" variant="flat" :disabled="!form.isDirty || form.processing || form.hasErrors || ativo == 'N'" type="submit"
             >
                     {{text_button_submit}}
                     <v-icon v-if="form.processing" icon="mdi-loading" class="animate-spin h-5 w-5 mr-3"></v-icon>

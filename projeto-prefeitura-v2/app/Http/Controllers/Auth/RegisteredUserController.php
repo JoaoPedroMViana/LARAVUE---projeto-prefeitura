@@ -68,14 +68,22 @@ class RegisteredUserController extends Controller
     {
         if(Gate::allows('isAtendente')) return redirect()->back();
         $user = User::findOrFail($id);
+        $canEdit = true;
+        if(Auth::user()->perfil == 'S' && $user->perfil != 'A'){
+            $canEdit = false;
+        }
         return Inertia::render('Editar_usuario', [
             'user' => $user,
+            'canEdit' => $canEdit
         ]);
     }
 
     public function update(UserRequest $request)
     {
         if(Gate::allows('isAtendente')) return redirect()->back();
+        if(Auth::user()->perfil == 'S' && $request->perfil != 'A'){
+            return redirect()->back()->with('message_error', 'Apenas Administradores da TI podem editar para este tipo de usuário');
+        }
         $user = User::findOrFail($request->id);
         $user->update([
             'name'=> $request->name,

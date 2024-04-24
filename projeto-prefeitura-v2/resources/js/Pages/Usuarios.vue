@@ -39,6 +39,12 @@
         else return 'Atendente'
         
     };
+
+    // Cor do ativo
+    const corAtivo = (ativo) => {
+        if(ativo == 'S') return 'green'
+        else return 'red'
+    }
 </script>
 
 <template>
@@ -71,7 +77,7 @@
                                     <td>{{user.name}}</td>
                                     <td>{{user.email}}</td>
                                     <td>{{perfil(user.perfil)}}</td>
-                                    <td>{{user.ativo}}</td>
+                                    <td>{{user.ativo}} <v-icon size="sm" :color="corAtivo(user.ativo)" icon="mdi-circle"></v-icon></td>
                                     <td class="text-center">
                                         <v-btn class="mr-6 h-75" rounded="lg" color="#7CB342" prepend-icon="mdi-eye-outline" variant="flat" @click.once="editar(user.id)">
                                             Visualizar 
