@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use App\Models\Pessoa;
 use Illuminate\Validation\Rule;
+use App\Rules\CpfValido;
 
 class PessoaRequest extends FormRequest
 {
@@ -25,7 +26,7 @@ class PessoaRequest extends FormRequest
     {
         return [
             'nome' => ['required', 'string', 'max:255', 'min:8'],
-            'CPF' => ['required', 'string', 'max:14', 'min:14', Rule::unique(Pessoa::class)->ignore($this->id)],
+            'CPF' => ['required', 'string', 'max:14', 'min:14', Rule::unique(Pessoa::class)->ignore($this->id), new CpfValido],
             'data_nascimento' => ['required'],
             'sexo' => ['required']
         ];

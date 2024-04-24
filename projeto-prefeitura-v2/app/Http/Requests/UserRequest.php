@@ -6,6 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules;
 use Illuminate\Validation\Rule;
 use App\Models\User;
+use App\Rules\CpfValido;
 
 class UserRequest extends FormRequest
 {
@@ -28,7 +29,7 @@ class UserRequest extends FormRequest
             'name' => 'required|string|max:255', 
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique(User::class)->ignore($this->id)],
             'password' => ['required', Rules\Password::defaults()],
-            'cpf' => ['required', 'string', 'max:14', 'min:14', Rule::unique(User::class)->ignore($this->id)],
+            'cpf' => ['required', 'string', 'max:14', 'min:14', Rule::unique(User::class)->ignore($this->id), new CpfValido],
             'perfil' => 'required|max:1|min:1|'.Rule::in(['T', 'S', 'A']), 
         ];
     }
