@@ -159,23 +159,36 @@
 <template>
     <form enctype="multipart/form-data" @submit.prevent="submit" class="p-8 pb-4">
         <v-container class="py-0 flex flex-col gap-4">
-            <v-select
-            id="pessoa_id"
-            v-model="select"
-            variant="outlined"
-            rounded="md"
-            :items="items"
-            label="Contruibuinte"
-            required
-            @change="form.validate('pessoa_id')"
-            @input="form.validate('pessoa_id')"
-            @mouseout="form.validate('pessoa_id')"
-            :error-messages="form.errors.pessoa_id"
-            base-color="#7CB342"
-            color="#7CB342"
-            density="comfortable"
-            ></v-select>
-            
+            <div class="relative">
+                <p class="absolute transition-all top-3 right-8 z-30 opacity-50 hover:opacity-100 hover:cursor-pointer">
+                    <v-icon icon="mdi-information-outline"></v-icon>
+                    <v-tooltip
+                        activator="parent"
+                        location="bottom"
+                        max-width="200"
+                        class="opacity-90"
+                    >
+                        Apenas contribuintes com mais de 16 anos podem ter protocolos registrados
+                    </v-tooltip>
+                </p>
+                <v-select
+                id="pessoa_id"
+                v-model="select"
+                variant="outlined"
+                rounded="md"
+                :items="items"
+                label="Contruibuinte"
+                required
+                @change="form.validate('pessoa_id')"
+                @input="form.validate('pessoa_id')"
+                @mouseout="form.validate('pessoa_id')"
+                :error-messages="form.errors.pessoa_id"
+                base-color="#7CB342"
+                color="#7CB342"
+                density="comfortable"
+                ></v-select>
+                
+            </div>
              <v-select
             id="departamento_id"
             v-model="select_departamento"

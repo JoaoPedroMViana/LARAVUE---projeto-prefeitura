@@ -52,13 +52,22 @@ class ProtocoloController extends Controller
             $departamentos_select = Departamento::select('id', 'nome')->whereIn('id', $permitidos_id)->get();   
             // pega só os departamentos que o usuário tem permissão
         }
+
+        // apenas usuários maiores ou iguais a 16 anos
+        $today = date('Y-m-d'); // data atual
+        $minYear = intval(date('Y')) - 16; // ano min para 16 anos
+        $minDate = strval($minYear).'-'. date('m-d'); // data min = ano min + dia e mes atuais
+
+        $pessoas_select = Pessoa::select('id', 'nome')->whereDate('data_nascimento', '<=', $minDate)->get();
+
         return Inertia::render('CadastroProtocolos', [
-            'pessoas_select' => Pessoa::select('id', 'nome')->get(),
+            'pessoas_select' => $pessoas_select,
             'departamentos_select' => $departamentos_select
         ]);
     }
 
     function store(ProtocoloRequest $request) {
+
         $protocolo = Protocolo::create([
             'descricao' => $request->descricao,
             'data_registro' => $request->data_registro,
