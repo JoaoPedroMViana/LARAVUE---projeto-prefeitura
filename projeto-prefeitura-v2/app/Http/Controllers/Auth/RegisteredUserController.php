@@ -22,7 +22,7 @@ class RegisteredUserController extends Controller
     public function index() 
     {
         if(Gate::allows('isAtendente')) return redirect()->back();
-        $itens_por_pag = 5;
+        $itens_por_pag = 7;
         if(request('itens_pag')) $itens_por_pag = request('itens_pag');
         return Inertia::render('Usuarios', [
             'users' => User::paginate($itens_por_pag)

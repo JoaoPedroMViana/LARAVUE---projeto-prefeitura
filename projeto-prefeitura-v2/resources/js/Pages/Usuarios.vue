@@ -53,7 +53,7 @@
             <link rel="icon" type="image/x-icon" href="/logo.ico" />
         </Head>
         <main-layout paginaAtual="Usuarios" class="w-full">
-            <v-app class="w-full my-3">
+            <div class="w-full mt-5">
                 <div class="w-full flex justify-center">
                     <v-card elevation="4" class="w-11/12 rounded-lg pt-4"> 
                         <div class="w-100 flex items-center justify-between m-0 py-2">
@@ -96,7 +96,7 @@
                                     variant="outlined"
                                     rounded="md"
                                     density="comfortable"
-                                    :items="[users.total, '20', '10', '5']"
+                                    :items="[users.total, '20', '10', '7']"
                                     base-color="#7CB342"
                                     label="Itens por página"
                                     color="#7CB342"
@@ -115,7 +115,7 @@
                         </div>
                     </v-card> 
                 </div>
-            </v-app>
+            </div>
         </main-layout>
     </div>
 </template>

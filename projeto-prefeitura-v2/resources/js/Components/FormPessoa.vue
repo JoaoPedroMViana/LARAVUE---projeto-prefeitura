@@ -12,7 +12,6 @@
         method: String,
         route: String,
         text_button_submit: String,
-        clear: Boolean
     })
 
     //  Definindo conteúdo 
@@ -143,19 +142,6 @@
         if(props.method == 'post'){
                 form.submit()
         } 
-    })
-
-    // Reset form
-    let limparForm = computed(() => {
-        return props.clear
-    })
-
-    watch(limparForm, () => {
-        if(form.isDirty || form.processing){
-            form.reset()
-            formated = null
-            form.submit()
-        }
     })
 
     // são 3 formatos de data diferente: br(front), en(data base) e string(data picker)

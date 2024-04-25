@@ -12,7 +12,6 @@
         method: String,
         route: String,
         text_button_submit: String,
-        clear: Boolean,
         pessoas_select: Object,
         departamentos_select: Object
     })
@@ -121,20 +120,6 @@
     onMounted(() => {
         if(props.method == 'post'){
                 form.submit()
-        }
-    })
-
-    // Reset form
-    let limparForm = computed(() => {
-        return props.clear
-    })
-
-    watch(limparForm, () => {
-        if(form.isDirty || form.processing){
-            form.reset()
-            formated = formatarData(formatarDataBanco(new Date()))
-            select.value = null;
-            form.submit()
         }
     })
    

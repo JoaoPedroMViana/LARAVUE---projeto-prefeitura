@@ -183,10 +183,6 @@
 
     })
 
-    // botar o preserveScroll na páginação e no número por página
-    // fazer as mensagens de erro das pessoa
-    // tentar passar uma array por parametro
-
 </script>
 
 <template>
@@ -194,7 +190,7 @@
         <Head title="Pessoas">
             <link rel="icon" type="image/x-icon" href="/logo.ico" />
         </Head>
-        <main-layout paginaAtual="Pessoas" class="w-full" >
+        <main-layout paginaAtual="Pessoas" class="w-full h-fit" >
             <v-dialog
             v-model="dialog"
             transition="dialog-top-transition"
@@ -226,7 +222,7 @@
                     </template>
                 </v-card>
             </v-dialog>
-            <v-app class="w-full my-3">
+            <div class="w-full mt-3">
                 <div class="w-full flex justify-center">
                     <v-card elevation="4" class="w-11/12 rounded-lg"> 
                        <v-text-field
@@ -328,10 +324,10 @@
                                     <td>{{pessoa.sexo}}</td>
                                     <td>
                                         <v-btn class="mr-6 h-75" rounded="lg" color="#7CB342" prepend-icon="mdi-pencil" variant="flat" @click.once="editar(pessoa.id)">
-                                            Editar 
+                                            Visualizar
                                         </v-btn>
                                         <v-btn class="h-75" rounded="lg" color="#B71C1C" prepend-icon="mdi-delete-outline" variant="flat" @click="dialog = true; pessoa_excluir.id = pessoa.id; pessoa_excluir.nome = pessoa.nome">
-                                            Apagar  
+                                            Excluir  
                                         </v-btn>
                                     </td>
                                 </tr>
@@ -366,7 +362,7 @@
                         </div>
                     </v-card>
                 </div>
-            </v-app>
+            </div>
            
         </main-layout>
     </div>

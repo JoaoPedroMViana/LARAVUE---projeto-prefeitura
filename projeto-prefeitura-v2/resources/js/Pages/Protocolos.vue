@@ -217,7 +217,7 @@
                     </template>
                 </v-card>
             </v-dialog>
-            <v-app class="w-full my-2">
+            <div class="w-full mt-4">
                 <div class="w-full flex justify-center">
                     <v-card elevation="4" class="w-11/12 rounded-lg">
                      <div class="flex h-12 justify-between mx-8 gap-8">
@@ -328,10 +328,10 @@
                                     <td><v-icon :color="cor(protocolo.situacao).color" icon="mdi-circle"></v-icon> {{cor(protocolo.situacao).text}}</td>
                                     <td class="text-center">
                                         <v-btn class="mr-6 h-75" rounded="lg" color="#7CB342" prepend-icon="mdi-pencil" variant="flat" @click.once="editar(protocolo.numero)">
-                                            Editar 
+                                            Visualizar
                                         </v-btn>
                                         <v-btn class="h-75" rounded="lg" color="#B71C1C" prepend-icon="mdi-delete-outline" variant="flat" @click="dialog = true; protocolo_excluir.numero = protocolo.numero; protocolo_excluir.pessoa_nome = protocolo.pessoa.nome">
-                                            Apagar  
+                                            Excluir  
                                         </v-btn>
                                     </td>
                                 </tr>
@@ -364,7 +364,7 @@
                         </div>
                     </v-card>  
                 </div>    
-            </v-app>
+            </div>
         </main-layout>
     </div>
 </template>

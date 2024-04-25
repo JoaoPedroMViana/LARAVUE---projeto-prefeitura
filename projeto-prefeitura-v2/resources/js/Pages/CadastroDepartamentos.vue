@@ -47,7 +47,7 @@
             <link rel="icon" type="image/x-icon" href="/logo.ico" />
         </Head>
         <main-layout paginaAtual="Cadastrar Departamentos" class="w-full">
-            <v-app class="w-full mt-4">
+            <div class="w-full mt-4">
                 <div class="w-full flex justify-center">
                     <v-card elevation="4" class="w-5/6 rounded-lg">
                         <form action="post" @submit.prevent="submit" class="p-8">
@@ -81,7 +81,7 @@
                         </form>
                     </v-card>
                 </div>
-            </v-app>
+            </div>
         </main-layout>
     </section>
 </template>

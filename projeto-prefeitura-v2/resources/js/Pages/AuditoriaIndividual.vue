@@ -22,7 +22,7 @@
         <Head title="Visualizar auditoria">
             <link rel="icon" type="image/x-icon" href="/logo.ico" />
         </Head> 
-        <v-app class="w-full my-2">
+        <div class="w-full my-3">
                 <div class="w-full flex justify-center">
                     <v-card elevation="4" class="w-11/12 rounded-lg">
                         <div class="p-12 flex
@@ -57,6 +57,6 @@
                         </div>
                     </v-card>
                 </div>
-        </v-app>
+        </div>
     </main-layout>
 </template>

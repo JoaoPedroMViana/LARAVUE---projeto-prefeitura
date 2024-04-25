@@ -9,7 +9,6 @@
         departamentos_select: Object
     });
 
-    let limparForm = ref(false);
 </script>
 
 <template>
@@ -20,13 +19,7 @@
             <v-app class="w-full mt-2"> 
                 <div class="w-full flex justify-center">
                     <v-card elevation="4" class="w-5/6 rounded-lg">
-                        <FormProtocolo :pessoas_select="pessoas_select" :departamentos_select="departamentos_select" :clear="limparForm" :values='null' route="/protocolos/store" method="post" text_button_submit="Cadastrar">
-                             <v-btn
-                              rounded="md" prepend-icon="mdi-delete-outline" variant="flat"
-                              @click="limparForm = !limparForm"
-                            >
-                                Limpar formulário 
-                            </v-btn>
+                        <FormProtocolo :pessoas_select="pessoas_select" :departamentos_select="departamentos_select" :values='null' route="/protocolos/store" method="post" text_button_submit="Cadastrar">
                         </FormProtocolo>
                     </v-card>    
                 </div>

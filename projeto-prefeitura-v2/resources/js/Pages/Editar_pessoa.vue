@@ -66,7 +66,7 @@
                     </template>
                 </v-card>
             </v-dialog>
-        <v-app class="w-full mt-4">
+        <div class="w-full mt-4">
             <div class="w-full flex justify-center">
                 <v-card elevation="4" class="w-5/6 rounded-lg">
                     <FormPessoa :values='pessoa' route="/pessoa/update" method="put" text_button_submit="Salvar">
@@ -78,6 +78,6 @@
                         </FormPessoa>
                 </v-card>
             </div>
-        </v-app>
+        </div>
     </main-layout>
 </template>

@@ -229,6 +229,7 @@
                 label="Senha"
                 id="password"
                 counter
+                autocomplete="off"
                 base-color="#7CB342"
                 color="#7CB342"
                 required

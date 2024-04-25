@@ -26,11 +26,17 @@
         padding: 0;
         margin: 0;
         box-sizing: border-box;
+        
     }
-    [type='text']:focus {
+    [type='text']:focus, [type='password']:focus, [type='email']:focus{
         box-shadow: none;
         border: none;
         outline: none;
         /* por algum motivo os inputs tavam com um box-shadow azul no focus  que parecia um border */
+    }
+
+    ::selection {
+        color: white;
+        background-color: rgb(26, 185, 26);
     }
 </style>

@@ -42,7 +42,7 @@
 <template>
         <v-container class="flex flex-column items-center justify-center py-0 items-center mt-2 relative h-full">
             <h2 class="pt-2">Anexar documentos:</h2>
-            <form method="post" @click.prevent="submit" class="w-full p-5 relative">
+            <form method="post" @submit.prevent="submit" class="w-full p-5 relative">
                 <v-file-input
                     class="w-full"
                     id="files"

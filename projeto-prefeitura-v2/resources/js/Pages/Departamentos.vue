@@ -34,7 +34,7 @@
     <Head title="Departamentos">
         <link rel="icon" type="image/x-icon" href="/logo.ico" />
     </Head>
-        <v-app class="w-full my-3">
+        <div class="w-full mt-4">
             <div class="w-full flex justify-center">
                 <v-card elevation="4" class="w-11/12 rounded-lg  pt-4">
                     <div class="w-100 flex items-center justify-between m-0 py-2">
@@ -90,6 +90,6 @@
                     </div>
                 </v-card>
             </div>
-        </v-app>
+        </div>
     </main-layout>
 </template>

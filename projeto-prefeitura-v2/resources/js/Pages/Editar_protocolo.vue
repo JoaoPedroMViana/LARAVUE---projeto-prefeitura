@@ -42,9 +42,9 @@
 
 <template>
     <main-layout paginaAtual="Editar Protocolo" class="w-full">
-        <Head title="Editar Protocolo">
-            <link rel="icon" type="image/x-icon" href="/logo.ico" />
-        </Head>
+    <Head title="Editar Protocolo">
+        <link rel="icon" type="image/x-icon" href="/logo.ico" />
+    </Head>
         <v-dialog
             v-model="dialog"
             transition="dialog-top-transition"

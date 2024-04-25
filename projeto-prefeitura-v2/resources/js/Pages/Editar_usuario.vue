@@ -88,7 +88,7 @@
                    </template>
                 </v-card>
         </v-dialog>
-        <v-app class="w-full mt-4">
+        <div class="w-full mt-4">
             <div class="w-full flex flex-column justify-center items-center">
                 <v-card elevation="4" class="w-5/6 rounded-lg">
                     <FormUsuarios :canEdit="canEdit" :ativo="user.ativo" :values='user' route="/user/update" method="put" text_button_submit="Salvar">
@@ -108,6 +108,6 @@
                     <MudarSenha :user_id="user.id" :user_ativo="user.ativo"/>
                 </v-card>
             </div>
-        </v-app>
+        </div>
     </main-layout>
 </template>
