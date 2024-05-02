@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('arq_anexados', function (Blueprint $table) {
-            $table->foreignId('protocolo_id')->constrained('protocolos', 'numero');
+            $table->foreignId('protocolo_id')->constrained('protocolos', 'numero')->onDelete('cascade');
         });
     }
 

@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('departamento_id')->constrained('departamentos', 'id');
             $table->timestamps();
         });
-    }
+    } 
 
     /**
      * Reverse the migrations.
