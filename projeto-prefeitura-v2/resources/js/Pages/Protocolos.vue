@@ -177,7 +177,18 @@
         else return {color: 'green', text: 'Solucionado'} 
     }
 
-    // fazer as validações nas rotas gets para caso o usurio digite algo nelas
+    // Data limite
+
+    let dataLimite = ref('00/00/0000');
+
+    const FormatarDataLimite = (date, prazo) => {
+        const newDate = new Date(date);
+        newDate.setDate(newDate.getDate() + prazo);
+        const dataString = formatarDataBanco(newDate);
+        const [ano, mes, dia] = dataString.split('-');
+        let formatada = `${dia}/${mes}/${ano}`
+        return formatada;
+    }
 </script>
 
 <template>
@@ -313,6 +324,7 @@
                                     <th>Contruibuinte</th>
                                     <th>Departamento</th>
                                     <th>Data de registro</th>
+                                    <th>Data limite</th>
                                     <th>Prazo</th>
                                     <th>Situação</th>
                                     <th class="text-center">Acões</th>
@@ -324,6 +336,7 @@
                                     <td><Link class="hover:underline text-blue-500" :href="`/pessoas/pesquisar?nome=${protocolo.pessoa.nome}`">{{protocolo.pessoa.nome}}</Link></td> 
                                     <td>{{protocolo.departamento.nome}}</td>
                                     <td>{{formatarData(protocolo.data_registro)}}</td>
+                                    <td>{{FormatarDataLimite(protocolo.data_registro, protocolo.prazo)}}</td>
                                     <td>{{protocolo.prazo}}</td>
                                     <td><v-icon :color="cor(protocolo.situacao).color" icon="mdi-circle"></v-icon> {{cor(protocolo.situacao).text}}</td>
                                     <td class="text-center">
