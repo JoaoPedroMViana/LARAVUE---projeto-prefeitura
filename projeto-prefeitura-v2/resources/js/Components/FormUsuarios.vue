@@ -16,6 +16,14 @@
         canEdit: Boolean
     });
 
+    // Mascara cpf
+    const mascaraCpf = (cpf) => {
+        if(cpf == null) return '';
+        cpf = cpf.replace(/\D/g, '');
+        cpf = cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+        return cpf
+    }
+
     //  Definindo conteúdo 
     let data = {
         name: null,
@@ -39,6 +47,36 @@
     }
 
     const form = useForm(props.method, props.route, data);
+
+    // cpf
+    let showerCpf = ref(mascaraCpf(form.cpf));
+
+    // formatação do cpf
+    const formatarCpf = (event) => {
+        if(event.key == 'Backspace' || event.key == 'v' && event.ctrlKey == true){
+            // se for backspace faz nada
+        }else if(showerCpf.value != null && /^[\d]+$/.test(event.key) ){
+            // testa de a tecla clicada é um numero/-/.
+            if(showerCpf.value.length == 3 || showerCpf.value.length == 7){    
+            // add o ponto/traço dinamicamente
+                showerCpf.value += '.'
+            }else if(showerCpf.value.length == 11) {
+                showerCpf.value += '-';
+            }
+        }else if(showerCpf.value == null && (/^[\d]+$/.test(event.key))){
+            return;
+        }else{
+            // se for alguma letra não escreve
+            event.preventDefault()
+        }
+    }
+
+    watch(showerCpf, () => {
+        if(showerCpf.value == null) return '';
+        form.cpf = showerCpf.value;
+        form.cpf = form.cpf.replace(/\D/g, '');
+        console.log(form.cpf);
+    })
 
     const submit = () => {
         form.submit({onSuccess: () => {
@@ -69,26 +107,6 @@
     // nome só aceita letras
     const onlyLetras = (event) => {
         if(!/^[A-Za-zÀ-ú\s]+$/.test(event.key)){
-            event.preventDefault()
-        }
-    }
-
-    // formatação do cpf
-    const formatarCpf = (event) => {
-        if(event.key == 'Backspace'){
-            // se for backspace faz nada
-        }else if(form.cpf != null && /^[\d]+$/.test(event.key) ){
-            // testa de a tecla clicada é um numero/-/.
-            if(form.cpf.length == 3 || form.cpf.length == 7){    
-            // add o ponto/traço dinamicamente
-                form.cpf += '.'
-            }else if(form.cpf.length == 11) {
-                form.cpf += '-';
-            }
-        }else if(form.cpf == null && (/^[\d]+$/.test(event.key))){
-            return;
-        }else{
-            // se for alguma letra não escreve
             event.preventDefault()
         }
     }
@@ -182,7 +200,7 @@
                 <v-text-field
                 variant="outlined"
                 rounded="md"
-                v-model="form.cpf"
+                v-model="showerCpf"
                 :counter="14"
                 label="CPF"
                 required

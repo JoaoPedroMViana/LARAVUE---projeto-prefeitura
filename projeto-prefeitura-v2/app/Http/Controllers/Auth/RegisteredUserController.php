@@ -50,12 +50,14 @@ class RegisteredUserController extends Controller
         if(Auth::user()->perfil == 'S' && $request->perfil != 'A'){
             return redirect()->back()->with('message_error', 'Apenas Administradores da TI podem criar este tipo de usuário');
         }else{
+            $cpf = preg_replace('/[^0-9]/', '', (string) $request->cpf);
+
             User::create([
                 'name' => $request->name,
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
                 'perfil' => $request->perfil,
-                'cpf' => $request->cpf,
+                'cpf' => $cpf,
                 'ativo' => $request->ativo
             ]);
     

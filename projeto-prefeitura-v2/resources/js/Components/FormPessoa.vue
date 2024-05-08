@@ -14,6 +14,14 @@
         text_button_submit: String,
     })
 
+    // Mascara cpf
+    const mascaraCpf = (cpf) => {
+        if(cpf == null) return '';
+        cpf = cpf.replace(/\D/g, '');
+        cpf = cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+        return cpf
+    }
+
     //  Definindo conteúdo 
     let data = {
         nome: null,
@@ -41,7 +49,6 @@
             complemento: props.values.complemento
         }
     }
-
 
     // Date picker
     const isMenuOpen = ref(false)
@@ -92,19 +99,24 @@
         }
     }
 
+    const form = useForm(props.method, props.route, data);
+
+    // cpf
+    let showerCpf = ref(mascaraCpf(form.CPF));
+
     // formatação do cpf
     const formatarCpf = (event) => {
-        if(event.key == 'Backspace'){
+        if(event.key == 'Backspace' || event.key == 'v' && event.ctrlKey == true){
             // se for backspace faz nada
-        }else if(form.CPF != null && /^[\d]+$/.test(event.key) ){
+        }else if(showerCpf.value != null && /^[\d]+$/.test(event.key) ){
             // testa de a tecla clicada é um numero/-/.
-            if(form.CPF.length == 3 || form.CPF.length == 7){    
+            if(showerCpf.value.length == 3 || showerCpf.value.length == 7){    
             // add o ponto/traço dinamicamente
-                form.CPF += '.'
-            }else if(form.CPF.length == 11) {
-                form.CPF += '-';
+                showerCpf.value += '.'
+            }else if(showerCpf.value.length == 11) {
+                showerCpf.value += '-';
             }
-        }else if(form.CPF == null && (/^[\d]+$/.test(event.key))){
+        }else if(showerCpf.value == null && (/^[\d]+$/.test(event.key))){
             return;
         }else{
             // se for alguma letra não escreve
@@ -112,9 +124,15 @@
         }
     }
 
-    const form = useForm(props.method, props.route, data);
+    watch(showerCpf, () => {
+        if(showerCpf.value == null) return '';
+        form.CPF = showerCpf.value;
+        form.CPF = form.CPF.replace(/\D/g, '');
+        console.log(form.CPF);
+    })
 
     const submit = () => {
+
         form.submit({onSuccess: () => {
             if(page.props.flash){
                 toast(`${page.props.flash}`, {
@@ -175,7 +193,7 @@
             class="max-w-md"
             variant="outlined"
             rounded="md"
-            v-model="form.CPF"
+            v-model="showerCpf"
             :counter="14"
             label="CPF"
             required

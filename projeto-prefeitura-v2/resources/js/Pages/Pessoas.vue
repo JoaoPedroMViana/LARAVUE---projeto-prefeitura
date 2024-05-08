@@ -140,7 +140,7 @@
 
     // formatação do cpf
     const formatarCpf = (event) => {
-        if(event.key == 'Backspace'){
+        if(event.key == 'Backspace' || event.key == 'v' && event.ctrlKey == true){
             // se for backspace faz nada
         }else if(searchCpf.value != null && /^[\d]+$/.test(event.key) ){
             // testa de a tecla clicada é um numero/-/.
@@ -182,6 +182,14 @@
         }
 
     })
+
+    // Mascara cpf
+
+    const mascaraCpf = (cpf) => {
+        cpf = cpf.replace(/\D/g, '');
+        cpf = cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+        return cpf
+    }
 
 </script>
 
@@ -319,7 +327,7 @@
                                 <tr v-for="pessoa in pessoas.data" :key="pessoa.id">
                                     <td>{{pessoa.id}}</td>
                                     <td>{{pessoa.nome}}</td>
-                                    <td>{{pessoa.CPF}}</td>
+                                    <td>{{mascaraCpf(pessoa.CPF)}}</td>
                                     <td>{{formatarData(pessoa.data_nascimento)}}</td>
                                     <td>{{pessoa.sexo}}</td>
                                     <td>

@@ -26,7 +26,7 @@ class PessoaRequest extends FormRequest
     {
         return [
             'nome' => ['required', 'string', 'max:255', 'min:8'],
-            'CPF' => ['required', 'string', 'max:14', 'min:14', Rule::unique(Pessoa::class)->ignore($this->id), new CpfValido],
+            'CPF' => ['required', 'string', 'max:11', 'min:11', Rule::unique(Pessoa::class)->ignore($this->id), new CpfValido],
             'data_nascimento' => ['required'],
             'sexo' => ['required']
         ];

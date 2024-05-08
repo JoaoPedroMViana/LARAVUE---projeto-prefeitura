@@ -178,9 +178,6 @@
     }
 
     // Data limite
-
-    let dataLimite = ref('00/00/0000');
-
     const FormatarDataLimite = (date, prazo) => {
         const newDate = new Date(date);
         newDate.setDate(newDate.getDate() + prazo);
@@ -189,6 +186,7 @@
         let formatada = `${dia}/${mes}/${ano}`
         return formatada;
     }
+    
 </script>
 
 <template>

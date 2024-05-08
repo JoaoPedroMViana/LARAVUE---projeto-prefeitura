@@ -23,13 +23,15 @@ class PessoaController extends Controller
     function create() {
         return Inertia::render('CadastroPessoas');
     } 
-
+ 
     function store(PessoaRequest $request) {
+
+        $cpf = preg_replace('/[^0-9]/', '', (string) $request->CPF);
 
         Pessoa::create([
             'nome' => $request->nome,
             'data_nascimento' => $request->data_nascimento,
-            'CPF' => $request->CPF,
+            'CPF' => $cpf,
             'sexo' => $request->sexo,
             'cidade' => $request->cidade,
             'bairro' => $request->bairro,
@@ -56,8 +58,10 @@ class PessoaController extends Controller
         $itens_por_pag = 5;
         if(request('itens_pag')) $itens_por_pag = request('itens_pag');
 
+        $cpf = preg_replace('/[^0-9]/', '', (string) $queryCpf);
+
         $query = Pessoa::where('nome', 'like', '%' . $queryNome . '%')
-        ->where('cpf', 'like', $queryCpf . '%')
+        ->where('cpf', 'like', $cpf . '%')
         ->where('sexo', 'like', $querySexo . '%');
 
         if (!empty($queryData)) {
@@ -82,8 +86,8 @@ class PessoaController extends Controller
         ]);
     }
 
-    function update(PessoaRequest $request) {    
-        Pessoa::findOrFail($request->id)->update($request->all());
+    function update(PessoaRequest $request) { 
+        Pessoa::findOrFail($request->id)->update($request->except('CPF'));
         return redirect('/pessoas')->with('message', 'A pessoa foi salva com sucesso!');
     }
 
